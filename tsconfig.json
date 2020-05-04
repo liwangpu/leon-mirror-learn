@@ -1,23 +1,50 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "target": "es2015",
-    "lib": [
-      "es2018",
-      "dom"
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "./",
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "downlevelIteration": true,
+        "experimentalDecorators": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "target": "es2015",
+        "lib": [
+            "es2018",
+            "dom"
+        ],
+        "paths": {
+            "@env/*": [
+                "src/environments/*"
+            ],
+            "xcloud-grid": [
+                "projects/xcloud-grid/src/public-api.ts"
+            ],
+            "mirror-deed": [
+                "projects/mirror-deed/src/public-api.ts"
+            ],
+            "mirror-core": [
+                "projects/mirror-core/src/public-api.ts"
+            ],
+            "mirror-shared": [
+                "projects/mirror-shared/src/public-api.ts"
+            ],
+            "mirror-component-layout": [
+                "projects/mirror-component-layout/src/public-api.ts"
+            ],
+            "mirror-component-set": [
+                "projects/mirror-component-set/src/public-api.ts"
+            ]
+        }
+    },
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true,
+        "strictInjectionParameters": true
+    },
+    "exclude": [
+        "**/test.ts",
+        "**/*.spec.ts"
     ]
-  },
-  "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
-  }
 }

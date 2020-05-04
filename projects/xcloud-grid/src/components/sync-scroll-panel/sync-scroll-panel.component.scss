@@ -1,0 +1,48 @@
+div.sync-panel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    div.revirser {
+        position: absolute;
+        display: flex;
+        width: 100%;
+        height: 100%;
+
+
+        div.slave-panel {
+            display: flex;
+            flex-flow: row wrap;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: scroll;
+
+            div.placeholder{
+                width: 100%;
+                height: 17px;
+            }
+            div.frozen {
+                display: flex;
+                height: 100%;
+                overflow-y: scroll;
+            }
+        }
+
+        div.master-panel {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            div.scroll {
+                display: flex;
+                position: absolute;
+                top: 0;
+                left: -17px;
+                right: 0;
+                bottom: 0;
+                z-index: 2;
+                overflow: auto;
+                background-color: #fff;
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+form {
+    div {
+        margin-bottom: .5em;
+
+        label {
+            display: inline-block;
+            width: 120px;
+            text-align: right;
+
+            &::after {
+                content: '：';
+            }
+        }
+    }
+}
+
+button {
+    margin-left: 120px;
+}

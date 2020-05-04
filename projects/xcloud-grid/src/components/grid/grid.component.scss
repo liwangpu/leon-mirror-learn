@@ -1,0 +1,13 @@
+div.grid {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    height: 100%;
+    padding: .5em 1em 0;
+    background-color: #fff;
+
+    .grid-content {
+        flex: 1;
+        position: relative;
+    }
+}

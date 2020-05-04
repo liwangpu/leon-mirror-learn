@@ -1,0 +1,46 @@
+<table #table>
+    <thead>
+        <tr class="table-row">
+            <ng-container *ngFor='let col of columns;trackBy:trackByColumnFn;let l=last'>
+                <th class="table-cell" [dynamicStyleWidth]='col.width' #headerCell>
+                    <div class="table-cell-wrapper" [sortTableColumn]='col' (sort)='onSort($event)'>
+                        <p class="title">{{col.name}}</p>
+                        <div class="indicator">
+                            <span class="sort"></span>
+                            <div class="advance-setting" (click)='currentEditColumn=col.field;menu.toggle($event);$event.stopPropagation();'>
+                                <i class="pi pi-angle-down"></i>
+                            </div>
+                            <div class="resizer-handler" [columResizerHandler]='headerCell'
+                                (afterResize)='afterColumnResize()'>
+                            </div>
+                        </div>
+                    </div>
+                </th>
+            </ng-container>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor='let rowData of datas;trackBy:trackByDataFn'>
+            <tr class="table-row" (click)='onRowClick(rowData)' [class.hidden]='rowData["_hidden"]'
+                [tableStateRow]='rowData' [class.active]='rowData["_active"]'>
+                <ng-container *ngFor='let col of columns;trackBy:trackByColumnFn;let f=first;'>
+                    <td class="table-cell">
+                        <ng-container *ngIf='shownNestedData && col.field===nestedToggleField'>
+                            <span class="toggle-nested" [style.width.em]='rowData["_level"]*2'>
+                                <i class="pi pi-chevron-right" *ngIf='rowData["_hasChildren"]'
+                                    [class.open]='rowData["_hideNestedData"]'
+                                    (click)='toggleNestedData(rowData,$event)'></i>
+                            </span>
+                        </ng-container>
+                        <span [class.link-column]='col.link'
+                            (click)='onLinkFieldClick(col.field,rowData,col.link)'>{{rowData[col.field]}}</span>
+                    </td>
+                </ng-container>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>
+
+<p-slideMenu styleClass='table-advance-setting-slide-menu' appendTo="body" #menu [model]="advanceColSettingMenu"
+    [popup]="true">
+</p-slideMenu>

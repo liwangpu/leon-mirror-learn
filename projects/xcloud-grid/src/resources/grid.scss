@@ -1,0 +1,157 @@
+xcloud-grid-header {
+    div.grid-header {
+        .ui-inputtext {
+            padding: .25em;
+        }
+
+        div.view {
+            p-dropdown {
+                .ui-dropdown {
+                    min-width: 132px;
+                }
+            }
+        }
+
+        div.buttons {
+            .ui-inputtext {
+                // width: 10.25em;
+            }
+        }
+    }
+}
+
+xcloud-grid-footer {
+    .ui-paginator {
+        $bgc: #F8F9FB;
+        background-color: $bgc;
+        border-color: #D5D8E1;
+
+        &>.ui-paginator-element {
+            height: 32px;
+            outline: none;
+
+            &:hover {
+                background-color: $bgc !important;
+            }
+
+            &:focus {
+                box-shadow: 0 0 0 0;
+            }
+
+            $uiPaginatorIconFontSize:25px;
+            $uiPaginatorIconFontWeight:400;
+
+            &.ui-paginator-first {
+                .ui-paginator-icon {
+                    font-size: $uiPaginatorIconFontSize;
+                    font-weight: $uiPaginatorIconFontWeight;
+
+                    &::before {
+                        content: '\00AB';
+                    }
+                }
+            }
+
+            &.ui-paginator-prev {
+                .ui-paginator-icon {
+                    font-size: $uiPaginatorIconFontSize;
+                    font-weight: $uiPaginatorIconFontWeight;
+
+                    &::before {
+                        content: '\2039';
+                    }
+                }
+            }
+
+            &.ui-paginator-next {
+                .ui-paginator-icon {
+                    font-size: $uiPaginatorIconFontSize;
+                    font-weight: $uiPaginatorIconFontWeight;
+
+                    &::before {
+                        content: '\203A';
+                    }
+                }
+            }
+
+            &.ui-paginator-last {
+                .ui-paginator-icon {
+                    font-size: $uiPaginatorIconFontSize;
+                    font-weight: $uiPaginatorIconFontWeight;
+
+                    &::before {
+                        content: '\00BB';
+                    }
+                }
+            }
+
+            &.ui-state-disabled {
+                .ui-paginator-icon {
+                    &:hover {
+                        color: #848484;
+                        background-color: $bgc;
+                    }
+                }
+            }
+
+            .ui-paginator-icon {
+                position: relative;
+                top: 0;
+                left: 0;
+                $size: 20px;
+                width: $size;
+                height: $size;
+                min-width: 0;
+                min-height: 0;
+                margin: 6px;
+                font-size: $size;
+                border-radius: 4px;
+                line-height: 14px;
+                color: #848484;
+
+                &:hover {
+                    // color: #608CE0;
+                    background-color: #e0e0e0;
+                }
+            }
+        }
+
+        .ui-paginator-pages {
+            height: 32px;
+
+            .ui-paginator-element {
+                $size: 20px;
+                width: $size;
+                height: $size;
+                min-width: 0;
+                min-height: 0;
+                margin: 6px;
+                border-radius: 4px;
+                line-height: $size;
+                color: #555C71;
+
+                &.ui-state-active {
+                    background-color: #608CE0;
+                }
+            }
+        }
+
+        .ui-dropdown {
+            background-color: $bgc;
+
+            .ui-dropdown-label-container {
+                .ui-inputtext {
+                    background-color: $bgc;
+                }
+            }
+
+            .ui-dropdown-trigger {
+                background-color: $bgc;
+
+                .ui-dropdown-trigger-icon {
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}

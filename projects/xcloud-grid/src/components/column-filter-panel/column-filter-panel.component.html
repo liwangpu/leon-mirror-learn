@@ -1,0 +1,21 @@
+<div class="column-filter-panel">
+    <div class="header">
+        <div class="buttons">
+            <button pButton type="button" label="查询" (click)='query()' *ngIf='!enableFilterView'></button>
+            <p-splitButton label="保存" (onClick)="save()" [model]="advanceMenuItems" *ngIf='enableFilterView'>
+            </p-splitButton>
+        </div>
+    </div>
+    <div class="content">
+        <div class="reviser">
+            <h3>匹配所有这些筛选器</h3>
+            <div class="filter-items">
+                <div #filterItemsContainer></div>
+            </div>
+            <div class="filter-buttons">
+                <span (click)='addFilterItem()'>添加筛选器</span>
+                <span (click)='clearFilterItems()'>全部删除</span>
+            </div>
+        </div>
+    </div>
+</div>

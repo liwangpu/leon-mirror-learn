@@ -1,0 +1,20 @@
+<div class="grid-header">
+    <div class="view slm">
+        <p-dropdown [options]="allViews" [(ngModel)]="activeView"></p-dropdown>
+    </div>
+    <div class="buttons">
+        <div class="search">
+            <i class="search pi pi-search" [class.hidden]='keyword'></i>
+            <input type="text" class="slm" pInputText placeholder="搜索此列表" [(ngModel)]='keyword' (keyup.enter)='search()'
+                #keywordInput>
+            <i class="clear pi pi-times" [class.hidden]='!keyword' (click)='keyword="";search()'></i>
+        </div>
+        <button pButton type="button" class="slm" icon="pi pi-arrow-left" iconPos="left" [disabled]="!enableReturn"
+            (click)="reset()"></button>
+        <button pButton type="button" class="slm" icon="pi pi-cog" iconPos="left"
+            (click)="advanceSettingMenuCt.toggle($event)"></button>
+        <button pButton type="button" class="slm" icon="pi pi-refresh" iconPos="left" (click)='refresh()'></button>
+        <button pButton type="button" class="slm" icon="pi pi-filter" iconPos="left" (click)='filter()'></button>
+    </div>
+</div>
+<p-slideMenu #advanceSettingMenuCt appendTo="body" [model]="advanceSettingMenu" [popup]="true"></p-slideMenu>

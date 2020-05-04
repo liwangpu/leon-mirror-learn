@@ -1,0 +1,16 @@
+<div class="sync-panel">
+    <div class="revirser">
+        <div class="slave-panel" #slavePanel>
+            <ng-container *ngFor='let slaveTemplate of slaveTemplates'>
+                <ng-template *ngTemplateOutlet='slaveTemplate'></ng-template>
+            </ng-container>
+            <div class="placeholder" #placeholder></div>
+        </div>
+
+        <div class="master-panel">
+            <div class="scroll" #masterPanel>
+                <ng-template *ngTemplateOutlet='masterTemplate'></ng-template>
+            </div>
+        </div>
+    </div>
+</div>

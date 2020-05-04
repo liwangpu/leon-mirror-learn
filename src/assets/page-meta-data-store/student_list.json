@@ -1,0 +1,12 @@
+{
+    "key": "student_list",
+    "title": "学生列表",
+    "layout": {
+        "control": "blank-layout",
+        "content": [
+            {
+                "key":"test-tab-1"
+            }
+        ]
+    }
+}

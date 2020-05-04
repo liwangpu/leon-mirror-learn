@@ -1,0 +1,7 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/mirror-component-layout",
+  "lib": {
+    "entryFile": "src/projects.ts"
+  }
+}

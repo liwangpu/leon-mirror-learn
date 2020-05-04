@@ -1,11 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { CoreRoutingModule as MirrorCoreRoutingModule } from 'mirror-core';
 
-
-const routes: Routes = [];
+const routes: Routes = [
+    {
+        path: 'grid-demo',
+        loadChildren: () => import('./grid-demo/grid-demo.module').then(m => m.GridDemoModule)
+    },
+    { path: '**', redirectTo: 'grid-demo' }
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [MirrorCoreRoutingModule, RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }

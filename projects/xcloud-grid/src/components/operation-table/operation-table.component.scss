@@ -1,0 +1,55 @@
+@import '../../table.scss';
+
+table {
+    @include TABLE;
+    width: auto;
+    min-width: 50px;
+    $table_cell_height: 40px;
+
+    thead {
+        .table-row {
+
+            .table-cell {
+
+                &.operation {
+                    width: 50px;
+                    height: 41px;
+                    text-align: center;
+                    background-color: white;
+                }
+            }
+        }
+    }
+
+    tbody {
+        .table-row {
+
+            .table-cell {
+                &.operation {
+                    div.wrapper {
+                        display: flex;
+                        align-items: center;
+
+                        &>* {
+                            margin-right: .5em;
+                        }
+
+
+                        i.button {
+                            &:hover {
+                                cursor: pointer;
+                                color: #007AD9;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    .table-row {
+
+        .table-cell {}
+    }
+}

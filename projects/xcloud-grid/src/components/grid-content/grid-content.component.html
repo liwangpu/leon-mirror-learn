@@ -1,0 +1,26 @@
+<div class="grid-content">
+    <xcloud-grid-sync-scroll-panel>
+        <ng-template syncSlaveScrollArea>
+            <xcloud-grid-tool-table *ngIf='selectMode' [datas]='datas' [radioSelect]='radioSelect'
+                [selectMode]='selectMode'>
+            </xcloud-grid-tool-table>
+        </ng-template>
+        <ng-template syncSlaveScrollArea>
+            <xcloud-grid-frozen-table [selectMode]='selectMode' [columns]='frozenColumns' [datas]='datas'
+                (afterResize)='afterColumnResize()' (radioSelectChange)='radioSelect=$event'>
+            </xcloud-grid-frozen-table>
+        </ng-template>
+        <ng-template syncMasterScrollArea>
+            <xcloud-grid-unfrozen-table [selectMode]='selectMode' [columns]='unfrozenColumns' [datas]='datas'
+                (afterResize)='afterColumnResize()' (radioSelectChange)='radioSelect=$event'>
+            </xcloud-grid-unfrozen-table>
+            <xcloud-grid-operation-table [flowProcessKey]='flowProcessKey' [datas]='datas' *ngIf='showOperationTable'>
+            </xcloud-grid-operation-table>
+        </ng-template>
+    </xcloud-grid-sync-scroll-panel>
+    <div class="filter-panel" [class.show]='showFilterView'>
+        <div #filterPanelAnchor></div>
+    </div>
+</div>
+
+<!-- <xcloud-grid-column-filter-panel *ngIf='advancePanel==="filter"'></xcloud-grid-column-filter-panel> -->

@@ -1,0 +1,12 @@
+{
+    "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+    "dest": "../../dist/xcloud-grid",
+    "lib": {
+        "entryFile": "src/public-api.ts",
+        "umdModuleIds": {
+            "primeng/dropdown": "primeng/dropdown",
+            "primeng/inputtext": "primeng/inputtext",
+            "primeng/button": "primeng/button"
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "title": "test-form-1",
+    "control": "test-form",
+    "content": [
+        {
+            "key": "test-tree-1"
+        }
+    ],
+    "subscribe": [
+        {
+            "source": "id"
+        }
+    ]
+}

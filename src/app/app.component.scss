@@ -1,0 +1,54 @@
+div.container {
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+    height: 100%;
+
+    div.navbar {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        width: 200px;
+        height: 100%;
+        padding: 0 1rem 1rem;
+        background-color: #1E1E1E;
+        overflow-y: auto;
+
+        p.title {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #23A9F2;
+            outline: none;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        a.nav {
+            display: inline-block;
+            text-decoration: none;
+            margin-bottom: .3rem;
+            color: gray;
+
+            &:hover {
+                cursor: pointer;
+                color: orange;
+            }
+
+            &.active {
+                color: orange;
+            }
+        }
+    }
+
+    div.content {
+        flex: 1 1 0;
+        height: 100%;
+        overflow: auto;
+        // padding: 1rem;
+        // background: linear-gradient(90deg, hsl(24, 20%, 87%) 1px, hsl(24, 20%, 95%)) -3px no-repeat;
+    }
+}
