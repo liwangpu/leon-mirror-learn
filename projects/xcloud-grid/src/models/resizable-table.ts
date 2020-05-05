@@ -7,6 +7,9 @@ import { GridOpsatService } from '../services/grid-opsat.service';
 import { ISortEvent } from './i-sort-event';
 import { ITableColumn } from './i-table-column';
 import { Table } from './table';
+import { GridMessageFlowService } from '../services/grid-message-flow.service';
+import { topicFilter, dataMap } from '../utils/grid-tool';
+import { MessageFlowEnum } from '../enums/message-flow.enum';
 
 export abstract class ResizableTable extends Table implements OnInit {
 
@@ -16,6 +19,8 @@ export abstract class ResizableTable extends Table implements OnInit {
     public readonly radioSelectChange: EventEmitter<string> = new EventEmitter<string>();
     @Input()
     public selectMode: 'single' | 'multiple' = 'multiple';
+    @Input()
+    public snapline: Element;
     @ViewChildren(SortTableColumnDirective)
     public sortColumns: QueryList<SortTableColumnDirective>;
     @ViewChildren('headerCell')
@@ -24,61 +29,69 @@ export abstract class ResizableTable extends Table implements OnInit {
     public nestedToggleField: string;
     public shownNestedData: boolean = false;
     public allRowSelected: boolean = false;
+    public enableRowState = true;
     protected abstract tableType: 'frozen' | 'unfrozen';
     public constructor(
         protected renderer2: Renderer2,
         protected cache: GridDataService,
+        protected messageFlow: GridMessageFlowService,
         opsat: GridOpsatService
     ) {
         super(opsat);
     }
     public ngOnInit(): void {
-        this.opsat.message
-            .pipe(filter(x => x.topic === GridTopicEnum.NestedToggleField))
-            .pipe(map(x => x.data))
-            .subscribe(field => this.nestedToggleField = field);
 
-        this.opsat.message
-            .pipe(filter(x => x.topic === GridTopicEnum.ShowNestedDataLevel))
-            .pipe(map(x => x.data))
-            .subscribe(level => {
-                this.nestedDataLevel = level;
-                // console.log('level', level);
-            });
+        this.messageFlow.message
+            .pipe(topicFilter(MessageFlowEnum.EnableTableRowState), dataMap)
+            .subscribe(enable => this.enableRowState = enable);
 
-        this.opsat.message
-            .pipe(filter(x => x.topic === GridTopicEnum.ViewDefinition))
-            .pipe(delay(80))
-            .subscribe(() => {
-                let cols: Array<ITableColumn> = this.cache.getActiveFilterViewColumns().filter(x => !x['_invisibale']
-                    && (this.tableType === 'unfrozen' ? !x['_frozen'] : x['_frozen']));
-                let minWidth: number = 0;
-                for (let col of cols) {
-                    minWidth += col.width ? col.width : 0;
-                }
 
-                if (this.nestedDataLevel > 1) {
-                    if (this.tableType === 'unfrozen') {
-                        this.shownNestedData = !cols.some(x => x['_frozen']);
-                    } else if (this.tableType === 'frozen') {
-                        this.shownNestedData = cols.some(x => x['_frozen']);
-                    } else {
-                        //
-                    }
-                }
+        // this.opsat.message
+        //     .pipe(filter(x => x.topic === GridTopicEnum.NestedToggleField))
+        //     .pipe(map(x => x.data))
+        //     .subscribe(field => this.nestedToggleField = field);
 
-                if (minWidth > 0) {
-                    this.renderer2.setStyle(this.table.nativeElement, 'width', `${minWidth}px`);
-                } else {
-                    this.renderer2.removeStyle(this.table.nativeElement, 'width');
-                }
-            });
+        // this.opsat.message
+        //     .pipe(filter(x => x.topic === GridTopicEnum.ShowNestedDataLevel))
+        //     .pipe(map(x => x.data))
+        //     .subscribe(level => {
+        //         this.nestedDataLevel = level;
+        //         // console.log('level', level);
+        //     });
+
+        // this.opsat.message
+        //     .pipe(filter(x => x.topic === GridTopicEnum.ViewDefinition))
+        //     .pipe(delay(80))
+        //     .subscribe(() => {
+        //         let cols: Array<ITableColumn> = this.cache.getActiveFilterViewColumns().filter(x => !x['_invisibale']
+        //             && (this.tableType === 'unfrozen' ? !x['_frozen'] : x['_frozen']));
+        //         let minWidth: number = 0;
+        //         for (let col of cols) {
+        //             minWidth += col.width ? col.width : 0;
+        //         }
+
+        //         if (this.nestedDataLevel > 1) {
+        //             if (this.tableType === 'unfrozen') {
+        //                 this.shownNestedData = !cols.some(x => x['_frozen']);
+        //             } else if (this.tableType === 'frozen') {
+        //                 this.shownNestedData = cols.some(x => x['_frozen']);
+        //             } else {
+        //                 //
+        //             }
+        //         }
+
+        //         if (minWidth > 0) {
+        //             this.renderer2.setStyle(this.table.nativeElement, 'width', `${minWidth}px`);
+        //         } else {
+        //             this.renderer2.removeStyle(this.table.nativeElement, 'width');
+        //         }
+        //     });
 
     }
 
     public onLinkFieldClick(field: string, data: any, link?: any): void {
         if (!link) { return; }
-        this.opsat.publish(GridTopicEnum.LinkFieldClick, { field, data });
+        // this.opsat.publish(GridTopicEnum.LinkFieldClick, { field, data });
     }
 
     public onRowClick(data: any): void {
@@ -100,7 +113,7 @@ export abstract class ResizableTable extends Table implements OnInit {
 
     public afterColumnResize(): void {
         this.afterResize.next();
-        this.opsat.publish(GridTopicEnum.ColumnWidthChange);
+        this.messageFlow.publish(MessageFlowEnum.ColumnWidthChange);
     }
 
     public calculateColumnWidth(): { [key: string]: number } {
@@ -111,7 +124,6 @@ export abstract class ResizableTable extends Table implements OnInit {
             obj[this.columns[index].field] = rect.width;
             index++;
         });
-
         return obj;
     }
 

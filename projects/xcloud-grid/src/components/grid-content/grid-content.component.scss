@@ -53,4 +53,14 @@ div.grid-content {
         }
     }
 
+    div.snapline {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1px;
+        height: 100%;
+        background-color: #608CE0;
+        z-index: 9999;
+        opacity: 0;
+    }
 }

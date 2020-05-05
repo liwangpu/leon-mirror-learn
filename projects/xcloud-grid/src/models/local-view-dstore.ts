@@ -29,6 +29,7 @@ export abstract class LocalViewDStore extends DStore {
         view.id = Date.now().toString();
         this.filterViews.push(view);
         this.temporaryStoreViewToLocalStorage();
+        console.log('view create', view);
         return view;
     }
 
@@ -38,6 +39,7 @@ export abstract class LocalViewDStore extends DStore {
             this.filterViews[index] = view;
         }
         this.temporaryStoreViewToLocalStorage();
+        console.log('view update', view);
     }
 
     protected temporaryStoreViewToLocalStorage(): void {

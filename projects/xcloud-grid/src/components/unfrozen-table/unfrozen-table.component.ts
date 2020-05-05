@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, forwardRef, OnInit, Renderer2, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { filter } from 'rxjs/operators';
 import { GridTopicEnum } from '../../enums/grid-topic.enum';
@@ -7,6 +7,7 @@ import { ITableColumn } from '../../models/i-table-column';
 import { ResizableTable } from '../../models/resizable-table';
 import { GridDataService } from '../../services/grid-data.service';
 import { GridOpsatService } from '../../services/grid-opsat.service';
+import { GridMessageFlowService } from '../../services/grid-message-flow.service';
 
 @Component({
     selector: 'xcloud-grid-unfrozen-table',
@@ -21,15 +22,18 @@ import { GridOpsatService } from '../../services/grid-opsat.service';
 })
 export class UnFrozenTableComponent extends ResizableTable implements OnInit {
 
+    @Output()
+    public freezeColumn: EventEmitter<string> = new EventEmitter<string>();
     public advanceColSettingMenu: Array<MenuItem>;
     public currentEditColumn: string;
     protected tableType: 'frozen' | 'unfrozen' = 'unfrozen';
     public constructor(
         renderer2: Renderer2,
         cache: GridDataService,
+        messageFlow: GridMessageFlowService,
         opsat: GridOpsatService,
     ) {
-        super(renderer2, cache, opsat);
+        super(renderer2, cache, messageFlow, opsat);
     }
 
     public ngOnInit(): void {
@@ -39,18 +43,9 @@ export class UnFrozenTableComponent extends ResizableTable implements OnInit {
             {
                 id: 'freezen-column',
                 label: '冻结此列',
-                command: () => {
-                    this.cache.freezeColumn(this.currentEditColumn);
-                }
+                command: () => this.cache.freezeColumn(this.currentEditColumn)
             }
         ];
-
-        // 订阅取消冻结或者隐藏表格列事件,取消表格所占宽度
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.UnFreezeColumn))
-        //     .subscribe(() => {
-        //         this.renderer2.removeStyle(this.table.nativeElement, 'width');
-        //     });
     }
 
 }

@@ -1,5 +1,5 @@
-import { Component, Inject, OnDestroy, OnInit, Optional, QueryList, ViewChild, ViewChildren, ViewContainerRef, ComponentFactory, ComponentFactoryResolver } from '@angular/core';
-import { forkJoin, Observable, Subject } from 'rxjs';
+import { Component, Inject, OnDestroy, OnInit, Optional, QueryList, ViewChild, ViewChildren, ViewContainerRef, ComponentFactory, ComponentFactoryResolver, HostListener } from '@angular/core';
+import { forkJoin, Observable, Subject, merge } from 'rxjs';
 import { delay, filter, map, take } from 'rxjs/operators';
 import { GridTopicEnum } from '../../enums/grid-topic.enum';
 import { IFilterView } from '../../models/i-filter-view';
@@ -48,6 +48,7 @@ export class GridContentComponent implements OnInit, OnDestroy {
     private filterPanelAnchor: ViewContainerRef;
     private columns: Array<ITableColumn> = [];
     private refreshDataProcess: Subject<void> = new Subject<void>();
+    private wheelingFn: any;
     public constructor(
         private opsat: GridOpsatService,
         private cache: GridDataService,
@@ -67,6 +68,19 @@ export class GridContentComponent implements OnInit, OnDestroy {
         //     .pipe(map(x => x.data))
         //     .subscribe(key => this.flowProcessKey = key);
     }
+
+    @HostListener('wheel', ['$event']) public onWheel(e: any): void {
+        e.stopPropagation();
+        if (!this.wheelingFn) {
+            this.messageFlow.publish(MessageFlowEnum.EnableTableRowState, false);
+        }
+        clearTimeout(this.wheelingFn);
+        this.wheelingFn = setTimeout(() => {
+            this.wheelingFn = null;
+            this.messageFlow.publish(MessageFlowEnum.EnableTableRowState, true);
+        }, 250);
+    }
+
     public ngOnDestroy(): void {
         // this.refreshDataProcess.complete();
         // this.refreshDataProcess.unsubscribe();
@@ -132,6 +146,23 @@ export class GridContentComponent implements OnInit, OnDestroy {
                 }
                 this.showFilterView = !this.showFilterView;
             });
+
+        const dataChangeObs: Observable<any> = this.dataFlow.message
+            .pipe(topicFilter(DataFlowTopicEnum.ListData));
+        const columnWidthChangeObs: Observable<any> = this.messageFlow.message
+            .pipe(topicFilter(MessageFlowEnum.ColumnWidthChange))
+        merge(dataChangeObs, columnWidthChangeObs)
+            .pipe(delay(800))
+            .subscribe(() => this.syncScrollPanel.revirseScroll());
+        // this.messageFlow.message
+        // .pipe(filter(x => x.topic === MessageFlowEnum. || x.topic === GridTopicEnum.ColumnWidthChange))
+        // .subscribe(() => {
+        //     if (!this.filterPanelAnchor.length) {
+        //         const fac = this.cfr.resolveComponentFactory(ColumnFilterPanelComponent);
+        //         this.filterPanelAnchor.createComponent(fac);
+        //     }
+        //     this.showFilterView = !this.showFilterView;
+        // });
         // this.refreshDataProcess.subscribe(() => {
         //     // console.log('flowProcessSrv', this.flowProcessSrv);
         //     if (!this.flowProcessSrv) { return; }
@@ -212,7 +243,6 @@ export class GridContentComponent implements OnInit, OnDestroy {
     }
 
     public afterColumnResize(): void {
-        // if (!this.enableFilterView) { return; }
         const view: IFilterView = this.cache.getActiveFilterView();
         this.tables.forEach(it => {
             let obj: {} = it.calculateColumnWidth();
@@ -223,10 +253,8 @@ export class GridContentComponent implements OnInit, OnDestroy {
                 view.columns[index].width = obj[field];
             }
         });
-        console.log('v', view);
         this.cache.setFilterView(view);
         this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData: false });
-        // this.opsat.publish(GridTopicEnum.FilterViewCreateOrUpdate, view);
     }
 
 }

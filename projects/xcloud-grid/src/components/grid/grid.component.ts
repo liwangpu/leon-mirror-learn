@@ -191,10 +191,10 @@ export class GridComponent implements OnInit, AfterViewInit {
             .pipe(topicFilter(MessageFlowEnum.FilterViewChange), dataMap)
             .subscribe(async (obj: { view: IFilterView, fetchData?: boolean }) => {
                 let { view, fetchData } = obj;
-                if (view.id === '_ALL') {
-                    this.dataFlow.publish(DataFlowTopicEnum.ViewDefinition, this.cache.getFilterViews());
-                    return;
-                }
+                // if (view.id === '_ALL') {
+                //     this.dataFlow.publish(DataFlowTopicEnum.ViewDefinition, this.cache.getFilterViews());
+                //     return;
+                // }
 
                 if (view.id) {
                     await this.dstore.onFilterViewUpdate(view);
