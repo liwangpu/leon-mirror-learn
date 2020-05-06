@@ -15,7 +15,7 @@ export interface DStoreOption {
 
 export abstract class DStore {
     private gridStartupFn: (option?: DStoreOption) => void;
-    public abstract buttons: Array<ITableButton>;
+    public abstract tableButtons: Array<ITableButton>;
     public abstract getColumns(): Promise<Array<ITableColumn>>;
     public abstract onQuery(queryParam?: { [key: string]: any }): Promise<IQueryResult>;
     public abstract getFilterViews(): Promise<Array<IFilterView>>;

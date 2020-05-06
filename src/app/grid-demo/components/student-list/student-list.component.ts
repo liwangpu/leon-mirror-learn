@@ -24,7 +24,12 @@ interface IStudent {
 })
 export class StudentListComponent extends LocalViewDStore implements OnInit {
 
-    public buttons: Array<ITableButton> = [];
+    public tableButtons: Array<ITableButton> = [
+        {
+            key: 'edit',
+            name: '编辑'
+        }
+    ];
 
     public constructor() {
         super();

@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChildren, ElementRef, QueryList, Renderer2, TemplateRef, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, ElementRef, QueryList, Renderer2, TemplateRef, ViewChild, ComponentFactoryResolver, ComponentFactory, ViewContainerRef } from '@angular/core';
 import { SyncMasterScrollAreaDirective } from '../../directives/sync-master-scroll-area.directive';
 import { SyncSlaveScrollAreaDirective } from '../../directives/sync-slave-scroll-area.directive';
 
@@ -9,12 +9,10 @@ import { SyncSlaveScrollAreaDirective } from '../../directives/sync-slave-scroll
 })
 export class SyncScrollPanelComponent implements AfterContentInit {
 
-    public slaveTemplates: Array<TemplateRef<any>> = [];
-    public masterTemplate: TemplateRef<any>;
-    // @ContentChildren(SyncSlaveScrollAreaDirective)
-    // private slaveAreas: QueryList<SyncSlaveScrollAreaDirective>;
-    // @ContentChildren(SyncMasterScrollAreaDirective)
-    // private masterAreas: QueryList<SyncMasterScrollAreaDirective>;
+    @ViewChild('slavePanelContainer', { static: true, read: ViewContainerRef })
+    public slavePanelContainer: ViewContainerRef;
+    @ViewChild('masterPanelContainer', { static: true, read: ViewContainerRef })
+    public masterPanelContainer: ViewContainerRef;
     @ViewChild('slavePanel', { static: true, read: ElementRef })
     private slavePanel: ElementRef;
     @ViewChild('masterPanel', { static: true, read: ElementRef })
@@ -59,5 +57,13 @@ export class SyncScrollPanelComponent implements AfterContentInit {
         // // console.log('offsetHeight', offsetHeight);
         // this.renderer2.setStyle(this.placeholderBox.nativeElement, 'height', `${scrollBarHeight}px`);
     }
+
+    // public createPanel(factories: Array<ComponentFactory<any>>): void {
+    //     if (!factories || factories.length) { return; }
+
+    //     for (let i = 1, len = factories.length; i < len; i++) {
+    //         this.slavePanelContainer.createComponent();
+    //     }
+    // }
 
 }
