@@ -11,10 +11,10 @@ export class SyncScrollPanelComponent implements AfterContentInit {
 
     public slaveTemplates: Array<TemplateRef<any>> = [];
     public masterTemplate: TemplateRef<any>;
-    @ContentChildren(SyncSlaveScrollAreaDirective)
-    private slaveAreas: QueryList<SyncSlaveScrollAreaDirective>;
-    @ContentChildren(SyncMasterScrollAreaDirective)
-    private masterAreas: QueryList<SyncMasterScrollAreaDirective>;
+    // @ContentChildren(SyncSlaveScrollAreaDirective)
+    // private slaveAreas: QueryList<SyncSlaveScrollAreaDirective>;
+    // @ContentChildren(SyncMasterScrollAreaDirective)
+    // private masterAreas: QueryList<SyncMasterScrollAreaDirective>;
     @ViewChild('slavePanel', { static: true, read: ElementRef })
     private slavePanel: ElementRef;
     @ViewChild('masterPanel', { static: true, read: ElementRef })
@@ -28,10 +28,10 @@ export class SyncScrollPanelComponent implements AfterContentInit {
     }
 
     public ngAfterContentInit(): void {
-        this.slaveAreas.forEach(it => {
-            this.slaveTemplates.push(it.template);
-        });
-        this.masterAreas.forEach(it => this.masterTemplate = it.template);
+        // this.slaveAreas.forEach(it => {
+        //     this.slaveTemplates.push(it.template);
+        // });
+        // this.masterAreas.forEach(it => this.masterTemplate = it.template);
 
         let lastScrollTop: number = 0;
         this.masterPanel.nativeElement.addEventListener('scroll', e => {
@@ -52,12 +52,12 @@ export class SyncScrollPanelComponent implements AfterContentInit {
     }
 
     public revirseScroll(): void {
-        let clientHeight: number = this.masterPanel.nativeElement.clientHeight;
-        let offsetHeight: number = this.masterPanel.nativeElement.offsetHeight;
-        let scrollBarHeight: number = offsetHeight - clientHeight;
-        // console.log('clientHeight', clientHeight);
-        // console.log('offsetHeight', offsetHeight);
-        this.renderer2.setStyle(this.placeholderBox.nativeElement, 'height', `${scrollBarHeight}px`);
+        // let clientHeight: number = this.masterPanel.nativeElement.clientHeight;
+        // let offsetHeight: number = this.masterPanel.nativeElement.offsetHeight;
+        // let scrollBarHeight: number = offsetHeight - clientHeight;
+        // // console.log('clientHeight', clientHeight);
+        // // console.log('offsetHeight', offsetHeight);
+        // this.renderer2.setStyle(this.placeholderBox.nativeElement, 'height', `${scrollBarHeight}px`);
     }
 
 }

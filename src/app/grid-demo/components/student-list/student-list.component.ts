@@ -1,5 +1,5 @@
 import { Component, OnInit, forwardRef } from '@angular/core';
-import { DStore, IFilterView, IQueryResult, ITableColumn, LocalViewDStore, ColumnTypeEnum } from 'xcloud-grid';
+import { DStore, IFilterView, IQueryResult, ITableColumn, LocalViewDStore, ColumnTypeEnum, ITableButton } from 'xcloud-grid';
 import * as faker from 'faker';
 
 interface IStudent {
@@ -23,6 +23,8 @@ interface IStudent {
     ]
 })
 export class StudentListComponent extends LocalViewDStore implements OnInit {
+
+    public buttons: Array<ITableButton> = [];
 
     public constructor() {
         super();

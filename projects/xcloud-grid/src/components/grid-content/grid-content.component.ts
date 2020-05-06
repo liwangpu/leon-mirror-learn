@@ -18,6 +18,7 @@ import { DataFlowTopicEnum } from '../../enums/data-flow-topic.enum';
 import { DStoreOption } from '../../models/dstore';
 import { MessageFlowEnum } from '../../enums/message-flow.enum';
 import { ColumnFilterPanelComponent } from '../column-filter-panel/column-filter-panel.component';
+import { ToolTableComponent } from '../tool-table/tool-table.component';
 
 @Component({
     selector: 'xcloud-grid-content',
@@ -44,6 +45,8 @@ export class GridContentComponent implements OnInit, OnDestroy {
     @ViewChildren(ResizableTable) public tables: QueryList<ResizableTable>;
     @ViewChild(SyncScrollPanelComponent, { static: true })
     private syncScrollPanel: SyncScrollPanelComponent;
+    @ViewChild('slaveScrollArea', { static: true, read: ViewContainerRef })
+    public slaveScrollArea: ViewContainerRef;
     @ViewChild('filterPanelAnchor', { static: false, read: ViewContainerRef })
     private filterPanelAnchor: ViewContainerRef;
     private columns: Array<ITableColumn> = [];
@@ -92,6 +95,13 @@ export class GridContentComponent implements OnInit, OnDestroy {
             .subscribe((option: DStoreOption) => {
                 // console.log(1, option);
                 this.selectMode = option.selectMode;
+
+                // if (this.selectMode) {
+                //     let fac = this.cfr.resolveComponentFactory(ToolTableComponent);
+                //     let com = this.slaveScrollArea.createComponent(fac);
+                // }
+                // console.log(111, this.slaveScrollArea);
+
             });
 
         this.dataFlow.message

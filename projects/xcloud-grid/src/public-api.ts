@@ -12,6 +12,7 @@ export * from './models/i-filter-view';
 export * from './models/i-filter';
 export * from './models/i-query-result';
 export * from './models/i-table-column';
+export * from './models/i-table-button';
 export * from './models/i-process-task-history';
 // enums
 export * from './enums/column-type-enum.enum';
