@@ -140,9 +140,9 @@ export class GridContentComponent implements OnInit, OnDestroy {
                 this.showFilterView = !this.showFilterView;
             });
 
-        // merge(dataObs, columnWidthChangeObs)
-        //     .pipe(delay(800))
-        //     .subscribe(() => this.syncScrollPanel.revirseScroll());
+        merge(dataObs, columnWidthChangeObs)
+            .pipe(delay(800))
+            .subscribe(() => this.syncScrollPanel.revirseScroll());
 
         forkJoin(dataObs.pipe(take(1)), viewObs.pipe(take(1)), tableButtonObs.pipe(take(1)))
             .subscribe(() => {

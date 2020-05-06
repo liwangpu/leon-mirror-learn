@@ -65,7 +65,8 @@ export class SyncScrollPanelComponent implements AfterContentInit {
         let scrollBarHeight: number = offsetHeight - clientHeight;
         // console.log('clientHeight', clientHeight);
         // console.log('offsetHeight', offsetHeight);
-        this.renderer2.setStyle(this.placeholderBox.nativeElement, 'height', `${scrollBarHeight}px`);
+        console.log(111,scrollBarHeight);
+        this.renderer2.setStyle(this.slavePanel.nativeElement, 'padding-bottom', `${scrollBarHeight}px`);
     }
 
     // public createPanel(factories: Array<ComponentFactory<any>>): void {
