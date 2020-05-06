@@ -1,7 +1,11 @@
 <div class="grid-content" #gridContent>
     <xcloud-grid-sync-scroll-panel>
 
-        <div slaveScrollArea>
+        <xcloud-grid-tool-table slaveScrollArea *ngIf='selectMode' [datas]='datas' [radioSelect]='radioSelect'
+            [selectMode]='selectMode'>
+        </xcloud-grid-tool-table>
+        
+        <!-- <div slaveScrollArea>
             <xcloud-grid-tool-table *ngIf='selectMode' [datas]='datas' [radioSelect]='radioSelect'
                 [selectMode]='selectMode'>
             </xcloud-grid-tool-table>
@@ -11,7 +15,7 @@
             <xcloud-grid-unfrozen-table [snapline]='snapline' [selectMode]='selectMode' [columns]='unfrozenColumns'
                 [datas]='datas' (afterResize)='afterColumnResize()' (radioSelectChange)='radioSelect=$event'>
             </xcloud-grid-unfrozen-table>
-        </div>
+        </div> -->
         <!-- <div slaveScrollArea>
             <xcloud-grid-tool-table *ngIf='selectMode' [datas]='datas' [radioSelect]='radioSelect'
                 [selectMode]='selectMode'>
@@ -21,11 +25,7 @@
                 [datas]='datas' (afterResize)='afterColumnResize()' (radioSelectChange)='radioSelect=$event'>
             </xcloud-grid-unfrozen-table>
         </div> -->
-        <div masterScrollArea>
-            <!-- <xcloud-grid-unfrozen-table [snapline]='snapline' [selectMode]='selectMode' [columns]='unfrozenColumns'
-                [datas]='datas' (afterResize)='afterColumnResize()' (radioSelectChange)='radioSelect=$event'>
-            </xcloud-grid-unfrozen-table> -->
-        </div>
+
 
 
 
