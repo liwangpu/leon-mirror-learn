@@ -12,7 +12,7 @@ div.sync-panel {
 
         div.slave-panel {
             display: flex;
-            flex-flow: row nowrap;
+            flex-flow: row wrap;
             height: 100%;
             overflow-x: hidden;
             overflow-y: scroll;
@@ -29,7 +29,7 @@ div.sync-panel {
         }
 
         div.master-panel {
-            flex: 1;
+            flex:1 ;
             height: 100%;
             position: relative;
             div.scroll {

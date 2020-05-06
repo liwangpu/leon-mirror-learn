@@ -1,19 +1,17 @@
 <div class="sync-panel">
     <div class="revirser">
         <div class="slave-panel" #slavePanel>
-            <!-- <ng-container *ngFor='let slaveTemplate of slaveTemplates'>
+            <ng-container *ngFor='let slaveTemplate of slaveTemplates'>
                 <ng-template *ngTemplateOutlet='slaveTemplate'></ng-template>
-            </ng-container> -->
-            <ng-content select='[slaveScrollArea]'></ng-content>
-            <div class="view-container" #slavePanelContainer></div>
-            <!-- <div class="placeholder" #placeholder></div> -->
+            </ng-container>
+            <div class="placeholder" #placeholder></div>
         </div>
 
         <div class="master-panel">
             <div class="scroll" #masterPanel>
-                <ng-content select='[masterScrollArea]'></ng-content>
-                <div class="view-container" #masterPanelContainer></div>
-                <!-- <ng-template *ngTemplateOutlet='masterTemplate'></ng-template> -->
+                <ng-container *ngFor='let masterTemplate of masterTemplates'>
+                    <ng-template *ngTemplateOutlet='masterTemplate'></ng-template>
+                </ng-container>
             </div>
         </div>
     </div>

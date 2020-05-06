@@ -42,6 +42,7 @@ export class GridContentComponent implements OnInit, OnDestroy {
     public flowProcessKey: string;
     public showFilterView: boolean = false;
     public showOperationTable: boolean = false;
+    public syncMasterAreaConfirm = false;
     @ViewChildren(ResizableTable) public tables: QueryList<ResizableTable>;
     @ViewChild(SyncScrollPanelComponent, { static: true })
     private syncScrollPanel: SyncScrollPanelComponent;
@@ -139,22 +140,24 @@ export class GridContentComponent implements OnInit, OnDestroy {
                 this.showFilterView = !this.showFilterView;
             });
 
-        merge(dataObs, columnWidthChangeObs)
-            .pipe(delay(800))
-            .subscribe(() => this.syncScrollPanel.revirseScroll());
+        // merge(dataObs, columnWidthChangeObs)
+        //     .pipe(delay(800))
+        //     .subscribe(() => this.syncScrollPanel.revirseScroll());
 
         forkJoin(dataObs.pipe(take(1)), viewObs.pipe(take(1)), tableButtonObs.pipe(take(1)))
             .subscribe(() => {
-                console.log('11', this.showOperationTable);
-                const facs: Array<ComponentFactory<any>> = [];
+                this.syncMasterAreaConfirm = true;
+                // console.log('11', this.showOperationTable);
+                // const facs: Array<ComponentFactory<any>> = [];
 
-                if (this.showOperationTable) {
-                    let ofac = this.cfr.resolveComponentFactory(OperationTableComponent);
-                    this.syncScrollPanel.masterPanelContainer.createComponent(ofac);
-                    //     facs.push(this.cfr.resolveComponentFactory(OperationTableComponent));
-                }
+                // if (this.showOperationTable) {
+                //     let ofac = this.cfr.resolveComponentFactory(OperationTableComponent);
+                //     this.syncScrollPanel.masterPanelContainer.createComponent(ofac);
+                //     //     facs.push(this.cfr.resolveComponentFactory(OperationTableComponent));
+                // }
                 // facs.push(this.cfr.resolveComponentFactory(UnFrozenTableComponent));
                 // this.syncScrollPanel.createPanel(facs);
+                // this.syncScrollPanel.revirseScroll();
             });
     }
 
