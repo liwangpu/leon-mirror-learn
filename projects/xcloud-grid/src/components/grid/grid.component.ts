@@ -58,6 +58,8 @@ export class GridComponent implements OnInit, AfterViewInit {
         this.dstore.registryGridStartup(option => {
 
             this.dataFlow.publish(DataFlowTopicEnum.DStoreOption, option);
+
+            this.messageFlow.publish(MessageFlowEnum.TableButtons, this.dstore.tableButtons);
             // 异步请求column,view
             from(this.dstore.getColumns()).subscribe(columns => this.dataFlow.publish(DataFlowTopicEnum._ColumnDefinition, columns));
             from(this.dstore.getFilterViews()).subscribe(views => this.dataFlow.publish(DataFlowTopicEnum._ViewDefinition, views));

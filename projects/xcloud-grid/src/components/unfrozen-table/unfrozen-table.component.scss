@@ -3,14 +3,12 @@
 table {
     @include TABLE;
     $table_cell_height: 40px;
+    min-width: 400px;
 
     thead {
         .table-row {
 
-            .table-cell {
-
-
-            }
+            .table-cell {}
         }
     }
 

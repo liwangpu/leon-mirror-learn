@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import { IFilterView } from './i-filter-view';
 import { IQueryResult } from './i-query-result';
 import { ITableColumn } from './i-table-column';
+import { ITableButton } from './i-table-button';
 
 export interface DStoreOption {
     selectMode?: 'single' | 'multiple';
@@ -14,6 +15,7 @@ export interface DStoreOption {
 
 export abstract class DStore {
     private gridStartupFn: (option?: DStoreOption) => void;
+    public abstract tableButtons: Array<ITableButton>;
     public abstract getColumns(): Promise<Array<ITableColumn>>;
     public abstract onQuery(queryParam?: { [key: string]: any }): Promise<IQueryResult>;
     public abstract getFilterViews(): Promise<Array<IFilterView>>;

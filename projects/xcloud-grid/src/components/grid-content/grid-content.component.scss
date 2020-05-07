@@ -33,6 +33,10 @@ div.grid-content {
     //     }
     // }
 
+    div.view-container {
+        display: none;
+    }
+
     div.filter-panel {
         position: absolute;
         top: 0;
@@ -62,5 +66,9 @@ div.grid-content {
         background-color: #608CE0;
         z-index: 9999;
         opacity: 0;
+    }
+
+    .hidden {
+        display: none;
     }
 }

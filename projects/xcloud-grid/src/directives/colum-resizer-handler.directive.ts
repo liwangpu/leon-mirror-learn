@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostListener, OnDestroy, Output, Renderer2, Input } from '@angular/core';
+import { Directive, EventEmitter, HostListener, OnDestroy, Output, Renderer2, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Directive({
@@ -14,7 +14,7 @@ export class ColumResizerHandlerDirective implements OnDestroy {
     private size: number = 0;
     private thNodeEl: Element;
     private tableNodeEl: Element;
-    public constructor(private el: ElementRef, private renderer2: Renderer2) {
+    public constructor(private renderer2: Renderer2) {
         this.handlerRelease.subscribe(() => {
             window.removeEventListener('mouseup', this.resizeEnd);
         });
@@ -32,38 +32,52 @@ export class ColumResizerHandlerDirective implements OnDestroy {
             const trNodeEl: any = this.thNodeEl.parentElement;
             this.tableNodeEl = trNodeEl.parentElement.parentElement;
         }
-        const tableNodeClientRect: any = this.tableNodeEl.getBoundingClientRect();
-        const thNodeClientRect: any = this.thNodeEl.getBoundingClientRect();
-        const snaplineClientRect: any = this.snapline.getBoundingClientRect();
+        const tableNodeClientRect: DOMRect = this.tableNodeEl.getBoundingClientRect();
+        const thNodeClientRect: DOMRect = this.thNodeEl.getBoundingClientRect();
+        const snaplineClientRect: DOMRect = this.snapline.getBoundingClientRect();
 
         let showSnapline = false;
+        // console.log('down');
         // 用自定义属性记下表格最原始的宽度
         const resize: (e: any) => void = e => {
             e.stopPropagation();
-            let thw: number = e.pageX - thNodeClientRect.left;
+            // 5补齐padding精度问题
+            let thw: number = e.pageX - thNodeClientRect.left + 5;
+
+            // console.log();
             this.renderer2.setStyle(this.snapline, 'left', `${e.pageX - snaplineClientRect.left}px`);
             if (!showSnapline) {
                 this.renderer2.setStyle(this.snapline, 'opacity', 1);
                 showSnapline = true;
             }
+            // 太小了就不调了
+            if (Math.abs(thw - thNodeClientRect.width) < 4) {
+                thw = thNodeClientRect.width;
+            }
             if (thw < thminWidth) {
                 thw = thminWidth;
             }
             this.size = thw;
+            // console.log('resize', e.pageX, thw);
         };
 
         window.addEventListener('mousemove', resize);
 
         const resizeEnd: (e: any) => void = e => {
             e.stopPropagation();
-            // tslint:disable-next-line: restrict-plus-operands
-            this.renderer2.setStyle(this.tableNodeEl, 'width', `${tableNodeClientRect.width + (this.size - thNodeClientRect.width)}px`);
-            this.renderer2.setStyle(this.thNodeEl, 'width', `${this.size}px`);
-            showSnapline = true;
-            this.renderer2.setStyle(this.snapline, 'opacity', 0);
-            this.renderer2.setStyle(this.snapline, 'left', `0`)    
-            window.removeEventListener('mousemove', resize);
             this.handlerRelease.next();
+            window.removeEventListener('mousemove', resize);
+            showSnapline = false;
+            // console.log('end', this.size);
+            if (!this.size || this.size === thNodeClientRect.width) { return; }
+            let tableWidth: number = tableNodeClientRect.width + (this.size - thNodeClientRect.width);
+            // tslint:disable-next-line: restrict-plus-operands
+            this.renderer2.setStyle(this.tableNodeEl, 'width', `${tableWidth}px`);
+            this.renderer2.setAttribute(this.tableNodeEl, 'sign-width', `${tableWidth}`);
+            this.renderer2.setStyle(this.thNodeEl, 'width', `${this.size}px`);
+            this.renderer2.setAttribute(this.thNodeEl, 'sign-width', `${this.size}`);
+            this.renderer2.setStyle(this.snapline, 'opacity', 0);
+            this.renderer2.setStyle(this.snapline, 'left', `0`)
             this.afterResize.next(this.size);
         };
 

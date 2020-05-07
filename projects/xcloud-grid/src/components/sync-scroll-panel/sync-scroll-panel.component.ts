@@ -1,6 +1,5 @@
-import { AfterContentInit, Component, ContentChildren, ElementRef, QueryList, Renderer2, TemplateRef, ViewChild } from '@angular/core';
-import { SyncMasterScrollAreaDirective } from '../../directives/sync-master-scroll-area.directive';
-import { SyncSlaveScrollAreaDirective } from '../../directives/sync-slave-scroll-area.directive';
+import { AfterContentInit, Component, ContentChildren, ElementRef, QueryList, Renderer2, TemplateRef, ViewChild, ComponentFactoryResolver, ComponentFactory, ViewContainerRef } from '@angular/core';
+import { SyncScrollAreaDirective } from '../../directives/sync-scroll-area.directive';
 
 @Component({
     selector: 'xcloud-grid-sync-scroll-panel',
@@ -10,17 +9,15 @@ import { SyncSlaveScrollAreaDirective } from '../../directives/sync-slave-scroll
 export class SyncScrollPanelComponent implements AfterContentInit {
 
     public slaveTemplates: Array<TemplateRef<any>> = [];
-    public masterTemplate: TemplateRef<any>;
-    @ContentChildren(SyncSlaveScrollAreaDirective)
-    private slaveAreas: QueryList<SyncSlaveScrollAreaDirective>;
-    @ContentChildren(SyncMasterScrollAreaDirective)
-    private masterAreas: QueryList<SyncMasterScrollAreaDirective>;
+    public masterTemplates: Array<TemplateRef<any>> = [];
+    @ContentChildren(SyncScrollAreaDirective)
+    private scrollAreas: QueryList<SyncScrollAreaDirective>;
     @ViewChild('slavePanel', { static: true, read: ElementRef })
     private slavePanel: ElementRef;
     @ViewChild('masterPanel', { static: true, read: ElementRef })
     private masterPanel: ElementRef;
-    @ViewChild('placeholder', { static: true, read: ElementRef })
-    private placeholderBox: ElementRef;
+    @ViewChild('scrollbarSupplement', { static: true, read: ElementRef })
+    private scrollbarSupplement: ElementRef;
     public constructor(
         private renderer2: Renderer2
     ) {
@@ -28,10 +25,16 @@ export class SyncScrollPanelComponent implements AfterContentInit {
     }
 
     public ngAfterContentInit(): void {
-        this.slaveAreas.forEach(it => {
-            this.slaveTemplates.push(it.template);
+        this.scrollAreas.forEach(it => {
+            // this.slaveTemplates.push(it.template);
+            // console.log(1, it.type);
+            if (it.type === 'master') {
+                this.masterTemplates.push(it.template);
+            } else {
+                this.slaveTemplates.push(it.template);
+            }
         });
-        this.masterAreas.forEach(it => this.masterTemplate = it.template);
+        // this.masterAreas.forEach(it => this.masterTemplate = it.template);
 
         let lastScrollTop: number = 0;
         this.masterPanel.nativeElement.addEventListener('scroll', e => {
@@ -57,7 +60,8 @@ export class SyncScrollPanelComponent implements AfterContentInit {
         let scrollBarHeight: number = offsetHeight - clientHeight;
         // console.log('clientHeight', clientHeight);
         // console.log('offsetHeight', offsetHeight);
-        this.renderer2.setStyle(this.placeholderBox.nativeElement, 'height', `${scrollBarHeight}px`);
+        // console.log(111,scrollBarHeight);
+        this.renderer2.setStyle(this.scrollbarSupplement.nativeElement, 'height', `${scrollBarHeight}px`);
     }
 
 }

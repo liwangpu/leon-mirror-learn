@@ -86,7 +86,8 @@
 
                         div.resizer-handler {
                             display: inline-block;
-                            width: 10px;
+                            // width: 10px;
+                            margin-left: 5px;
                             height: $table_cell_height / 2;
 
                             &:hover {
@@ -179,6 +180,7 @@
             height: $table_cell_height;
             max-height: $table_cell_height;
             border-bottom: 1px solid #D5D8E1;
+            background-color: #fff;
             text-align: left;
         }
     }

@@ -1,55 +1,61 @@
 @import '../../table.scss';
 
-table {
-    @include TABLE;
-    width: auto;
-    min-width: 50px;
-    $table_cell_height: 40px;
+:host {
+    display: block;
+    position: sticky;
+    right: 0;
+    // background-color: pink;
+    z-index: 999;
+    table {
+        @include TABLE;
+        width: auto;
+        min-width: 50px;
+        $table_cell_height: 40px;
+        z-index: 999;
+        thead {
+            .table-row {
 
-    thead {
-        .table-row {
+                .table-cell {
 
-            .table-cell {
-
-                &.operation {
-                    width: 50px;
-                    height: 41px;
-                    text-align: center;
-                    background-color: white;
+                    &.operation {
+                        width: 50px;
+                        // height: 41px;
+                        text-align: center;
+                    }
                 }
             }
         }
-    }
 
-    tbody {
-        .table-row {
+        tbody {
+            .table-row {
 
-            .table-cell {
-                &.operation {
-                    div.wrapper {
-                        display: flex;
-                        align-items: center;
+                .table-cell {
+                    &.operation {
+                        div.wrapper {
+                            display: flex;
+                            align-items: center;
 
-                        &>* {
-                            margin-right: .5em;
-                        }
+                            &>* {
+                                margin-right: .5em;
+                            }
 
 
-                        i.button {
-                            &:hover {
-                                cursor: pointer;
-                                color: #007AD9;
+                            i.button {
+                                &:hover {
+                                    cursor: pointer;
+                                    color: #007AD9;
+                                }
                             }
                         }
                     }
                 }
             }
         }
-    }
 
 
-    .table-row {
+        .table-row {
 
-        .table-cell {}
+            .table-cell {}
+        }
     }
 }

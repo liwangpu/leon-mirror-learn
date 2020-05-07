@@ -1,5 +1,5 @@
 import { Component, OnInit, forwardRef } from '@angular/core';
-import { DStore, IFilterView, IQueryResult, ITableColumn, LocalViewDStore, ColumnTypeEnum } from 'xcloud-grid';
+import { DStore, IFilterView, IQueryResult, ITableColumn, LocalViewDStore, ColumnTypeEnum, ITableButton } from 'xcloud-grid';
 import * as faker from 'faker';
 
 interface IStudent {
@@ -23,6 +23,13 @@ interface IStudent {
     ]
 })
 export class StudentListComponent extends LocalViewDStore implements OnInit {
+
+    public tableButtons: Array<ITableButton> = [
+        {
+            key: 'edit',
+            name: '编辑'
+        }
+    ];
 
     public constructor() {
         super();
@@ -75,7 +82,7 @@ export class StudentListComponent extends LocalViewDStore implements OnInit {
     public async onQuery(queryParam?: { [key: string]: any }): Promise<IQueryResult<any>> {
         let students: Array<IStudent> = [];
 
-        for (let i: number = 0; i < 30; i++) {
+        for (let i: number = 0; i < 50; i++) {
             let s: IStudent = {
                 id: i,
                 name: faker.name.findName(),

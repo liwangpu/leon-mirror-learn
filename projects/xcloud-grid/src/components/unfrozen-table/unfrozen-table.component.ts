@@ -30,10 +30,9 @@ export class UnFrozenTableComponent extends ResizableTable implements OnInit {
     public constructor(
         renderer2: Renderer2,
         cache: GridDataService,
-        messageFlow: GridMessageFlowService,
-        opsat: GridOpsatService,
+        messageFlow: GridMessageFlowService
     ) {
-        super(renderer2, cache, messageFlow, opsat);
+        super(renderer2, cache, messageFlow);
     }
 
     public ngOnInit(): void {

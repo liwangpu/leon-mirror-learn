@@ -10,6 +10,7 @@ export class DynamicStyleWidthDirective {
             return;
         }
         this.renderer2.setStyle(this.el.nativeElement, 'width', `${val}px`);
+        this.renderer2.setAttribute(this.el.nativeElement, 'sign-width', `${val}`);
     }
     public constructor(
         private el: ElementRef,

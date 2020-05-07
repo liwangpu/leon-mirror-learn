@@ -9,9 +9,7 @@ table {
     thead {
         .table-row {
 
-            .table-cell {
-
-            }
+            .table-cell {}
         }
     }
 
@@ -45,12 +43,13 @@ table {
                 padding: 2px .5em 2px 0;
                 line-height: 20px;
                 text-align: right;
-               
+
 
                 i.pi {
                     display: inline-block;
                     font-size: 1.2em;
                     transition: transform 100ms;
+
                     &.open {
                         transform: rotate(90deg);
                     }

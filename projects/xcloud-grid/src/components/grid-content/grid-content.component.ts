@@ -18,6 +18,10 @@ import { DataFlowTopicEnum } from '../../enums/data-flow-topic.enum';
 import { DStoreOption } from '../../models/dstore';
 import { MessageFlowEnum } from '../../enums/message-flow.enum';
 import { ColumnFilterPanelComponent } from '../column-filter-panel/column-filter-panel.component';
+import { ToolTableComponent } from '../tool-table/tool-table.component';
+import { ITableButton } from '../../models/i-table-button';
+import { UnFrozenTableComponent } from '../unfrozen-table/unfrozen-table.component';
+import { OperationTableComponent } from '../operation-table/operation-table.component';
 
 @Component({
     selector: 'xcloud-grid-content',
@@ -37,13 +41,13 @@ export class GridContentComponent implements OnInit, OnDestroy {
     public enableRowOperation: boolean = false;
     public flowProcessKey: string;
     public showFilterView: boolean = false;
-    public get showOperationTable(): boolean {
-        // tslint:disable-next-line: no-redundant-boolean
-        return this.enableRowOperation || this.flowProcessKey ? true : false;
-    }
+    public showOperationTable: boolean = false;
+    public syncMasterAreaConfirm = false;
     @ViewChildren(ResizableTable) public tables: QueryList<ResizableTable>;
     @ViewChild(SyncScrollPanelComponent, { static: true })
     private syncScrollPanel: SyncScrollPanelComponent;
+    // @ViewChild('slaveScrollArea', { static: true, read: ViewContainerRef })
+    // public slaveScrollArea: ViewContainerRef;
     @ViewChild('filterPanelAnchor', { static: false, read: ViewContainerRef })
     private filterPanelAnchor: ViewContainerRef;
     private columns: Array<ITableColumn> = [];
@@ -67,6 +71,7 @@ export class GridContentComponent implements OnInit, OnDestroy {
         //     .pipe(take(1))
         //     .pipe(map(x => x.data))
         //     .subscribe(key => this.flowProcessKey = key);
+
     }
 
     @HostListener('wheel', ['$event']) public onWheel(e: any): void {
@@ -87,19 +92,33 @@ export class GridContentComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
-        this.dataFlow.message
-            .pipe(topicFilter(DataFlowTopicEnum.DStoreOption), dataMap, take(1))
-            .subscribe((option: DStoreOption) => {
-                // console.log(1, option);
+        const optionObs: Observable<DStoreOption> = this.dataFlow.message
+            .pipe(topicFilter(DataFlowTopicEnum.DStoreOption), dataMap);
+        const dataObs: Observable<IQueryResult> = this.dataFlow.message
+            .pipe(topicFilter(DataFlowTopicEnum.ListData), dataMap);
+        const viewObs: Observable<Array<IFilterView>> = this.dataFlow.message
+            .pipe(topicFilter(DataFlowTopicEnum.ViewDefinition), dataMap);
+        const openPanelObs: Observable<any> = this.messageFlow.message
+            .pipe(topicFilter(MessageFlowEnum.OpenFilterSettingPanel));
+        const columnWidthChangeObs: Observable<any> = this.messageFlow.message
+            .pipe(topicFilter(MessageFlowEnum.ColumnWidthChange));
+        const tableButtonObs: Observable<Array<ITableButton>> = this.messageFlow.message
+            .pipe(topicFilter(MessageFlowEnum.TableButtons), dataMap);
+
+        tableButtonObs
+            .pipe(take(1))
+            .subscribe(buttons => this.showOperationTable = buttons && buttons.length ? true : false);
+
+        optionObs
+            .pipe(take(1))
+            .subscribe(option => {
                 this.selectMode = option.selectMode;
             });
 
-        this.dataFlow.message
-            .pipe(topicFilter(DataFlowTopicEnum.ListData), dataMap)
+        dataObs
             .subscribe((res: IQueryResult) => this.datas = res.items);
 
-        this.dataFlow.message
-            .pipe(topicFilter(DataFlowTopicEnum.ViewDefinition))
+        viewObs
             .subscribe(() => {
                 let cols = this.cache.getActiveFilterViewColumns();
                 for (let idx: number = cols.length - 1; idx >= 0; idx--) {
@@ -107,38 +126,12 @@ export class GridContentComponent implements OnInit, OnDestroy {
                     // tslint:disable-next-line: no-dynamic-delete
                     delete col['sorting_order'];
                 }
-                // if (this.cache.history.sorting.field) {
-                //     let index: number = cols.findIndex(x => x.field === this.cache.history.sorting.field);
-                //     if (index > -1) {
-                //         cols[index]['sorting_order'] = this.cache.history.sorting.direction;
-                //     }
-                // }
                 this.columns = cols;
-
                 this.unfrozenColumns = this.columns.filter(x => !x['_frozen'] && !x['_invisibale']);
                 this.frozenColumns = this.columns.filter(x => x['_frozen'] && !x['_invisibale']);
             });
-        //     .pipe(delay(100))
-        //     .subscribe((cols: Array<ITableColumn>) => {
-        //         for (let idx: number = cols.length - 1; idx >= 0; idx--) {
-        //             let col: ITableColumn = cols[idx];
-        //             // tslint:disable-next-line: no-dynamic-delete
-        //             delete col['sorting_order'];
-        //         }
-        //         // if (this.cache.history.sorting.field) {
-        //         //     let index: number = cols.findIndex(x => x.field === this.cache.history.sorting.field);
-        //         //     if (index > -1) {
-        //         //         cols[index]['sorting_order'] = this.cache.history.sorting.direction;
-        //         //     }
-        //         // }
-        //         this.columns = cols;
 
-        //         this.unfrozenColumns = this.columns.filter(x => !x['_frozen'] && !x['_invisibale']);
-        //         this.frozenColumns = this.columns.filter(x => x['_frozen'] && !x['_invisibale']);
-        //     });
-
-        this.messageFlow.message
-            .pipe(topicFilter(MessageFlowEnum.OpenFilterSettingPanel))
+        openPanelObs
             .subscribe(() => {
                 if (!this.filterPanelAnchor.length) {
                     const fac = this.cfr.resolveComponentFactory(ColumnFilterPanelComponent);
@@ -147,99 +140,25 @@ export class GridContentComponent implements OnInit, OnDestroy {
                 this.showFilterView = !this.showFilterView;
             });
 
-        const dataChangeObs: Observable<any> = this.dataFlow.message
-            .pipe(topicFilter(DataFlowTopicEnum.ListData));
-        const columnWidthChangeObs: Observable<any> = this.messageFlow.message
-            .pipe(topicFilter(MessageFlowEnum.ColumnWidthChange))
-        merge(dataChangeObs, columnWidthChangeObs)
-            .pipe(delay(800))
+        merge(dataObs, columnWidthChangeObs)
+            .pipe(delay(500))
             .subscribe(() => this.syncScrollPanel.revirseScroll());
-        // this.messageFlow.message
-        // .pipe(filter(x => x.topic === MessageFlowEnum. || x.topic === GridTopicEnum.ColumnWidthChange))
-        // .subscribe(() => {
-        //     if (!this.filterPanelAnchor.length) {
-        //         const fac = this.cfr.resolveComponentFactory(ColumnFilterPanelComponent);
-        //         this.filterPanelAnchor.createComponent(fac);
-        //     }
-        //     this.showFilterView = !this.showFilterView;
-        // });
-        // this.refreshDataProcess.subscribe(() => {
-        //     // console.log('flowProcessSrv', this.flowProcessSrv);
-        //     if (!this.flowProcessSrv) { return; }
 
-        //     forkJoin(this.datas.map(x => this.flowProcessSrv.getCurrentTask(this.flowProcessKey, x.id)))
-        //         .subscribe((arr: Array<Array<IFlowProcess>>) => {
+        forkJoin(dataObs.pipe(take(1)), viewObs.pipe(take(1)), tableButtonObs.pipe(take(1)))
+            .subscribe(() => {
+                this.syncMasterAreaConfirm = true;
+                // console.log('11', this.showOperationTable);
+                // const facs: Array<ComponentFactory<any>> = [];
 
-        //             for (let i: number = 0, len: number = arr.length; i < len; i++) {
-        //                 this.datas[i]['_flowProcess'] = arr[i];
-        //             }
-        //             // console.log('process', arr[0]);
-        //         });
-
-        // });
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.EnableRowOperation))
-        //     .pipe(take(1))
-        //     .subscribe(() => this.enableRowOperation = true);
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.OpenAdvancePanel))
-        //     .pipe(map(x => x.data))
-        //     .subscribe((panel: string) => this.advancePanel = panel);
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.CloseAdvancePanel))
-        //     .subscribe(() => this.advancePanel = null);
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.ColumnDefinition))
-        //     .pipe(map(x => x.data))
-        //     .pipe(delay(100))
-        //     .subscribe((cols: Array<ITableColumn>) => {
-        //         for (let idx: number = cols.length - 1; idx >= 0; idx--) {
-        //             let col: ITableColumn = cols[idx];
-        //             // tslint:disable-next-line: no-dynamic-delete
-        //             delete col['sorting_order'];
-        //         }
-        //         if (this.cache.history.sorting.field) {
-        //             let index: number = cols.findIndex(x => x.field === this.cache.history.sorting.field);
-        //             if (index > -1) {
-        //                 cols[index]['sorting_order'] = this.cache.history.sorting.direction;
-        //             }
-        //         }
-        //         this.columns = cols;
-
-        //         this.unfrozenColumns = this.columns.filter(x => !x['frozen'] && !x['invisibale']);
-        //         this.frozenColumns = this.columns.filter(x => x['frozen'] && !x['invisibale']);
-        //     });
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.ListData))
-        //     .pipe(map(x => x.data))
-        //     .pipe(delay(100))
-        //     .subscribe((res: IQueryResult) => {
-        //         this.datas = res.items;
-        //         if (this.flowProcessKey) {
-        //             this.refreshDataProcess.next();
-        //         }
-        //     });
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.EnableColumnFrozen))
-        //     .pipe(take(1))
-        //     .pipe(map(x => x.data))
-        //     .subscribe(enable => this.enableColumnFrozen = enable);
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.RowSelectMode))
-        //     .pipe(take(1))
-        //     .pipe(map(x => x.data))
-        //     .subscribe(mode => this.selectMode = mode);
-
-        // this.opsat.message.pipe(filter(x => x.topic === GridTopicEnum.ListData || x.topic === GridTopicEnum.ColumnWidthChange), delay(800)).subscribe(() => {
-        //     this.syncScrollPanel.revirseScroll();
-        // });
+                // if (this.showOperationTable) {
+                //     let ofac = this.cfr.resolveComponentFactory(OperationTableComponent);
+                //     this.syncScrollPanel.masterPanelContainer.createComponent(ofac);
+                //     //     facs.push(this.cfr.resolveComponentFactory(OperationTableComponent));
+                // }
+                // facs.push(this.cfr.resolveComponentFactory(UnFrozenTableComponent));
+                // this.syncScrollPanel.createPanel(facs);
+                // this.syncScrollPanel.revirseScroll();
+            });
     }
 
     public afterColumnResize(): void {

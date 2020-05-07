@@ -18,7 +18,6 @@ import { ColumnFilterViewEditPanelComponent } from './components/column-filter-v
 import { ColumnVisualEditingPanelComponent } from './components/column-visual-editing-panel/column-visual-editing-panel.component';
 import { FilterItemBoxComponent } from './components/filter-item-box/filter-item-box.component';
 import { FilterItemSettingPanelComponent } from './components/filter-item-setting-panel/filter-item-setting-panel.component';
-import { FlowProcessOperationComponent } from './components/flow-process-operation/flow-process-operation.component';
 import { FrozenTableComponent } from './components/frozen-table/frozen-table.component';
 import { GridContentComponent } from './components/grid-content/grid-content.component';
 import { GridFooterComponent } from './components/grid-footer/grid-footer.component';
@@ -26,19 +25,17 @@ import { GridHeaderComponent } from './components/grid-header/grid-header.compon
 import { GridComponent } from './components/grid/grid.component';
 import { OperationTableComponent } from './components/operation-table/operation-table.component';
 import { SyncScrollPanelComponent } from './components/sync-scroll-panel/sync-scroll-panel.component';
-import { TableHeaderCellComponent } from './components/table-header-cell/table-header-cell.component';
 import { ToolTableComponent } from './components/tool-table/tool-table.component';
 import { UnFrozenTableComponent } from './components/unfrozen-table/unfrozen-table.component';
 import { ColumResizerHandlerDirective } from './directives/colum-resizer-handler.directive';
 import { DynamicStyleWidthDirective } from './directives/dynamic-style-width.directive';
 import { ResizeTableColumnDirective } from './directives/resize-table-column.directive';
 import { SortTableColumnDirective } from './directives/sort-table-column.directive';
-import { SyncMasterScrollAreaDirective } from './directives/sync-master-scroll-area.directive';
-import { SyncSlaveScrollAreaDirective } from './directives/sync-slave-scroll-area.directive';
 import { TableStateRowDirective } from './directives/table-state-row.directive';
+import { SyncScrollAreaDirective } from './directives/sync-scroll-area.directive';
 
 @NgModule({
-    declarations: [SortTableColumnDirective, ResizeTableColumnDirective, TableHeaderCellComponent, ColumResizerHandlerDirective, GridHeaderComponent, ColumnVisualEditingPanelComponent, ColumnFilterPanelComponent, FilterItemBoxComponent, FilterItemSettingPanelComponent, ColumnFilterViewEditPanelComponent, GridContentComponent, GridFooterComponent, DynamicStyleWidthDirective, GridComponent, SyncScrollPanelComponent, SyncMasterScrollAreaDirective, SyncSlaveScrollAreaDirective, ToolTableComponent, UnFrozenTableComponent, FrozenTableComponent, OperationTableComponent, FlowProcessOperationComponent, TableStateRowDirective],
+    declarations: [SortTableColumnDirective, ResizeTableColumnDirective, ColumResizerHandlerDirective, GridHeaderComponent, ColumnVisualEditingPanelComponent, ColumnFilterPanelComponent, FilterItemBoxComponent, FilterItemSettingPanelComponent, ColumnFilterViewEditPanelComponent, GridContentComponent, GridFooterComponent, DynamicStyleWidthDirective, GridComponent, SyncScrollPanelComponent, ToolTableComponent, UnFrozenTableComponent, FrozenTableComponent, OperationTableComponent, TableStateRowDirective, SyncScrollAreaDirective],
     imports: [
         CommonModule,
         ReactiveFormsModule,

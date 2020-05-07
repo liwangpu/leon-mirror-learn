@@ -29,21 +29,16 @@ export abstract class ResizableTable extends Table implements OnInit {
     public nestedToggleField: string;
     public shownNestedData: boolean = false;
     public allRowSelected: boolean = false;
-    public enableRowState = true;
     protected abstract tableType: 'frozen' | 'unfrozen';
     public constructor(
         protected renderer2: Renderer2,
         protected cache: GridDataService,
-        protected messageFlow: GridMessageFlowService,
-        opsat: GridOpsatService
+        messageFlow: GridMessageFlowService
     ) {
-        super(opsat);
+        super(messageFlow);
     }
     public ngOnInit(): void {
-
-        this.messageFlow.message
-            .pipe(topicFilter(MessageFlowEnum.EnableTableRowState), dataMap)
-            .subscribe(enable => this.enableRowState = enable);
+        super.ngOnInit();
 
 
         // this.opsat.message
@@ -95,18 +90,18 @@ export abstract class ResizableTable extends Table implements OnInit {
     }
 
     public onRowClick(data: any): void {
-        if (!this.selectMode) { return; }
-        if (data['_level'] && data['_level'] > 1) { return; }
+        // if (!this.selectMode) { return; }
+        // if (data['_level'] && data['_level'] > 1) { return; }
 
-        this.radioSelectChange.emit(data['id']);
+        // this.radioSelectChange.emit(data['id']);
 
-        if (this.selectMode === 'single') {
-            this.opsat.publish(GridTopicEnum.RowSelected, [data]);
-        } else {
-            data['selected'] = !data['selected'];
-            this.allRowSelected = !this.datas.some(x => !x['selected']);
-            this.opsat.publish(GridTopicEnum.RowSelected, this.datas.filter(x => x['selected']));
-        }
+        // if (this.selectMode === 'single') {
+        //     this.opsat.publish(GridTopicEnum.RowSelected, [data]);
+        // } else {
+        //     data['selected'] = !data['selected'];
+        //     this.allRowSelected = !this.datas.some(x => !x['selected']);
+        //     this.opsat.publish(GridTopicEnum.RowSelected, this.datas.filter(x => x['selected']));
+        // }
         // console.log('row select', data['id']);
         // console.log('row click', this.datas.filter(x => x['selected']));
     }
