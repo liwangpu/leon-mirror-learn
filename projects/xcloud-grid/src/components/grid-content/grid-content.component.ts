@@ -1,15 +1,11 @@
-import { Component, Inject, OnDestroy, OnInit, Optional, QueryList, ViewChild, ViewChildren, ViewContainerRef, ComponentFactory, ComponentFactoryResolver, HostListener } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef, ComponentFactoryResolver, HostListener } from '@angular/core';
 import { forkJoin, Observable, Subject, merge } from 'rxjs';
-import { delay, filter, map, take } from 'rxjs/operators';
-import { GridTopicEnum } from '../../enums/grid-topic.enum';
+import { delay, take } from 'rxjs/operators';
 import { IFilterView } from '../../models/i-filter-view';
-import { IFlowProcess } from '../../models/i-flow-process';
 import { IQueryResult } from '../../models/i-query-result';
 import { ITableColumn } from '../../models/i-table-column';
 import { ResizableTable } from '../../models/resizable-table';
 import { GridDataService } from '../../services/grid-data.service';
-import { GridOpsatService } from '../../services/grid-opsat.service';
-// import { FLOWPROCESSSTORE, IFlowProcessStore } from '../../tokens/flow-process-store';
 import { SyncScrollPanelComponent } from '../sync-scroll-panel/sync-scroll-panel.component';
 import { GridDataFlowService } from '../../services/grid-data-flow.service';
 import { GridMessageFlowService } from '../../services/grid-message-flow.service';
@@ -18,17 +14,14 @@ import { DataFlowTopicEnum } from '../../enums/data-flow-topic.enum';
 import { DStoreOption } from '../../models/dstore';
 import { MessageFlowEnum } from '../../enums/message-flow.enum';
 import { ColumnFilterPanelComponent } from '../column-filter-panel/column-filter-panel.component';
-import { ToolTableComponent } from '../tool-table/tool-table.component';
 import { ITableButton } from '../../models/i-table-button';
-import { UnFrozenTableComponent } from '../unfrozen-table/unfrozen-table.component';
-import { OperationTableComponent } from '../operation-table/operation-table.component';
 
 @Component({
     selector: 'xcloud-grid-content',
     templateUrl: './grid-content.component.html',
     styleUrls: ['./grid-content.component.scss']
 })
-export class GridContentComponent implements OnInit, OnDestroy {
+export class GridContentComponent implements OnInit {
 
     public radioSelect: string;
     public enableColumnFrozen: boolean = true;
@@ -46,31 +39,16 @@ export class GridContentComponent implements OnInit, OnDestroy {
     @ViewChildren(ResizableTable) public tables: QueryList<ResizableTable>;
     @ViewChild(SyncScrollPanelComponent, { static: true })
     private syncScrollPanel: SyncScrollPanelComponent;
-    // @ViewChild('slaveScrollArea', { static: true, read: ViewContainerRef })
-    // public slaveScrollArea: ViewContainerRef;
     @ViewChild('filterPanelAnchor', { static: false, read: ViewContainerRef })
     private filterPanelAnchor: ViewContainerRef;
     private columns: Array<ITableColumn> = [];
-    private refreshDataProcess: Subject<void> = new Subject<void>();
     private wheelingFn: any;
     public constructor(
-        private opsat: GridOpsatService,
         private cache: GridDataService,
         private dataFlow: GridDataFlowService,
         private messageFlow: GridMessageFlowService,
         private cfr: ComponentFactoryResolver
-        // @Optional() @Inject(FLOWPROCESSSTORE) private flowProcessSrv: IFlowProcessStore
     ) {
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.EnableFilterView))
-        //     .pipe(map(x => x.data))
-        //     .subscribe(enable => this.enableFilterView = enable);
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.ProcessKey))
-        //     .pipe(take(1))
-        //     .pipe(map(x => x.data))
-        //     .subscribe(key => this.flowProcessKey = key);
 
     }
 
@@ -84,11 +62,6 @@ export class GridContentComponent implements OnInit, OnDestroy {
             this.wheelingFn = null;
             this.messageFlow.publish(MessageFlowEnum.EnableTableRowState, true);
         }, 250);
-    }
-
-    public ngOnDestroy(): void {
-        // this.refreshDataProcess.complete();
-        // this.refreshDataProcess.unsubscribe();
     }
 
     public ngOnInit(): void {

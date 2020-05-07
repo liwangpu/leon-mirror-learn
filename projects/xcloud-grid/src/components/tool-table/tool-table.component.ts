@@ -3,6 +3,7 @@ import { GridTopicEnum } from '../../enums/grid-topic.enum';
 import { Table } from '../../models/table';
 import { GridOpsatService } from '../../services/grid-opsat.service';
 import { GridMessageFlowService } from '../../services/grid-message-flow.service';
+import { MessageFlowEnum } from '../../enums/message-flow.enum';
 
 @Component({
     selector: 'xcloud-grid-tool-table',
@@ -35,7 +36,12 @@ export class ToolTableComponent extends Table implements OnChanges {
     }
 
     public selectAllRows(): void {
-
+        for (let it of this.datas) {
+            if (it['_level'] && it['_level'] > 1) { continue; }
+            if (it['_hidden']) { continue; }
+            it['_selected'] = this.allRowSelected;
+        }
+        this.messageFlow.publish(MessageFlowEnum.RowSelected, this.datas.filter(x => x['_selected']));
     }
 
 }

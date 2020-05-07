@@ -4,5 +4,6 @@ export enum MessageFlowEnum {
     FilterViewChange = 'FilterViewChange',
     OpenFilterSettingPanel = 'OpenFilterSettingPanel',
     EnableTableRowState = 'EnableTableRowState',
-    ColumnWidthChange = 'ColumnWidthChange'
+    ColumnWidthChange = 'ColumnWidthChange',
+    RowSelected = 'RowSelected'
 }

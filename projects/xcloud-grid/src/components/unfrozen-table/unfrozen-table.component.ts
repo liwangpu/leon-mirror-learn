@@ -8,6 +8,7 @@ import { ResizableTable } from '../../models/resizable-table';
 import { GridDataService } from '../../services/grid-data.service';
 import { GridOpsatService } from '../../services/grid-opsat.service';
 import { GridMessageFlowService } from '../../services/grid-message-flow.service';
+import { GridDataFlowService } from '../../services/grid-data-flow.service';
 
 @Component({
     selector: 'xcloud-grid-unfrozen-table',
@@ -30,9 +31,10 @@ export class UnFrozenTableComponent extends ResizableTable implements OnInit {
     public constructor(
         renderer2: Renderer2,
         cache: GridDataService,
+        dataFlow: GridDataFlowService,
         messageFlow: GridMessageFlowService
     ) {
-        super(renderer2, cache, messageFlow);
+        super(renderer2, cache, dataFlow, messageFlow);
     }
 
     public ngOnInit(): void {

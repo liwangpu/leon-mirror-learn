@@ -10,6 +10,10 @@ import { Table } from './table';
 import { GridMessageFlowService } from '../services/grid-message-flow.service';
 import { topicFilter, dataMap } from '../utils/grid-tool';
 import { MessageFlowEnum } from '../enums/message-flow.enum';
+import { Observable } from 'rxjs';
+import { DStoreOption } from './dstore';
+import { DataFlowTopicEnum } from '../enums/data-flow-topic.enum';
+import { GridDataFlowService } from '../services/grid-data-flow.service';
 
 export abstract class ResizableTable extends Table implements OnInit {
 
@@ -33,55 +37,13 @@ export abstract class ResizableTable extends Table implements OnInit {
     public constructor(
         protected renderer2: Renderer2,
         protected cache: GridDataService,
-        messageFlow: GridMessageFlowService
+        protected dataFlow: GridDataFlowService,
+        protected messageFlow: GridMessageFlowService
     ) {
         super(messageFlow);
     }
     public ngOnInit(): void {
         super.ngOnInit();
-
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.NestedToggleField))
-        //     .pipe(map(x => x.data))
-        //     .subscribe(field => this.nestedToggleField = field);
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.ShowNestedDataLevel))
-        //     .pipe(map(x => x.data))
-        //     .subscribe(level => {
-        //         this.nestedDataLevel = level;
-        //         // console.log('level', level);
-        //     });
-
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.ViewDefinition))
-        //     .pipe(delay(80))
-        //     .subscribe(() => {
-        //         let cols: Array<ITableColumn> = this.cache.getActiveFilterViewColumns().filter(x => !x['_invisibale']
-        //             && (this.tableType === 'unfrozen' ? !x['_frozen'] : x['_frozen']));
-        //         let minWidth: number = 0;
-        //         for (let col of cols) {
-        //             minWidth += col.width ? col.width : 0;
-        //         }
-
-        //         if (this.nestedDataLevel > 1) {
-        //             if (this.tableType === 'unfrozen') {
-        //                 this.shownNestedData = !cols.some(x => x['_frozen']);
-        //             } else if (this.tableType === 'frozen') {
-        //                 this.shownNestedData = cols.some(x => x['_frozen']);
-        //             } else {
-        //                 //
-        //             }
-        //         }
-
-        //         if (minWidth > 0) {
-        //             this.renderer2.setStyle(this.table.nativeElement, 'width', `${minWidth}px`);
-        //         } else {
-        //             this.renderer2.removeStyle(this.table.nativeElement, 'width');
-        //         }
-        //     });
-
     }
 
     public onLinkFieldClick(field: string, data: any, link?: any): void {
@@ -90,20 +52,19 @@ export abstract class ResizableTable extends Table implements OnInit {
     }
 
     public onRowClick(data: any): void {
-        // if (!this.selectMode) { return; }
-        // if (data['_level'] && data['_level'] > 1) { return; }
+        if (!this.selectMode) { return; }
+        if (data['_level'] && data['_level'] > 1) { return; }
 
-        // this.radioSelectChange.emit(data['id']);
-
-        // if (this.selectMode === 'single') {
-        //     this.opsat.publish(GridTopicEnum.RowSelected, [data]);
-        // } else {
-        //     data['selected'] = !data['selected'];
-        //     this.allRowSelected = !this.datas.some(x => !x['selected']);
-        //     this.opsat.publish(GridTopicEnum.RowSelected, this.datas.filter(x => x['selected']));
-        // }
+        if (this.selectMode === 'single') {
+            this.radioSelectChange.emit(data['id']);
+            this.messageFlow.publish(MessageFlowEnum.RowSelected, [data]);
+        } else {
+            data['_selected'] = !data['_selected'];
+            this.allRowSelected = !this.datas.some(x => !x['_selected']);
+            this.messageFlow.publish(MessageFlowEnum.RowSelected, this.datas.filter(x => x['_selected']));
+        }
         // console.log('row select', data['id']);
-        // console.log('row click', this.datas.filter(x => x['selected']));
+        // console.log('row click', this.datas.filter(x => x['_selected']));
     }
 
     public afterColumnResize(): void {

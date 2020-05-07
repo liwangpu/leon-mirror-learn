@@ -21,6 +21,7 @@ export abstract class DStore {
     public abstract getFilterViews(): Promise<Array<IFilterView>>;
     public abstract onFilterViewCreate(view: IFilterView): Promise<IFilterView>;
     public abstract onFilterViewUpdate(view: IFilterView): Promise<void>;
+    public async onDataSelected(datas: Array<any>): Promise<void> { }
     public async gridStartup(option?: DStoreOption): Promise<void> {
         option = option || {};
 

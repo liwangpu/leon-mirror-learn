@@ -1,5 +1,5 @@
 import { Component, OnInit, forwardRef } from '@angular/core';
-import { DStore, IFilterView, IQueryResult, ITableColumn, LocalViewDStore, ColumnTypeEnum, ITableButton } from 'xcloud-grid';
+import { DStore, IQueryResult, ITableColumn, LocalViewDStore, ColumnTypeEnum, ITableButton } from 'xcloud-grid';
 import * as faker from 'faker';
 
 interface IStudent {
@@ -25,10 +25,10 @@ interface IStudent {
 export class StudentListComponent extends LocalViewDStore implements OnInit {
 
     public tableButtons: Array<ITableButton> = [
-        {
-            key: 'edit',
-            name: '编辑'
-        }
+        // {
+        //     key: 'edit',
+        //     name: '编辑'
+        // }
     ];
 
     public constructor() {
@@ -37,7 +37,8 @@ export class StudentListComponent extends LocalViewDStore implements OnInit {
 
     public async ngOnInit(): Promise<void> {
         this.gridStartup({
-            selectMode: "multiple"
+            selectMode: "multiple",
+            // selectMode: "single",
         });
     }
 
@@ -100,4 +101,7 @@ export class StudentListComponent extends LocalViewDStore implements OnInit {
         };
     }
 
+    public async onDataSelected(datas: Array<any>): Promise<void> {
+        console.log('data selected', datas);
+    }
 }

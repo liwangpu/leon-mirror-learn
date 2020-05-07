@@ -68,6 +68,8 @@ export class ColumResizerHandlerDirective implements OnDestroy {
             this.handlerRelease.next();
             window.removeEventListener('mousemove', resize);
             showSnapline = false;
+            this.renderer2.setStyle(this.snapline, 'opacity', 0);
+            this.renderer2.setStyle(this.snapline, 'left', `0`)
             // console.log('end', this.size);
             if (!this.size || this.size === thNodeClientRect.width) { return; }
             let tableWidth: number = tableNodeClientRect.width + (this.size - thNodeClientRect.width);
@@ -76,8 +78,6 @@ export class ColumResizerHandlerDirective implements OnDestroy {
             this.renderer2.setAttribute(this.tableNodeEl, 'sign-width', `${tableWidth}`);
             this.renderer2.setStyle(this.thNodeEl, 'width', `${this.size}px`);
             this.renderer2.setAttribute(this.thNodeEl, 'sign-width', `${this.size}`);
-            this.renderer2.setStyle(this.snapline, 'opacity', 0);
-            this.renderer2.setStyle(this.snapline, 'left', `0`)
             this.afterResize.next(this.size);
         };
 
