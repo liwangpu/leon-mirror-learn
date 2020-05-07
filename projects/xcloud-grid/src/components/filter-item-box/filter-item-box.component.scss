@@ -1,0 +1,56 @@
+:host {
+    position: relative;
+    display: block;
+    margin-bottom: 14px;
+
+    div.filter-item-box {
+        position: relative;
+        width: 100%;
+        min-height: 64px;
+        border: 1px solid #DDDBDA;
+        border-radius: 4px;
+        padding: .5rem .8rem;
+        font-size: .9rem;
+        color: rgb(62, 62, 60);
+
+        &.unvalid {
+            background-color: rgb(250, 255, 189);
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: rgb(243, 242, 242);
+        }
+
+        p {
+            span.v {
+                padding-left: .5rem;
+            }
+        }
+    }
+
+    .item-edit-panel {
+        display: block;
+        width: 400px;
+        height: 320px;
+    }
+
+    div.close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        $size: 20px;
+        width: $size;
+        height: $size;
+        line-height: $size;
+        font-size: $size;
+        text-align: center;
+        color: #B0ADAB;
+
+        &:hover {
+            cursor: pointer;
+            color: #514F4D;
+        }
+
+    }
+}

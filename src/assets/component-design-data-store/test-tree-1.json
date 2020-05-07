@@ -1,0 +1,9 @@
+{
+    "title": "test-tree-1",
+    "control": "test-tree",
+    "subscribe": [
+        {
+            "source": "id"
+        }
+    ]
+}

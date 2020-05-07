@@ -1,0 +1,25 @@
+<div class="filter-item-setting-panel">
+    <div class="content">
+        <form [formGroup]="editForm">
+            <label>字段</label>
+            <p-dropdown class="maximum" [options]="fields" formControlName='field'></p-dropdown>
+            <label>运算符</label>
+            <p-dropdown class="maximum" [options]="operators" formControlName='operator' placeholder='请选择运算符'>
+            </p-dropdown>
+            <label>值</label>
+
+            <ng-container [ngSwitch]='fieldType'>
+                <p-dropdown class="maximum" placeholder='请选择值' [options]="values" formControlName='value'
+                    *ngSwitchCase="'select'">
+                </p-dropdown>
+                <input type="number" pInputText formControlName='value' *ngSwitchCase="'decimal'">
+                <input type="number" pInputText formControlName='value' *ngSwitchCase="'integer'">
+                <input type="text" pInputText formControlName='value' *ngSwitchDefault>
+            </ng-container>
+        </form>
+    </div>
+    <div class="footer">
+        <button pButton class="ui-button-secondary" type="button" label="取消" (click)='ref.close()'></button>
+        <button pButton type="button" label="保存" (click)='save()'></button>
+    </div>
+</div>

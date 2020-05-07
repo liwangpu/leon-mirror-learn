@@ -1,0 +1,64 @@
+@import '../../table.scss';
+
+table {
+    @include TABLE;
+    $table_cell_height: 40px;
+    min-width: 400px;
+
+    thead {
+        .table-row {
+
+            .table-cell {}
+        }
+    }
+
+    tbody {
+        .table-row {
+
+            .table-cell {
+
+
+                span.link-column {
+                    color: #007AD9;
+
+                    &:hover {
+                        cursor: pointer;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+
+
+    .table-row {
+
+        .table-cell {
+
+            span.toggle-nested {
+                display: inline-block;
+                min-width: 1.5em;
+                height: 20px;
+                padding: 2px .5em 2px 0;
+                line-height: 20px;
+                text-align: right;
+
+
+                i.pi {
+                    display: inline-block;
+                    font-size: 1.2em;
+                    transition: transform 100ms;
+
+                    &.open {
+                        transform: rotate(90deg);
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                        color: #007AD9;
+                    }
+                }
+            }
+        }
+    }
+}

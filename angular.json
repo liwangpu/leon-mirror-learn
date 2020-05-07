@@ -45,13 +45,17 @@
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": "src/polyfills.ts",
-                        "tsConfig": "tsconfig.app.json",
+                        "tsConfig": "tsconfig.json",
                         "aot": true,
                         "assets": [
                             "src/favicon.ico",
                             "src/assets"
                         ],
                         "styles": [
+                            "node_modules/primeng/resources/themes/nova-light/theme.css",
+                            "node_modules/primeng/resources/primeng.min.css",
+                            "node_modules/primeicons/primeicons.css",
+                            "projects/xcloud-grid/src/resources/grid.scss",
                             "src/styles.scss"
                         ],
                         "scripts": []
@@ -64,6 +68,7 @@
                                     "with": "src/environments/environment.prod.ts"
                                 }
                             ],
+                            "tsConfig": "tsconfig.prod.json",
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
@@ -106,7 +111,413 @@
                     }
                 }
             }
+        },
+        "xcloud-grid": {
+            "projectType": "library",
+            "root": "projects/xcloud-grid",
+            "sourceRoot": "projects/xcloud-grid/src",
+            "prefix": "xcloud-grid",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "inlineTemplate": false,
+                    "inlineStyle": false,
+                    "style": "scss",
+                    "skipTests": true
+                },
+                "@schematics/angular:class": {
+                    "skipTests": true
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:guard": {
+                    "skipTests": true
+                },
+                "@schematics/angular:interceptor": {
+                    "skipTests": true
+                },
+                "@schematics/angular:module": {
+                    "skipTests": true
+                },
+                "@schematics/angular:pipe": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "projects/xcloud-grid/tsconfig.lib.json",
+                        "project": "projects/xcloud-grid/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/xcloud-grid/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/xcloud-grid/src/test.ts",
+                        "tsConfig": "projects/xcloud-grid/tsconfig.spec.json",
+                        "karmaConfig": "projects/xcloud-grid/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/xcloud-grid/tsconfig.lib.json",
+                            "projects/xcloud-grid/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
+        },
+        "mirror-deed": {
+            "projectType": "library",
+            "root": "projects/mirror-deed",
+            "sourceRoot": "projects/mirror-deed/src",
+            "prefix": "mirror-deed",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "inlineTemplate": false,
+                    "inlineStyle": false,
+                    "style": "scss",
+                    "skipTests": true
+                },
+                "@schematics/angular:class": {
+                    "skipTests": true
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:guard": {
+                    "skipTests": true
+                },
+                "@schematics/angular:interceptor": {
+                    "skipTests": true
+                },
+                "@schematics/angular:module": {
+                    "skipTests": true
+                },
+                "@schematics/angular:pipe": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "projects/mirror-deed/tsconfig.lib.json",
+                        "project": "projects/mirror-deed/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/mirror-deed/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/mirror-deed/tsconfig.lib.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
+        },
+        "mirror-core": {
+            "projectType": "library",
+            "root": "projects/mirror-core",
+            "sourceRoot": "projects/mirror-core/src",
+            "prefix": "mirror-core",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "inlineTemplate": false,
+                    "inlineStyle": false,
+                    "style": "scss",
+                    "skipTests": true
+                },
+                "@schematics/angular:class": {
+                    "skipTests": true
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:guard": {
+                    "skipTests": true
+                },
+                "@schematics/angular:interceptor": {
+                    "skipTests": true
+                },
+                "@schematics/angular:module": {
+                    "skipTests": true
+                },
+                "@schematics/angular:pipe": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "projects/mirror-core/tsconfig.lib.json",
+                        "project": "projects/mirror-core/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/mirror-core/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/mirror-core/src/test.ts",
+                        "tsConfig": "projects/mirror-core/tsconfig.spec.json",
+                        "karmaConfig": "projects/mirror-core/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/mirror-core/tsconfig.lib.json",
+                            "projects/mirror-core/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
+        },
+        "mirror-component-layout": {
+            "projectType": "library",
+            "root": "projects/mirror-component-layout",
+            "sourceRoot": "projects/mirror-component-layout/src",
+            "prefix": "mirror-component-layout",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "inlineTemplate": false,
+                    "inlineStyle": false,
+                    "style": "scss",
+                    "skipTests": true
+                },
+                "@schematics/angular:class": {
+                    "skipTests": true
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:guard": {
+                    "skipTests": true
+                },
+                "@schematics/angular:interceptor": {
+                    "skipTests": true
+                },
+                "@schematics/angular:module": {
+                    "skipTests": true
+                },
+                "@schematics/angular:pipe": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "projects/mirror-component-layout/tsconfig.lib.json",
+                        "project": "projects/mirror-component-layout/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/mirror-component-layout/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/mirror-component-layout/src/test.ts",
+                        "tsConfig": "projects/mirror-component-layout/tsconfig.spec.json",
+                        "karmaConfig": "projects/mirror-component-layout/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/mirror-component-layout/tsconfig.lib.json",
+                            "projects/mirror-component-layout/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
+        },
+        "mirror-component-set": {
+            "projectType": "library",
+            "root": "projects/mirror-component-set",
+            "sourceRoot": "projects/mirror-component-set/src",
+            "prefix": "mirror-component-set",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "inlineTemplate": false,
+                    "inlineStyle": false,
+                    "style": "scss",
+                    "skipTests": true
+                },
+                "@schematics/angular:class": {
+                    "skipTests": true
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:guard": {
+                    "skipTests": true
+                },
+                "@schematics/angular:interceptor": {
+                    "skipTests": true
+                },
+                "@schematics/angular:module": {
+                    "skipTests": true
+                },
+                "@schematics/angular:pipe": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "projects/mirror-component-set/tsconfig.lib.json",
+                        "project": "projects/mirror-component-set/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/mirror-component-set/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/mirror-component-set/src/test.ts",
+                        "karmaConfig": "projects/mirror-component-set/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/mirror-component-set/tsconfig.lib.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
+        },
+        "mirror-shared": {
+            "projectType": "library",
+            "root": "projects/mirror-shared",
+            "sourceRoot": "projects/mirror-shared/src",
+            "prefix": "mirror-shared",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "inlineTemplate": false,
+                    "inlineStyle": false,
+                    "style": "scss",
+                    "skipTests": true
+                },
+                "@schematics/angular:class": {
+                    "skipTests": true
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:guard": {
+                    "skipTests": true
+                },
+                "@schematics/angular:interceptor": {
+                    "skipTests": true
+                },
+                "@schematics/angular:module": {
+                    "skipTests": true
+                },
+                "@schematics/angular:pipe": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "projects/mirror-shared/tsconfig.lib.json",
+                        "project": "projects/mirror-shared/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/mirror-shared/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/mirror-shared/src/test.ts",
+                        "tsConfig": "projects/mirror-shared/tsconfig.spec.json",
+                        "karmaConfig": "projects/mirror-shared/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/mirror-shared/tsconfig.lib.json",
+                            "projects/mirror-shared/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
         }
     },
-    "defaultProject": "mirror-learn"
+    "defaultProject": "mirror-learn",
+    "cli": {
+        "analytics": false
+    }
 }

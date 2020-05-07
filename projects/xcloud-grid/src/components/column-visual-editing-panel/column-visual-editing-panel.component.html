@@ -1,0 +1,30 @@
+<div class="column-visual-editing-panel">
+    <div class="content">
+        <div class="fields available-fields">
+            <span class="field-title">可用字段</span>
+            <div class="fields-wrapper">
+                <p *ngFor='let it of availableFields' [class.active]='it.active' (click)='onAvailableFieldSelect(it)'>
+                    {{it.name}}</p>
+            </div>
+        </div>
+        <div class="operations">
+            <i class="pi pi-caret-right" style="font-size: 2.4rem;" (click)='moveToVisualField()'></i>
+            <i class="pi pi-caret-left" style="font-size: 2.4rem;" (click)='moveToAvailableField()'></i>
+        </div>
+        <div class="fields visual-fields">
+            <span class="field-title">可视字段</span>
+            <div class="fields-wrapper">
+                <p *ngFor='let it of visualFields' [class.active]='it.active' (click)='onVisualFieldSelect(it)'>
+                    {{it.name}}</p>
+            </div>
+        </div>
+        <div class="operations">
+            <i class="pi pi-caret-up" style="font-size: 2.4rem;" (click)='moveUpAvailableField()'></i>
+            <i class="pi pi-caret-down" style="font-size: 2.4rem;" (click)='moveDownAvailableField()'></i>
+        </div>
+    </div>
+    <div class="footer">
+        <button pButton class="ui-button-secondary" type="button" label="取消" (click)='ref.close()'></button>
+        <button pButton type="button" label="保存" (click)='saveColumnChange()'></button>
+    </div>
+</div>

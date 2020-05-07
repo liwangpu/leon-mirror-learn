@@ -1,0 +1,14 @@
+<div class="column-filter-view-edit-panel">
+    <div class="content">
+        <form [formGroup]="editForm" class="simple-editor above-label">
+            <div class="fitem oneline">
+                <label>视图名称</label>
+                <input type="text" pInputText formControlName='name'>
+            </div>
+        </form>
+    </div>
+    <div class="footer">
+        <button pButton class="ui-button-secondary" type="button" label="取消" (click)='ref.close()'></button>
+        <button pButton type="button" label="保存" (click)='save()'></button>
+    </div>
+</div>

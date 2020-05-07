@@ -1,0 +1,9 @@
+{
+    "title": "test-tab-1",
+    "control": "test-tab",
+    "content": [
+        {
+            "key": "test-form-1"
+        }
+    ]
+}

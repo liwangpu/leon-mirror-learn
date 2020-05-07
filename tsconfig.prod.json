@@ -1,0 +1,37 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./out-tsc/app",
+        "types": [],
+        "paths": {
+            "@env/*": [
+                "src/environments/*"
+            ],
+            "xcloud-grid": [
+                "dist/xcloud-grid"
+            ],
+            "mirror-deed": [
+                "dist/mirror-deed"
+            ],
+            "mirror-core": [
+                "dist/mirror-core"
+            ],
+            "mirror-shared": [
+                "projects/mirror-shared/src/public-api.ts"
+            ],
+            "mirror-component-layout": [
+                "projects/mirror-component-layout/src/public-api.ts"
+            ],
+            "mirror-component-set": [
+                "projects/mirror-component-set/src/public-api.ts"
+            ]
+        }
+    },
+    "files": [
+        "src/main.ts",
+        "src/polyfills.ts"
+    ],
+    "include": [
+        "src/**/*.d.ts"
+    ]
+}

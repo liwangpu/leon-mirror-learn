@@ -1,0 +1,28 @@
+<table #table>
+    <thead>
+        <tr class="table-row">
+            <th class="table-cell select">
+                <span (click)='selectAllRows()'>
+                    <p-checkbox *ngIf='selectMode === "multiple"' binary="true" [(ngModel)]="allRowSelected">
+                    </p-checkbox>
+                </span>
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor='let rowData of datas;trackBy:trackByDataFn'>
+            <tr class="table-row" [class.hidden]='rowData["_hidden"]' (click)='onRowClick(rowData)'
+                [tableStateRow]='rowData' [class.active]='rowData["_active"]'>
+                <td class="table-cell">
+                    <ng-container *ngIf='!rowData["_level"]||rowData["_level"]===1'>
+                        <p-checkbox *ngIf='selectMode === "multiple"' [ngModel]="rowData._selected" binary="true">
+                        </p-checkbox>
+                        <p-radioButton *ngIf='selectMode === "single"' name="select" [value]="rowData.id"
+                            [(ngModel)]="radioSelect"></p-radioButton>
+                    </ng-container>
+                </td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>
