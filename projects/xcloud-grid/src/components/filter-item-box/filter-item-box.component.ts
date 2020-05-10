@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { FILTEROPERATORS } from '../../consts/filter-operators';
 import { ITableColumn } from '../../models/i-table-column';
 import { GridDataService } from '../../services/grid-data.service';
@@ -17,6 +17,8 @@ import { DynamicDialogRef, DynamicDialogService } from '@byzan/orion2';
 })
 export class FilterItemBoxComponent {
 
+    @Output()
+    public readonly delete: EventEmitter<string> = new EventEmitter<string>();
     public id: string;
     public field: string;
     public fieldName: string;
@@ -24,7 +26,6 @@ export class FilterItemBoxComponent {
     public operatorName: string;
     public text: string;
     public value: any;
-    @Output() public readonly delete: EventEmitter<string> = new EventEmitter<string>();
     public constructor(
         public dialogService: DynamicDialogService,
         private cache: GridDataService,
@@ -38,7 +39,11 @@ export class FilterItemBoxComponent {
             data: this.field ? { field: this.field, operator: this.operator, value: this.value } : null
         });
 
-        ref.afterClosed().pipe(filter(x => x))
+        ref.afterClosed()
+            .pipe(tap(x => {
+                if (!x && !this.field) { this.delete.emit(this.id); }
+            }))
+            .pipe(filter(x => x))
             .subscribe((res: { field: string; operator: string; value: string }) => {
                 this.field = res.field;
                 this.operator = res.operator;
@@ -59,11 +64,5 @@ export class FilterItemBoxComponent {
         let op: SelectItem = this.operator && FILTEROPERATORS.filter(x => x.value === this.operator)[0];
         this.operatorName = op ? op.label : '';
         this.text = this.value;
-        // if (this.cache.fieldInfos && this.cache.fieldInfos[this.field]) {
-        //     let it: ISelectOption = this.cache.fieldInfos[this.field].filter(x => `${x.value}` === `${this.value}`)[0];
-        //     if (it) {
-        //         this.text = it.text;
-        //     }
-        // }
     }
 }

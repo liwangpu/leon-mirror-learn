@@ -26,7 +26,7 @@ export class ColumnFilterPanelComponent implements OnInit {
     @ViewChild('filterItemsContainer', { static: true, read: ViewContainerRef })
     public filterItemsContainer: ViewContainerRef;
     public enableFilterView: boolean = false;
-    public filterView: IFilterView;
+    // public filterView: IFilterView;
     public advanceMenuItems: Array<MenuItem>;
     public filterItemBoxs: Array<FilterItemBoxComponent> = [];
     public logicalOperations: Array<SelectItem>;
@@ -74,9 +74,9 @@ export class ColumnFilterPanelComponent implements OnInit {
 
     public renderFilterPanel(): void {
         this.filterItemsContainer.clear();
-        this.filterItemBoxs = [];
-        if (this.filterView.filters && this.filterView.filters.length > 0) {
-            for (let it of this.filterView.filters) {
+        let filters: Array<IFilter> = this.filterItemBoxs = [];
+        if (filters.length) {
+            for (let it of filters) {
                 this.addFilterItem(it.field, it.operator, it.value);
             }
         }
@@ -106,11 +106,11 @@ export class ColumnFilterPanelComponent implements OnInit {
     }
 
     public save(): void {
-        // let view: IFilterView = ObjectTool.deepCopy(this.filterView);
-        // if (view.id === '_ALL') {
-        //     this.saveAs(view);
-        //     return;
-        // }
+        let view: IFilterView = this.cache.getActiveFilterView();
+        if (view.id === '_ALL') {
+            this.saveAs(view);
+            return;
+        }
 
         // view.filters = this.filterItemBoxs.filter(x => x.field).map(x =>
         //     ({
@@ -135,15 +135,17 @@ export class ColumnFilterPanelComponent implements OnInit {
     }
 
     public saveAs(v?: IFilterView): void {
-        // let view: IFilterView = v ? v : ObjectTool.deepCopy(this.filterView);
-        // view.id = undefined;
-        // view.name = undefined;
-        // view.filters = this.filterItemBoxs.filter(x => x.field).map(x =>
-        //     ({
-        //         field: x.field,
-        //         operator: x.operator,
-        //         value: x.value
-        //     }));
+        let view: IFilterView = v || this.cache.getActiveFilterView();
+        view.id = null;
+        view.name = null;
+        view.filters = this.filterItemBoxs.filter(x => x.field).map(x =>
+            ({
+                field: x.field,
+                operator: x.operator,
+                value: x.value
+            }));
+
+        console.log(1, view.filters);
         // this.transformFilterValueType(view);
         // this.dialogService.open(ColumnFilterViewEditPanelComponent, {
         //     header: '保存新列表视图',

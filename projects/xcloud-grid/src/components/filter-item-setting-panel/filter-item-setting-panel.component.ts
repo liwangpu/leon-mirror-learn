@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, Optional, Inject } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { delay } from 'rxjs/operators';
-import { EQ_OPERATOR, FILTEROPERATORS, GT_OPERATOR, GTE_OPERATOR, LIKE_OPERATOR, LT_OPERATOR, LTE_OPERATOR, NE_OPERATOR, NLIKE_OPERATOR } from '../../consts/filter-operators';
+import { EQ_OPERATOR, FILTEROPERATORS, GT_OPERATOR, GTE_OPERATOR, LIKE_OPERATOR, LT_OPERATOR, LTE_OPERATOR, NE_OPERATOR } from '../../consts/filter-operators';
 import { ColumnTypeEnum } from '../../enums/column-type-enum.enum';
 import { ITableColumn } from '../../models/i-table-column';
 import { GridDataService } from '../../services/grid-data.service';
@@ -84,7 +84,6 @@ export class FilterItemSettingPanelComponent implements OnInit, AfterViewInit {
     private settingStringOperations(): void {
         const opts: Array<SelectItem> = [
             { label: '包含', value: LIKE_OPERATOR },
-            { label: '不包含', value: NLIKE_OPERATOR },
             { label: '等于', value: EQ_OPERATOR }
         ];
         this.operators = opts;
