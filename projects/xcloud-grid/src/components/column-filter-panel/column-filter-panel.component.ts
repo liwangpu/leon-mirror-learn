@@ -12,9 +12,9 @@ import { ArrayTool } from '../../utils/array-tool';
 import { ObjectTool } from '../../utils/object-tool';
 import { ColumnFilterViewEditPanelComponent } from '../column-filter-view-edit-panel/column-filter-view-edit-panel.component';
 import { FilterItemBoxComponent } from '../filter-item-box/filter-item-box.component';
-import { DialogService } from 'primeng/dynamicdialog';
 import { GridMessageFlowService } from '../../services/grid-message-flow.service';
 import { MessageFlowEnum } from '../../enums/message-flow.enum';
+import { DynamicDialogRef, DynamicDialogService } from '@byzan/orion2';
 
 @Component({
     selector: 'xcloud-grid-column-filter-panel',
@@ -35,7 +35,7 @@ export class ColumnFilterPanelComponent implements OnInit {
         private cfr: ComponentFactoryResolver,
         private cache: GridDataService,
         private messageFlow: GridMessageFlowService,
-        private dialogService: DialogService
+        private dialogService: DynamicDialogService
     ) {
         this.logicalOperations = [
             {
@@ -147,12 +147,12 @@ export class ColumnFilterPanelComponent implements OnInit {
 
         console.log(1, view.filters);
         // this.transformFilterValueType(view);
-        // this.dialogService.open(ColumnFilterViewEditPanelComponent, {
-        //     header: '保存新列表视图',
-        //     width: '450px',
-        //     height: '300px',
-        //     data: view
-        // });
+        this.dialogService.open(ColumnFilterViewEditPanelComponent, {
+            header: '保存新列表视图',
+            width: '450px',
+            height: '300px',
+            data: view
+        });
 
         // ref.onClose
         //     .pipe(take(1))

@@ -33,7 +33,7 @@ import { ResizeTableColumnDirective } from './directives/resize-table-column.dir
 import { SortTableColumnDirective } from './directives/sort-table-column.directive';
 import { TableStateRowDirective } from './directives/table-state-row.directive';
 import { SyncScrollAreaDirective } from './directives/sync-scroll-area.directive';
-import { InputModule as OrionInputModule, DynamicDialogModule as OrionDynamicDialogModule, FormModule as OrionFormModule, SelectModule as OrionSelectModule, ButtonModule as OrionButtonModule, CheckboxModule as OrionCheckboxModule, RadioButtonModule as OrionRadioButtonModule } from '@byzan/orion2';
+import { InputModule as OrionInputModule, DynamicDialogModule as OrionDynamicDialogModule, FormModule as OrionFormModule, SelectModule as OrionSelectModule, ButtonModule as OrionButtonModule, CheckboxModule as OrionCheckboxModule, RadioButtonModule as OrionRadioButtonModule, DynamicDialogService } from '@byzan/orion2';
 import { TransferComponent } from './components/transfer/transfer.component';
 
 @NgModule({
@@ -63,6 +63,7 @@ import { TransferComponent } from './components/transfer/transfer.component';
         OrionRadioButtonModule
     ],
     providers: [
+        DynamicDialogService
     ],
     exports: [
         GridComponent

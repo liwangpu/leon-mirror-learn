@@ -10,10 +10,7 @@ import { DynamicDialogRef, DynamicDialogService } from '@byzan/orion2';
 @Component({
     selector: 'xcloud-grid-filter-item-box',
     templateUrl: './filter-item-box.component.html',
-    styleUrls: ['./filter-item-box.component.scss'],
-    providers: [
-        DynamicDialogService
-    ]
+    styleUrls: ['./filter-item-box.component.scss']
 })
 export class FilterItemBoxComponent {
 
