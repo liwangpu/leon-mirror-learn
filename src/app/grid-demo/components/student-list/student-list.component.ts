@@ -37,7 +37,7 @@ export class StudentListComponent extends LocalViewDStore implements OnInit {
 
     public async ngOnInit(): Promise<void> {
         this.gridStartup({
-            selectMode: "multiple",
+            // selectMode: "multiple",
             // selectMode: "single",
         });
     }

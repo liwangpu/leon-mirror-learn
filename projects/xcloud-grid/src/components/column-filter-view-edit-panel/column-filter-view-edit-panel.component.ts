@@ -17,7 +17,6 @@ export class ColumnFilterViewEditPanelComponent implements OnInit {
     public constructor(
         public ref: DynamicDialogRef<ColumnFilterViewEditPanelComponent>,
         private fb: FormBuilder,
-        private opsat: GridOpsatService,
         @Inject(DIALOG_DATA) private data?: any,
     ) {
         this.editForm = this.fb.group({

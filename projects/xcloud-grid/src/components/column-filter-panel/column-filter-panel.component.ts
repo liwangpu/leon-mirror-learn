@@ -1,4 +1,4 @@
-import { Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef, Injector } from '@angular/core';
 import { MenuItem, SelectItem } from 'primeng/api';
 import { filter, map, take } from 'rxjs/operators';
 import { ColumnTypeEnum } from '../../enums/column-type-enum.enum';
@@ -35,7 +35,8 @@ export class ColumnFilterPanelComponent implements OnInit {
         private cfr: ComponentFactoryResolver,
         private cache: GridDataService,
         private messageFlow: GridMessageFlowService,
-        private dialogService: DynamicDialogService
+        private dialogService: DynamicDialogService,
+        private injector: Injector
     ) {
         this.logicalOperations = [
             {
@@ -83,6 +84,7 @@ export class ColumnFilterPanelComponent implements OnInit {
     }
 
     public addFilterItem(field?: string, operator?: string, value?: string): void {
+        let ij: Injector = Injector.create([], this.injector);
         let factory: ComponentFactory<FilterItemBoxComponent> = this.cfr.resolveComponentFactory(FilterItemBoxComponent);
         let com: ComponentRef<FilterItemBoxComponent> = this.filterItemsContainer.createComponent(factory);
         com.instance.id = `${Date.now()}-${field}`;

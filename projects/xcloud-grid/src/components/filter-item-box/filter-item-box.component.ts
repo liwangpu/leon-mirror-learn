@@ -29,11 +29,13 @@ export class FilterItemBoxComponent {
     ) { }
 
     public editItem(): void {
+        let data: any = { columns: this.cache.getActiveFilterViewColumns() };
+        data.filter = this.field ? { field: this.field, operator: this.operator, value: this.value } : null;
         const ref: DynamicDialogRef<any> = this.dialogService.open(FilterItemSettingPanelComponent, {
             header: '筛选器设置',
             width: '400px',
             height: '420px',
-            data: this.field ? { field: this.field, operator: this.operator, value: this.value } : null
+            data
         });
 
         ref.afterClosed()

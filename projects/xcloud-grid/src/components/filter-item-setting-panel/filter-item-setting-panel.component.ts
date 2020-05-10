@@ -5,8 +5,8 @@ import { delay } from 'rxjs/operators';
 import { EQ_OPERATOR, FILTEROPERATORS, GT_OPERATOR, GTE_OPERATOR, LIKE_OPERATOR, LT_OPERATOR, LTE_OPERATOR, NE_OPERATOR } from '../../consts/filter-operators';
 import { ColumnTypeEnum } from '../../enums/column-type-enum.enum';
 import { ITableColumn } from '../../models/i-table-column';
-import { GridDataService } from '../../services/grid-data.service';
 import { DynamicDialogRef, DynamicDialogConfig, DIALOG_DATA } from '@byzan/orion2';
+import { IFilter } from '../../models/i-filter';
 
 @Component({
     selector: 'xcloud-grid-filter-item-setting-panel',
@@ -25,8 +25,7 @@ export class FilterItemSettingPanelComponent implements OnInit, AfterViewInit {
         public ref: DynamicDialogRef<FilterItemSettingPanelComponent>,
         public config: DynamicDialogConfig,
         private fb: FormBuilder,
-        private cache: GridDataService,
-        @Optional() @Inject(DIALOG_DATA) private data?: any
+        @Optional() @Inject(DIALOG_DATA) private data?: { columns: Array<ITableColumn>, filter: IFilter }
     ) {
         this.editForm = this.fb.group({
             field: ['', [Validators.required]],
@@ -36,7 +35,7 @@ export class FilterItemSettingPanelComponent implements OnInit, AfterViewInit {
     }
 
     public ngOnInit(): void {
-        const cols: Array<ITableColumn> = this.cache.getActiveFilterViewColumns().filter(x => !x['_invisibale']);
+        const cols: Array<ITableColumn> = this.data?.columns;
         this.fields = cols.map(x =>
             ({ label: x.name, value: x.field }));
 
@@ -50,19 +49,13 @@ export class FilterItemSettingPanelComponent implements OnInit, AfterViewInit {
                 // tslint:disable-next-line: prefer-switch
                 if (col.fieldType === ColumnTypeEnum.Number) {
                     this.settingNumberOperations();
-                } else if (col.fieldType === ColumnTypeEnum.Select) {
-                    this.settingSelectOperations();
-                    if (this.cache.fieldInfos) {
-                        this.values = this.cache.fieldInfos[field].map(x =>
-                            ({ label: x.text, value: x.value }));
-                    }
                 } else {
                     this.settingStringOperations();
                 }
             });
 
-        if (this.data) {
-            this.editForm.patchValue(this.data);
+        if (this.data?.filter) {
+            this.editForm.patchValue(this.data?.filter);
         } else {
             this.editForm.patchValue({ field: cols[0].field });
         }
@@ -101,12 +94,5 @@ export class FilterItemSettingPanelComponent implements OnInit, AfterViewInit {
         this.operators = opts;
     }
 
-    private settingSelectOperations(): void {
-        const opts: Array<SelectItem> = [
-            { label: '等于', value: EQ_OPERATOR },
-            { label: '不等于', value: NE_OPERATOR }
-        ];
-        this.operators = opts;
-    }
 
 }
