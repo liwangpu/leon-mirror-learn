@@ -1,0 +1,51 @@
+<div class="transfer">
+    <div class="transfer-list" [style.flex]='listWidth==="auto"?"1":"0 1 "+listWidth'>
+        <div class="header">
+            <div (click)='selectAllSourceData()'>
+                <byz-checkbox [(ngModel)]='_allSourceDataSeleted' [disabled]="!(_sourceDatas&&_sourceDatas.length)">{{titles[0]}}
+                </byz-checkbox>
+            </div>
+            <span>{{_sourceDatas&&_sourceDatas.length&&_sourceDatas.length>999?"999+":(_sourceDatas&&_sourceDatas.length||0)}}</span>
+        </div>
+        <div class="content" cdkDropList (cdkDropListDropped)="dropSource($event)">
+            <ng-container *ngIf='_sourceDatas&&_sourceDatas.length;else noContent'>
+                <div class="transfer-drag-item" *ngFor='let s of _sourceDatas' cdkDrag>
+                    <byz-checkbox [ngModel]="s._selected"
+                        (ngModelChange)='s._selected=$event;autoJudgeAllSourceSelected()'>{{s.lable}}</byz-checkbox>
+                    <span class="byz-icon bi-menu" cdkDragHandle></span>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="buttons">
+        <div class="revirsor">
+            <byz-button type="default" icon="byz-icon bi-arrow-ios-forward" (click)='moveSourceToTarget()'></byz-button>
+            <byz-button type="default" icon="byz-icon bi-arrow-ios-back" (click)='moveTargetToSource()'></byz-button>
+        </div>
+    </div>
+    <div class="transfer-list" [style.flex]='listWidth==="auto"?"1":"0 1 "+listWidth'>
+        <div class="header">
+            <div (click)='selectAllTargetData()'>
+                <byz-checkbox [(ngModel)]='_allTargetDataSelected'  [disabled]="!(_targetDatas&&_targetDatas.length)">{{titles[1]}}
+                </byz-checkbox>
+            </div>
+            <span>{{_targetDatas&&_targetDatas.length&&_targetDatas.length>999?"999+":(_targetDatas&&_targetDatas.length||0)}}</span>
+        </div>
+        <div class="content" cdkDropList (cdkDropListDropped)="dropTarget($event)">
+            <ng-container *ngIf='_targetDatas&&_targetDatas.length;else noContent'>
+                <div class="transfer-drag-item" *ngFor='let s of _targetDatas' cdkDrag>
+                    <byz-checkbox [ngModel]="s._selected"
+                        (ngModelChange)='s._selected=$event;autoJudgeAllTargetSelected()'>{{s.lable}}</byz-checkbox>
+                    <span class="byz-icon bi-menu" cdkDragHandle></span>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<ng-template #noContent>
+    <div class="no-content">
+        <span class="byz-icon bi-error-2"></span>
+        <p>暂无内容</p>
+    </div>
+</ng-template>

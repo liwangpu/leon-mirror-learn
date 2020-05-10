@@ -33,16 +33,18 @@ import { ResizeTableColumnDirective } from './directives/resize-table-column.dir
 import { SortTableColumnDirective } from './directives/sort-table-column.directive';
 import { TableStateRowDirective } from './directives/table-state-row.directive';
 import { SyncScrollAreaDirective } from './directives/sync-scroll-area.directive';
+import { InputModule as OrionInputModule, DynamicDialogModule as OrionDynamicDialogModule, FormModule as OrionFormModule, SelectModule as OrionSelectModule, ButtonModule as OrionButtonModule, CheckboxModule as OrionCheckboxModule, RadioButtonModule as OrionRadioButtonModule } from '@byzan/orion2';
+import { TransferComponent } from './components/transfer/transfer.component';
 
 @NgModule({
-    declarations: [SortTableColumnDirective, ResizeTableColumnDirective, ColumResizerHandlerDirective, GridHeaderComponent, ColumnVisualEditingPanelComponent, ColumnFilterPanelComponent, FilterItemBoxComponent, FilterItemSettingPanelComponent, ColumnFilterViewEditPanelComponent, GridContentComponent, GridFooterComponent, DynamicStyleWidthDirective, GridComponent, SyncScrollPanelComponent, ToolTableComponent, UnFrozenTableComponent, FrozenTableComponent, OperationTableComponent, TableStateRowDirective, SyncScrollAreaDirective],
+    declarations: [SortTableColumnDirective, ResizeTableColumnDirective, ColumResizerHandlerDirective, GridHeaderComponent, ColumnVisualEditingPanelComponent, ColumnFilterPanelComponent, FilterItemBoxComponent, FilterItemSettingPanelComponent, ColumnFilterViewEditPanelComponent, GridContentComponent, GridFooterComponent, DynamicStyleWidthDirective, GridComponent, SyncScrollPanelComponent, ToolTableComponent, UnFrozenTableComponent, FrozenTableComponent, OperationTableComponent, TableStateRowDirective, SyncScrollAreaDirective, TransferComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
         DragDropModule,
         ScrollingModule,
-        DynamicDialogModule,
+        // DynamicDialogModule,
         SlideMenuModule,
         PaginatorModule,
         ButtonModule,
@@ -51,7 +53,14 @@ import { SyncScrollAreaDirective } from './directives/sync-scroll-area.directive
         SplitButtonModule,
         CheckboxModule,
         RadioButtonModule,
-        DropdownModule
+        DropdownModule,
+        OrionInputModule,
+        OrionDynamicDialogModule,
+        OrionFormModule,
+        OrionSelectModule,
+        OrionButtonModule,
+        OrionCheckboxModule,
+        OrionRadioButtonModule
     ],
     providers: [
     ],

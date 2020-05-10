@@ -22,8 +22,6 @@ export abstract class ResizableTable extends Table implements OnInit {
     @Output()
     public readonly radioSelectChange: EventEmitter<string> = new EventEmitter<string>();
     @Input()
-    public selectMode: 'single' | 'multiple' = 'multiple';
-    @Input()
     public snapline: Element;
     @ViewChildren(SortTableColumnDirective)
     public sortColumns: QueryList<SortTableColumnDirective>;
@@ -49,22 +47,6 @@ export abstract class ResizableTable extends Table implements OnInit {
     public onLinkFieldClick(field: string, data: any, link?: any): void {
         if (!link) { return; }
         // this.opsat.publish(GridTopicEnum.LinkFieldClick, { field, data });
-    }
-
-    public onRowClick(data: any): void {
-        if (!this.selectMode) { return; }
-        if (data['_level'] && data['_level'] > 1) { return; }
-
-        if (this.selectMode === 'single') {
-            this.radioSelectChange.emit(data['id']);
-            this.messageFlow.publish(MessageFlowEnum.RowSelected, [data]);
-        } else {
-            data['_selected'] = !data['_selected'];
-            this.allRowSelected = !this.datas.some(x => !x['_selected']);
-            this.messageFlow.publish(MessageFlowEnum.RowSelected, this.datas.filter(x => x['_selected']));
-        }
-        // console.log('row select', data['id']);
-        // console.log('row click', this.datas.filter(x => x['_selected']));
     }
 
     public afterColumnResize(): void {

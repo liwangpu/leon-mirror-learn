@@ -1,13 +1,12 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AfterViewInit, Component, OnInit, Optional, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { delay } from 'rxjs/operators';
 import { EQ_OPERATOR, FILTEROPERATORS, GT_OPERATOR, GTE_OPERATOR, LIKE_OPERATOR, LT_OPERATOR, LTE_OPERATOR, NE_OPERATOR, NLIKE_OPERATOR } from '../../consts/filter-operators';
 import { ColumnTypeEnum } from '../../enums/column-type-enum.enum';
 import { ITableColumn } from '../../models/i-table-column';
 import { GridDataService } from '../../services/grid-data.service';
-import { ArrayTool } from '../../utils/array-tool';
-import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogRef, DynamicDialogConfig, DIALOG_DATA } from '@byzan/orion2';
 
 @Component({
     selector: 'xcloud-grid-filter-item-setting-panel',
@@ -23,49 +22,50 @@ export class FilterItemSettingPanelComponent implements OnInit, AfterViewInit {
     public fields: Array<SelectItem>;
     public values: Array<SelectItem>;
     public constructor(
-        public ref: DynamicDialogRef,
+        public ref: DynamicDialogRef<FilterItemSettingPanelComponent>,
         public config: DynamicDialogConfig,
         private fb: FormBuilder,
-        private cache: GridDataService
+        private cache: GridDataService,
+        @Optional() @Inject(DIALOG_DATA) private data?: any
     ) {
         this.editForm = this.fb.group({
-            field: [],
-            operator: [],
+            field: ['', [Validators.required]],
+            operator: ['', [Validators.required]],
             value: []
         });
     }
 
     public ngOnInit(): void {
-        // const cols: Array<ITableColumn> = ArrayTool.deepCopy(this.cache.columns);
-        // this.fields = cols.map(x =>
-        //     ({ label: x.name, value: x.field }));
+        const cols: Array<ITableColumn> = this.cache.getActiveFilterViewColumns().filter(x => !x['_invisibale']);
+        this.fields = cols.map(x =>
+            ({ label: x.name, value: x.field }));
 
-        // this.editForm.get('field').valueChanges
-        //     .pipe(delay(150))
-        //     .subscribe(field => {
-        //         let colIndex: number = cols.findIndex(x => x.field === field);
-        //         let col: ITableColumn = cols[colIndex];
-        //         this.fieldType = col.fieldType;
+        this.editForm.get('field').valueChanges
+            .pipe(delay(150))
+            .subscribe(field => {
+                let colIndex: number = cols.findIndex(x => x.field === field);
+                let col: ITableColumn = cols[colIndex];
+                this.fieldType = col.fieldType;
 
-        //         // tslint:disable-next-line: prefer-switch
-        //         if (col.fieldType === ColumnTypeEnum.Number) {
-        //             this.settingNumberOperations();
-        //         } else if (col.fieldType === ColumnTypeEnum.Select) {
-        //             this.settingSelectOperations();
-        //             if (this.cache.fieldInfos) {
-        //                 this.values = this.cache.fieldInfos[field].map(x =>
-        //                     ({ label: x.text, value: x.value }));
-        //             }
-        //         } else {
-        //             this.settingStringOperations();
-        //         }
-        //     });
+                // tslint:disable-next-line: prefer-switch
+                if (col.fieldType === ColumnTypeEnum.Number) {
+                    this.settingNumberOperations();
+                } else if (col.fieldType === ColumnTypeEnum.Select) {
+                    this.settingSelectOperations();
+                    if (this.cache.fieldInfos) {
+                        this.values = this.cache.fieldInfos[field].map(x =>
+                            ({ label: x.text, value: x.value }));
+                    }
+                } else {
+                    this.settingStringOperations();
+                }
+            });
 
-        // if (this.config.data) {
-        //     this.editForm.patchValue(this.config.data);
-        // } else {
-        //     this.editForm.patchValue({ field: cols[0].field });
-        // }
+        if (this.data) {
+            this.editForm.patchValue(this.data);
+        } else {
+            this.editForm.patchValue({ field: cols[0].field });
+        }
     }
 
     public ngAfterViewInit(): void {

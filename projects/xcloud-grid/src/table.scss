@@ -5,7 +5,7 @@
     color: rgb(81, 79, 77);
     font-size: 14px;
     font-weight: 400;
-    $table_cell_height: 40px;
+    $table_cell_height: 48px;
 
     thead {
         .table-row {
@@ -35,6 +35,7 @@
                     flex-flow: row nowrap;
                     align-items: center;
                     height: 100%;
+
                     &[sort=asc] {
                         div.indicator {
                             span.sort {
@@ -60,6 +61,7 @@
                         line-height: $table_cell_height - 2px;
                         padding-left: .5em;
                         overflow: hidden;
+                        font-weight: bold;
                         white-space: nowrap;
                         text-overflow: ellipsis;
                     }
@@ -114,7 +116,7 @@
                             // background-color: pink;
                             opacity: 0;
 
-                            i.pi {
+                            .col-setting {
                                 width: $s;
                                 height: $s;
                                 font-size: $s;
@@ -182,6 +184,7 @@
             border-bottom: 1px solid #D5D8E1;
             background-color: #fff;
             text-align: left;
+            font-size: 14px;
         }
     }
 }

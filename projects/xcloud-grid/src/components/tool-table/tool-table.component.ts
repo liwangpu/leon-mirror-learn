@@ -12,13 +12,6 @@ import { MessageFlowEnum } from '../../enums/message-flow.enum';
 })
 export class ToolTableComponent extends Table implements OnChanges {
 
-    @Input()
-    public selectMode: 'single' | 'multiple' = 'multiple';
-    @Input()
-    public radioSelect: string;
-    @Output()
-    public readonly radioSelectChange: EventEmitter<string> = new EventEmitter<string>();
-    public allRowSelected: boolean = false;
     public constructor(
         messageFlow: GridMessageFlowService
     ) {
@@ -29,10 +22,6 @@ export class ToolTableComponent extends Table implements OnChanges {
         if (changes['datas']) {
             this.allRowSelected = false;
         }
-    }
-
-    public onRowClick(data: any): void {
-
     }
 
     public selectAllRows(): void {

@@ -1,20 +1,24 @@
 <div class="grid-header">
     <div class="view slm">
-        <p-dropdown [options]="allViews" [(ngModel)]="activeView"></p-dropdown>
+        <byz-select [options]="allViews" [(ngModel)]="activeView"></byz-select>
     </div>
     <div class="buttons">
         <div class="search">
-            <i class="search pi pi-search" [class.hidden]='keyword'></i>
+            <!-- <i class="search pi pi-search" [class.hidden]='keyword'></i>
             <input type="text" class="slm" pInputText placeholder="搜索此列表" [(ngModel)]='keyword' (keyup.enter)='search()'
                 #keywordInput>
-            <i class="clear pi pi-times" [class.hidden]='!keyword' (click)='keyword="";search()'></i>
+            <i class="clear pi pi-times" [class.hidden]='!keyword' (click)='keyword="";search()'></i> -->
+            <byz-input class="slm" [showClear]="true" [(ngModel)]='keyword' (keyup.enter)='search()'
+                placeholder="搜索此列表"></byz-input>
         </div>
-        <button pButton type="button" class="slm" icon="pi pi-arrow-left" iconPos="left" [disabled]="!enableReturn"
-            (click)="reset()"></button>
-        <button pButton type="button" class="slm" icon="pi pi-cog" iconPos="left"
-            (click)="advanceSettingMenuCt.toggle($event)"></button>
-        <button pButton type="button" class="slm" icon="pi pi-refresh" iconPos="left" (click)='refresh()'></button>
-        <button pButton type="button" class="slm" icon="pi pi-filter" iconPos="left" (click)='filter()'></button>
+        <byz-button class="slm" type="default" icon="byz-icon bi-arrow-back" (click)="reset()"></byz-button>
+        <byz-button class="slm" type="default" icon="byz-icon bi-settings"
+            (click)="closeFilterPanel();advanceSettingMenuCt.toggle($event)"></byz-button>
+        <byz-button class="slm" type="default" icon="byz-icon bi-refresh" (click)='refresh()'></byz-button>
+        <byz-button class="slm" type="default" icon="byz-icon bi-funnel" (click)='toggleFilterPanel()'></byz-button>
     </div>
 </div>
 <p-slideMenu #advanceSettingMenuCt appendTo="body" [model]="advanceSettingMenu" [popup]="true"></p-slideMenu>
+
+
+<!-- <xcloud-grid-column-visual-editing-panel></xcloud-grid-column-visual-editing-panel> -->

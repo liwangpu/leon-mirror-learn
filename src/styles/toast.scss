@@ -1,0 +1,12 @@
+:root {
+    --byz-toast-default-summary-foreground: var(--byz-text-color);
+    --byz-toast-default-detail-foreground: var(--byz-text-color-light);
+    --byz-toast-success-background: var(--byz-palette-green-lighter);
+    --byz-toast-success-border-color: var(--byz-palette-yellow-light);
+    --byz-toast-info-background: var(--byz-hover-background);
+    --byz-toast-info-border-color: var(--byz-color-secondary);
+    --byz-toast-warn-background: var(--byz-palette-yellow-lighter);
+    --byz-toast-warn-border-color: var(--byz-palette-yellow-dark);
+    --byz-toast-error-background: var(--byz-palette-red-lighter);
+    --byz-toast-error-border-color: var(--byz-palette-red-medium);
+}

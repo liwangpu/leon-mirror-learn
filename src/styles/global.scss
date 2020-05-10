@@ -1,0 +1,54 @@
+:root {
+    --byz-color-primary: #608ce0;
+    --byz-color-secondary: #7aa2e7;
+    --byz-color-tertiary: #476bba;
+    --byz-color-light: #cadffa;
+    --byz-color-lighter: #f0f7ff;
+    --byz-text-color: #555c71; //正文、标题、投影颜色
+    --byz-text-color-light: #818699; //正文颜色
+    --byz-text-color-lighter: #a5aabf; //辅助、图标颜色
+    --byz-text-color-place: #bec2d2; //占位符颜色
+    --byz-text-color-placeholder: #d5d8e1; //边框
+    --byz-disabled-background: #f8f9fb;
+    --byz-disabled-color: #a5aabf;
+    --byz-color-gray-step-1: #fafbfc;
+    --byz-color-gray-step-2: #f8f9fb;
+    --byz-color-gray-step-3: #eceff4;
+    --byz-color-gray-step-4: #e1e4ea;
+    --byz-palette-black-dark: #3e4350;
+    --byz-palette-black-medium: #555c71;
+    --byz-palette-black-light: #818699;
+    --byz-palette-blue-dark: #7266d8;
+    --byz-palette-blue-medium: #8d75c9;
+    --byz-palette-blue-light: #608ce0;
+    --byz-palette-green-dark: #38b98d;
+    --byz-palette-green-medium: #7cc387;
+    --byz-palette-green-light: #74c7d6;
+    --byz-palette-green-lighter: #f0f7e5;
+    --byz-palette-yellow-dark: #f9b273;
+    --byz-palette-yellow-medium: #f9d173;
+    --byz-palette-yellow-light: #b2d57e;
+    --byz-palette-yellow-lighter: #fef6e3;
+    --byz-palette-red-dark: #eb5b5b;
+    --byz-palette-red-medium: #f98173;
+    --byz-palette-red-light: #cd85a1;
+    --byz-palette-red-lighter: #fee6e3;
+    --byz-border-radius: 3px;
+    --byz-border-small-radius: 2px;
+    --byz-font-family: initial;
+    --byz-font-size: 14px;
+    --byz-font-small-size: 12px;
+    --box-shadow-width: 2px;
+    --byz-border-default-color: var(--byz-text-color-placeholder);
+    --byz-border-disabled-color: var(--byz-text-color-placeholder);
+    --byz-background: #ffffff;
+    --byz-palette-white: #ffffff;
+    --byz-input-background: var(--byz-palette-white);
+    --byz-highlight-text-color: #ffffff;
+    --byz-hover-background: #f1f6ff;
+    --byz-hover-border-color: #d5dff5;
+    --byz-invalid-border-color: var(--byz-palette-red-dark);
+    --byz-invalid-border-color-hover: var(--byz-palette-red-dark);
+    --byz-invalid-border-color-focus: var(--byz-palette-red-dark);
+    --byz-invalid-box-shadow-color: var(--byz-palette-red-lighter);
+}

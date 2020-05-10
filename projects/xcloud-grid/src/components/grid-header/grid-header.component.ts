@@ -9,12 +9,14 @@ import { GridDataService } from '../../services/grid-data.service';
 import { GridOpsatService } from '../../services/grid-opsat.service';
 import { GRIDCONFIG, IGridConfig } from '../../tokens/grid-config';
 import { ColumnVisualEditingPanelComponent } from '../column-visual-editing-panel/column-visual-editing-panel.component';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DynamicDialogRef, DynamicDialogService } from '@byzan/orion2';
 import { GridDataFlowService } from '../../services/grid-data-flow.service';
 import { GridMessageFlowService } from '../../services/grid-message-flow.service';
 import { topicFilter, dataMap } from '../../utils/grid-tool';
 import { DataFlowTopicEnum } from '../../enums/data-flow-topic.enum';
 import { MessageFlowEnum } from '../../enums/message-flow.enum';
+import { ITransferItem } from '../transfer/transfer.component';
+import { ITableColumn } from '../../models/i-table-column';
 
 @Component({
     selector: 'xcloud-grid-header',
@@ -32,7 +34,7 @@ export class GridHeaderComponent implements OnInit {
     public activeView: any;
     public advanceSettingMenu: Array<MenuItem>;
     public constructor(
-        public dialogService: DialogService,
+        public dialogService: DynamicDialogService,
         private opsat: GridOpsatService,
         private cache: GridDataService,
         private dataFlow: GridDataFlowService,
@@ -117,21 +119,51 @@ export class GridHeaderComponent implements OnInit {
             {
                 label: '选择需要显示的列',
                 command: () => {
-                    this.dialogService.open(ColumnVisualEditingPanelComponent, {
+                    let columns: Array<ITableColumn> = this.cache.getActiveFilterViewColumns();
+                    const ref: DynamicDialogRef<ColumnVisualEditingPanelComponent> = this.dialogService.open(ColumnVisualEditingPanelComponent, {
                         header: '选择需要显示的字段',
                         width: '600px',
-                        height: '400px'
+                        height: '500px',
+                        data: { columns }
+                    });
+                    ref.afterClosed().pipe(filter(x => x)).subscribe((res: [Array<ITransferItem>, Array<ITransferItem>]) => {
+                        let [targets, sources] = res;
+                        let nColumns: Array<ITableColumn> = [];
+                        sources.forEach(s => {
+                            let col = columns.filter(x => x.field === s.value)[0];
+                            col['_invisibale'] = false;
+                            nColumns.push(col);
+                        });
+                        targets.forEach(s => {
+                            let col = columns.filter(x => x.field === s.value)[0];
+                            col['_invisibale'] = true;
+                            nColumns.push(col);
+                        });
+                        let view: IFilterView = this.cache.getActiveFilterView();
+                        view.columns = nColumns;
+                        this.cache.setFilterView(view);
                     });
                 }
             }
         ];
+
+
+
+        // setTimeout(() => {
+        //     let cols = this.cache.getActiveFilterViewColumns();
+        // }, 500);
     }
 
-    public filter(): void {
-        this.messageFlow.publish(MessageFlowEnum.OpenFilterSettingPanel);
+    public toggleFilterPanel(): void {
+        this.messageFlow.publish(MessageFlowEnum.ToggleFilterSettingPanel);
+    }
+
+    public closeFilterPanel(): void {
+        this.messageFlow.publish(MessageFlowEnum.CloseFilterSettingPanel);
     }
 
     public refresh(): void {
+        this.closeFilterPanel();
         this.dataFlow.publish(DataFlowTopicEnum._History, this.cache.getHistory());
     }
 
@@ -147,6 +179,7 @@ export class GridHeaderComponent implements OnInit {
     }
 
     public reset(): void {
+        this.closeFilterPanel();
         this.cache.initializeHistory();
         // this.keyword = undefined;
         // this.cache.history.keyword = undefined;

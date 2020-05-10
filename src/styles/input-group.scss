@@ -1,0 +1,100 @@
+.ui-input-group {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.ui-input-group .ui-input-group-addon {
+    display: inline-block;
+    text-align: center;
+    min-width: 1.5em;
+    padding: 0.25em 0.5em;
+    border: 1px solid var(--byz-border-default-color);
+}
+
+.ui-input-group .ui-input-group-addon + .ui-input-group-addon {
+    border-left: 0 none;
+}
+
+.ui-input-group .ui-inputtext {
+    padding-left: 0.5em;
+}
+
+.ui-input-group byz-input:not(:first-child) .ui-inputtext {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-width: 0;
+}
+
+.ui-input-group byz-input:not(:last-child) .ui-inputtext {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right-width: 0;
+}
+
+.ui-input-group .ui-button {
+    margin-right: 0;
+    border-radius: 0;
+}
+
+.ui-input-group > byz-button:not(:first-child) > .ui-button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.ui-input-group > byz-button:not(:last-child) > .ui-button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.ui-fluid .ui-input-group .ui-inputtext {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.ui-input-group .ui-chkbox,
+.ui-input-group .ui-radio-button {
+    margin-right: 0;
+    vertical-align: bottom;
+}
+
+.ui-float-label {
+    display: block;
+    position: relative;
+}
+
+.ui-float-label > label {
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 0.25em;
+    top: 50%;
+    margin-top: -0.5em;
+    transition: 0.3s ease all;
+    -moz-transition: 0.3s ease all;
+    -webkit-transition: 0.3s ease all;
+    color: var(--byz-text-color);
+    line-height: 1;
+}
+
+.ui-fluid .ui-input-group .ui-float-label {
+    width: 100%;
+}
+
+.ui-input-group .ui-float-label .ui-inputtext {
+    height: 100%;
+}
+
+.ui-input-group .ui-float-label:last-child .ui-inputtext {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-right-width: 1px;
+}
+
+.ui-input-group .ui-float-label:not(:first-child) .ui-inputtext {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-width: 0;
+}

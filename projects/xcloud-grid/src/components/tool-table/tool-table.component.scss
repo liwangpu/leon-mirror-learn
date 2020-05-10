@@ -13,7 +13,6 @@ table {
 
                 &.select {
                     width: 40px;
-                    text-align: center;
                 }
             }
         }
@@ -29,6 +28,8 @@ table {
 
     .table-row {
 
-        .table-cell {}
+        .table-cell {
+            text-align: center;
+        }
     }
 }

@@ -1,0 +1,12 @@
+:root {
+    --byz-message-default-summary-foreground: var(--byz-text-color);
+    --byz-message-default-detail-foreground: var(--byz-text-color-light);
+    --byz-message-success-background: var(--byz-palette-green-lighter);
+    --byz-message-success-border-color: var(--byz-palette-yellow-light);
+    --byz-message-info-background: var(--byz-hover-background);
+    --byz-message-info-border-color: var(--byz-color-secondary);
+    --byz-message-warn-background: var(--byz-palette-yellow-lighter);
+    --byz-message-warn-border-color: var(--byz-palette-yellow-dark);
+    --byz-message-error-background: var(--byz-palette-red-lighter);
+    --byz-message-error-border-color: var(--byz-palette-red-medium);
+}

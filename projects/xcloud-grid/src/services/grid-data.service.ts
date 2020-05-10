@@ -16,7 +16,7 @@ export class GridDataService {
 
     public fieldInfos: { [key: string]: Array<ISelectOption> };
     private history: IHistory = { pagination: {}, sorting: {}, keyword: null };
-    private filterViews: Array<IFilterView>;
+    private filterViews: Array<IFilterView> = [];
     public constructor(
         @Inject(GRIDCONFIG) private gridConfig: IGridConfig,
         private dataFlow: GridDataFlowService,
@@ -47,9 +47,11 @@ export class GridDataService {
         return ObjectTool.deepCopy(this.filterViews);
     }
 
-    public setFilterView(view: IFilterView): void {
+    public setFilterView(view: IFilterView, fetchData?: boolean): void {
         let v: IFilterView = ObjectTool.deepCopy(view);
         let index = this.filterViews.findIndex(x => x.id === v.id);
+
+        this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData });
         if (index > -1) {
             this.filterViews[index] = v;
             return;

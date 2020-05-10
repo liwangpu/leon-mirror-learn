@@ -71,8 +71,10 @@ export class GridContentComponent implements OnInit {
             .pipe(topicFilter(DataFlowTopicEnum.ListData), dataMap);
         const viewObs: Observable<Array<IFilterView>> = this.dataFlow.message
             .pipe(topicFilter(DataFlowTopicEnum.ViewDefinition), dataMap);
-        const openPanelObs: Observable<any> = this.messageFlow.message
-            .pipe(topicFilter(MessageFlowEnum.OpenFilterSettingPanel));
+        const togglePanelObs: Observable<any> = this.messageFlow.message
+            .pipe(topicFilter(MessageFlowEnum.ToggleFilterSettingPanel));
+        const closePanelObs: Observable<any> = this.messageFlow.message
+            .pipe(topicFilter(MessageFlowEnum.CloseFilterSettingPanel));
         const columnWidthChangeObs: Observable<any> = this.messageFlow.message
             .pipe(topicFilter(MessageFlowEnum.ColumnWidthChange));
         const tableButtonObs: Observable<Array<ITableButton>> = this.messageFlow.message
@@ -104,7 +106,10 @@ export class GridContentComponent implements OnInit {
                 this.frozenColumns = this.columns.filter(x => x['_frozen'] && !x['_invisibale']);
             });
 
-        openPanelObs
+        closePanelObs
+            .subscribe(() => this.showFilterView = false);
+
+        togglePanelObs
             .subscribe(() => {
                 if (!this.filterPanelAnchor.length) {
                     const fac = this.cfr.resolveComponentFactory(ColumnFilterPanelComponent);
@@ -132,6 +137,10 @@ export class GridContentComponent implements OnInit {
                 // this.syncScrollPanel.createPanel(facs);
                 // this.syncScrollPanel.revirseScroll();
             });
+
+        // setTimeout(() => {
+        //     this.messageFlow.publish(MessageFlowEnum.ToggleFilterSettingPanel);
+        // }, 200);
     }
 
     public afterColumnResize(): void {
@@ -146,7 +155,6 @@ export class GridContentComponent implements OnInit {
             }
         });
         this.cache.setFilterView(view);
-        this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData: false });
     }
 
 }

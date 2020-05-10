@@ -1,21 +1,23 @@
 <div class="column-filter-panel">
     <div class="header">
-        <div class="buttons">
-            <button pButton type="button" label="查询" (click)='query()' *ngIf='!enableFilterView'></button>
-            <p-splitButton label="保存" (onClick)="save()" [model]="advanceMenuItems" *ngIf='enableFilterView'>
-            </p-splitButton>
-        </div>
+        <p class="title">
+            <span class="byz-icon bi-funnel"></span>
+            <span>筛选器</span>
+        </p>
+        <p class="clear" (click)='clearFilterItems()'>清空</p>
+    </div>
+    <div class="advance">
+        <byz-select [options]="logicalOperations" placeholder="请选择运算符" [showClear]="false"
+            [(ngModel)]='logicalOperation'>
+        </byz-select>
     </div>
     <div class="content">
-        <div class="reviser">
-            <h3>匹配所有这些筛选器</h3>
-            <div class="filter-items">
-                <div #filterItemsContainer></div>
-            </div>
-            <div class="filter-buttons">
-                <span (click)='addFilterItem()'>添加筛选器</span>
-                <span (click)='clearFilterItems()'>全部删除</span>
-            </div>
-        </div>
+        <div #filterItemsContainer></div>
+        <byz-button class="add-filter" type="default" icon="byz-icon bi-plus" (click)='addFilterItem()'>新增筛选条件
+        </byz-button>
+    </div>
+    <div class="footer">
+        <byz-button type="default">另存为</byz-button>
+        <byz-button type="primary" (click)='query()'>确定</byz-button>
     </div>
 </div>

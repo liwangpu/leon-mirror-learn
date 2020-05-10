@@ -9,7 +9,7 @@
                             <span class="sort"></span>
                             <div class="advance-setting"
                                 (click)='currentEditColumn=col.field;currentTableCell=headerCell;menu.toggle($event);$event.stopPropagation();'>
-                                <i class="pi pi-angle-down"></i>
+                                <span class="byz-icon col-setting bi-chevron-down"></span>
                             </div>
                             <div class="resizer-handler" [columResizerHandler]='headerCell' [snapline]='snapline'
                                 (afterResize)='afterColumnResize()'>

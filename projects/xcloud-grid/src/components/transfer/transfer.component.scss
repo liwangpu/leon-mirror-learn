@@ -1,0 +1,91 @@
+div.transfer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-width: 200px;
+    height: 100%;
+    user-select: none;
+    z-index: 90000;
+    $contentItemMnHeight: 220px;
+    $transferHeaderHeight: 40px;
+
+    div.transfer-list {
+        position: relative;
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+        min-height: $contentItemMnHeight;
+        border: 1px solid var(--byz-border-default-color);
+        border-radius: 4px;
+        $lrp: 12px;
+        overflow: hidden;
+
+        div.header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: $transferHeaderHeight;
+            border-bottom: 1px solid var(--byz-border-default-color);
+            padding: 0 $lrp;
+
+            &>span {
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 16px;
+                color: var(--byz-text-color);
+            }
+        }
+
+        div.content {
+            position: relative;
+            flex: 1;
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            div.no-content {
+                position: absolute;
+                display: flex;
+                flex-flow: column;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+
+                .byz-icon {
+                    $s: 32px;
+                    width: $s;
+                    height: $s;
+                    font-size: $s;
+                    color: #BEC2D2;
+                }
+
+                &>p {
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: 19px;
+                    color: var(--byz-text-color);
+                    margin-top: 12px;
+                }
+            }
+        }
+    }
+
+    div.buttons {
+        height: 100%;
+        min-height: $contentItemMnHeight;
+        padding: $transferHeaderHeight 8px 0 8px;
+
+        div.revirsor {
+            display: flex;
+            height: 100%;
+            min-height: $contentItemMnHeight - $transferHeaderHeight;
+            flex-flow: column;
+            justify-content: center;
+
+            &>* {
+                margin-top: 8px;
+            }
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import { Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, SelectItem } from 'primeng/api';
 import { filter, map, take } from 'rxjs/operators';
 import { ColumnTypeEnum } from '../../enums/column-type-enum.enum';
 import { GridTopicEnum } from '../../enums/grid-topic.enum';
@@ -13,6 +13,8 @@ import { ObjectTool } from '../../utils/object-tool';
 import { ColumnFilterViewEditPanelComponent } from '../column-filter-view-edit-panel/column-filter-view-edit-panel.component';
 import { FilterItemBoxComponent } from '../filter-item-box/filter-item-box.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { GridMessageFlowService } from '../../services/grid-message-flow.service';
+import { MessageFlowEnum } from '../../enums/message-flow.enum';
 
 @Component({
     selector: 'xcloud-grid-column-filter-panel',
@@ -21,40 +23,53 @@ import { DialogService } from 'primeng/dynamicdialog';
 })
 export class ColumnFilterPanelComponent implements OnInit {
 
-    @ViewChild('filterItemsContainer', { static: true, read: ViewContainerRef }) public filterItemsContainer: ViewContainerRef;
-
+    @ViewChild('filterItemsContainer', { static: true, read: ViewContainerRef })
+    public filterItemsContainer: ViewContainerRef;
     public enableFilterView: boolean = false;
     public filterView: IFilterView;
     public advanceMenuItems: Array<MenuItem>;
-    public filterItemBoxs: Array<FilterItemBoxComponent>;
+    public filterItemBoxs: Array<FilterItemBoxComponent> = [];
+    public logicalOperations: Array<SelectItem>;
+    public logicalOperation: string = '@and';
     public constructor(
         private cfr: ComponentFactoryResolver,
-        private opsat: GridOpsatService,
         private cache: GridDataService,
+        private messageFlow: GridMessageFlowService,
         private dialogService: DialogService
-    ) { }
-
-    public ngOnInit(): void {
-        this.opsat.message
-            .pipe(filter(x => x.topic === GridTopicEnum.ViewDefinition))
-            .pipe(map(x => x.data))
-            .subscribe(() => {
-                // this.filterView = ObjectTool.deepCopy(this.cache.activeFilterView);
-                // this.renderFilterPanel();
-            });
-
-        this.opsat.message
-            .pipe(filter(x => x.topic === GridTopicEnum.EnableFilterView))
-            .pipe(map(x => x.data))
-            .subscribe(enable => this.enableFilterView = enable);
-
-        this.advanceMenuItems = [
+    ) {
+        this.logicalOperations = [
             {
-                label: '另存为', command: () => {
-                    this.saveAs();
-                }
+                label: '满足以下所有条件',
+                value: '@and'
+            },
+            {
+                label: '满足以下任意条件',
+                value: '@or'
             }
         ];
+    }
+
+    public ngOnInit(): void {
+        // this.opsat.message
+        //     .pipe(filter(x => x.topic === GridTopicEnum.ViewDefinition))
+        //     .pipe(map(x => x.data))
+        //     .subscribe(() => {
+        //         // this.filterView = ObjectTool.deepCopy(this.cache.activeFilterView);
+        //         // this.renderFilterPanel();
+        //     });
+
+        // this.opsat.message
+        //     .pipe(filter(x => x.topic === GridTopicEnum.EnableFilterView))
+        //     .pipe(map(x => x.data))
+        //     .subscribe(enable => this.enableFilterView = enable);
+
+        // this.advanceMenuItems = [
+        //     {
+        //         label: '另存为', command: () => {
+        //             this.saveAs();
+        //         }
+        //     }
+        // ];
     }
 
     public renderFilterPanel(): void {
@@ -81,16 +96,13 @@ export class ColumnFilterPanelComponent implements OnInit {
             ArrayTool.remove(this.filterItemBoxs, it => it.id === id);
             this.filterItemsContainer.remove(i);
         });
+        com.instance.editItem();
         this.filterItemBoxs.push(com.instance);
     }
 
     public clearFilterItems(): void {
         this.filterItemsContainer.clear();
         this.filterItemBoxs = [];
-
-        if (!this.enableFilterView) {
-            this.query();
-        }
     }
 
     public save(): void {
@@ -148,15 +160,16 @@ export class ColumnFilterPanelComponent implements OnInit {
     }
 
     public query(): void {
-        let view: IFilterView = ObjectTool.deepCopy(this.filterView);
-        view.filters = this.filterItemBoxs.filter(x => x.field).map(x =>
-            ({
-                field: x.field,
-                operator: x.operator,
-                value: x.value
-            }));
-        this.transformFilterValueType(view);
-        this.opsat.publish(GridTopicEnum.FilterViewCreateOrUpdate, view);
+        // let view: IFilterView = ObjectTool.deepCopy(this.filterView);
+        // view.filters = this.filterItemBoxs.filter(x => x.field).map(x =>
+        //     ({
+        //         field: x.field,
+        //         operator: x.operator,
+        //         value: x.value
+        //     }));
+        // this.transformFilterValueType(view);
+        // this.opsat.publish(GridTopicEnum.FilterViewCreateOrUpdate, view);
+        this.messageFlow.publish(MessageFlowEnum.CloseFilterSettingPanel);
     }
 
     private transformFilterValueType(view: IFilterView): void {

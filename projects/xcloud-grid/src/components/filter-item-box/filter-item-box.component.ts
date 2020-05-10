@@ -6,14 +6,14 @@ import { ISelectOption } from '../../models/i-select-option';
 import { ITableColumn } from '../../models/i-table-column';
 import { GridDataService } from '../../services/grid-data.service';
 import { FilterItemSettingPanelComponent } from '../filter-item-setting-panel/filter-item-setting-panel.component';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogRef, DynamicDialogService } from '@byzan/orion2';
 
 @Component({
     selector: 'xcloud-grid-filter-item-box',
     templateUrl: './filter-item-box.component.html',
     styleUrls: ['./filter-item-box.component.scss'],
     providers: [
-        DialogService
+        DynamicDialogService
     ]
 })
 export class FilterItemBoxComponent {
@@ -27,23 +27,25 @@ export class FilterItemBoxComponent {
     public value: any;
     @Output() public readonly delete: EventEmitter<string> = new EventEmitter<string>();
     public constructor(
-        public dialogService: DialogService,
+        public dialogService: DynamicDialogService,
         private cache: GridDataService,
     ) { }
+
     public editItem(): void {
-        const ref: DynamicDialogRef = this.dialogService.open(FilterItemSettingPanelComponent, {
+        const ref: DynamicDialogRef<any> = this.dialogService.open(FilterItemSettingPanelComponent, {
             header: '筛选器设置',
             width: '400px',
             height: '420px',
             data: this.field ? { field: this.field, operator: this.operator, value: this.value } : null
         });
 
-        ref.onClose.pipe(take(1), filter(x => x)).subscribe((res: { field: string; operator: string; value: string }) => {
-            this.field = res.field;
-            this.operator = res.operator;
-            this.value = res.value;
-            this.generateDisplayMessage();
-        });
+        ref.afterClosed().pipe(filter(x => x))
+            .subscribe((res: { field: string; operator: string; value: string }) => {
+                this.field = res.field;
+                this.operator = res.operator;
+                this.value = res.value;
+                this.generateDisplayMessage();
+            });
     }
 
     public deleteItem(): void {
@@ -51,13 +53,13 @@ export class FilterItemBoxComponent {
     }
 
     public generateDisplayMessage(): void {
-        // if (!this.field) { return; }
-        // const cols: Array<ITableColumn> = this.cache.columns;
-        // let col: ITableColumn = cols.filter(x => x.field === this.field)[0];
-        // this.fieldName = col ? col.name : '';
-        // let op: SelectItem = this.operator && FILTEROPERATORS.filter(x => x.value === this.operator)[0];
-        // this.operatorName = op ? op.label : '';
-        // this.text = null;
+        if (!this.field) { return; }
+        const cols: Array<ITableColumn> = this.cache.getActiveFilterViewColumns();
+        let col: ITableColumn = cols.filter(x => x.field === this.field)[0];
+        this.fieldName = col ? col.name : '';
+        let op: SelectItem = this.operator && FILTEROPERATORS.filter(x => x.value === this.operator)[0];
+        this.operatorName = op ? op.label : '';
+        this.text = this.value;
         // if (this.cache.fieldInfos && this.cache.fieldInfos[this.field]) {
         //     let it: ISelectOption = this.cache.fieldInfos[this.field].filter(x => `${x.value}` === `${this.value}`)[0];
         //     if (it) {

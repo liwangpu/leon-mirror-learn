@@ -76,7 +76,8 @@ div.grid-header {
     justify-content: space-between;
     width: 100%;
     min-height: 2.5em;
-    margin-bottom: .325em;
+    padding: 0 24px 12px;
+    // margin-bottom: .325em;
 
     .slm {
         margin-top: .325em;
@@ -133,20 +134,20 @@ div.grid-header {
             }
         }
 
-        &>button {
-            $size: 2em;
-            width: $size;
-            height: $size;
+        &>byz-button {
+            //     $size: 2em;
+            //     width: $size;
+            //     height: $size;
             margin-left: 4px;
-            color: #848484;
-            border-color: #848484;
-            background-color: #fff;
+            //     color: #848484;
+            //     border-color: #848484;
+            //     background-color: #fff;
 
-            &[disabled] {
-                &:hover {
-                    cursor: default;
-                }
-            }
+            //     &[disabled] {
+            //         &:hover {
+            //             cursor: default;
+            //         }
+            //     }
         }
     }
 }

@@ -25,10 +25,10 @@ interface IStudent {
 export class StudentListComponent extends LocalViewDStore implements OnInit {
 
     public tableButtons: Array<ITableButton> = [
-        // {
-        //     key: 'edit',
-        //     name: '编辑'
-        // }
+        {
+            key: 'edit',
+            name: '编辑'
+        }
     ];
 
     public constructor() {
@@ -45,7 +45,7 @@ export class StudentListComponent extends LocalViewDStore implements OnInit {
     public async getColumns(): Promise<Array<ITableColumn>> {
         let arr: Array<ITableColumn> = [
             {
-                name: '名称很长很长的呢',
+                name: '名称',
                 field: 'name',
                 sort: true
             },
@@ -81,6 +81,7 @@ export class StudentListComponent extends LocalViewDStore implements OnInit {
     }
 
     public async onQuery(queryParam?: { [key: string]: any }): Promise<IQueryResult<any>> {
+        console.log('query work!');
         let students: Array<IStudent> = [];
 
         for (let i: number = 0; i < 50; i++) {

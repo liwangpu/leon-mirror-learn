@@ -1,0 +1,532 @@
+@font-face {
+    font-family: "orionicons";
+    src: url("./fonts/orionicons.eot");
+    src: url("./fonts/orionicons.eot#iefix") format("eot"),
+        url("./fonts/orionicons.woff2") format("woff2"),
+        url("./fonts/orionicons.woff") format("woff"),
+        url("./fonts/orionicons.ttf") format("truetype"),
+        url("./fonts/orionicons.svg#orionicons") format("svg");
+}
+.byz-icon {
+    font-family: "orionicons" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.bi-arrow-back::before {
+    content: "\ea01";
+}
+
+.bi-arrow-downward::before {
+    content: "\ea02";
+}
+
+.bi-arrow-forward::before {
+    content: "\ea03";
+}
+
+.bi-arrow-ios-back::before {
+    content: "\ea04";
+}
+
+.bi-arrow-ios-downward::before {
+    content: "\ea05";
+}
+
+.bi-arrow-ios-forward::before {
+    content: "\ea06";
+}
+
+.bi-arrow-ios-upward::before {
+    content: "\ea07";
+}
+
+.bi-arrow-upward::before {
+    content: "\ea08";
+}
+
+.bi-arrowhead-down::before {
+    content: "\ea09";
+}
+
+.bi-arrowhead-left::before {
+    content: "\ea0a";
+}
+
+.bi-arrowhead-right::before {
+    content: "\ea0b";
+}
+
+.bi-arrowhead-up::before {
+    content: "\ea0c";
+}
+
+.bi-chevron-down::before {
+    content: "\ea0d";
+}
+
+.bi-chevron-left::before {
+    content: "\ea0e";
+}
+
+.bi-chevron-right::before {
+    content: "\ea0f";
+}
+
+.bi-chevron-up::before {
+    content: "\ea10";
+}
+
+.bi-code::before {
+    content: "\ea11";
+}
+
+.bi-code-downlaod::before {
+    content: "\ea12";
+}
+
+.bi-collapse::before {
+    content: "\ea13";
+}
+
+.bi-corner-up-left::before {
+    content: "\ea14";
+}
+
+.bi-expand::before {
+    content: "\ea15";
+}
+
+.bi-minus::before {
+    content: "\ea16";
+}
+
+.bi-minus-aquare::before {
+    content: "\ea17";
+}
+
+.bi-move::before {
+    content: "\ea18";
+}
+
+.bi-plus::before {
+    content: "\ea19";
+}
+
+.bi-plus-square::before {
+    content: "\ea1a";
+}
+
+.bi-rewind-left::before {
+    content: "\ea1b";
+}
+
+.bi-rewind-right::before {
+    content: "\ea1c";
+}
+
+.bi-skip-back::before {
+    content: "\ea1d";
+}
+
+.bi-skip-forward::before {
+    content: "\ea1e";
+}
+
+.bi-sorting::before {
+    content: "\ea1f";
+}
+
+.bi-swap::before {
+    content: "\ea20";
+}
+
+.bi-trending-down::before {
+    content: "\ea21";
+}
+
+.bi-trending-up::before {
+    content: "\ea22";
+}
+
+.bi-Location::before {
+    content: "\ea23";
+}
+
+.bi-attach::before {
+    content: "\ea24";
+}
+
+.bi-attach-2::before {
+    content: "\ea25";
+}
+
+.bi-bell::before {
+    content: "\ea26";
+}
+
+.bi-bell-off::before {
+    content: "\ea27";
+}
+
+.bi-book::before {
+    content: "\ea28";
+}
+
+.bi-calendar::before {
+    content: "\ea29";
+}
+
+.bi-car::before {
+    content: "\ea2a";
+}
+
+.bi-checkmark::before {
+    content: "\ea2b";
+}
+
+.bi-close::before {
+    content: "\ea2c";
+}
+
+.bi-close-2::before {
+    content: "\ea2d";
+}
+
+.bi-close-3::before {
+    content: "\ea2e";
+}
+
+.bi-cloud-download::before {
+    content: "\ea2f";
+}
+
+.bi-cloud-upload::before {
+    content: "\ea30";
+}
+
+.bi-copy::before {
+    content: "\ea31";
+}
+
+.bi-cube::before {
+    content: "\ea32";
+}
+
+.bi-download::before {
+    content: "\ea33";
+}
+
+.bi-edit::before {
+    content: "\ea34";
+}
+
+.bi-edit-2::before {
+    content: "\ea35";
+}
+
+.bi-email::before {
+    content: "\ea36";
+}
+
+.bi-error::before {
+    content: "\ea37";
+}
+
+.bi-error-2::before {
+    content: "\ea38";
+}
+
+.bi-external-link::before {
+    content: "\ea39";
+}
+
+.bi-eye::before {
+    content: "\ea3a";
+}
+
+.bi-eye-off::before {
+    content: "\ea3b";
+}
+
+.bi-file::before {
+    content: "\ea3c";
+}
+
+.bi-file-add::before {
+    content: "\ea3d";
+}
+
+.bi-file-remove::before {
+    content: "\ea3e";
+}
+
+.bi-file-text::before {
+    content: "\ea3f";
+}
+
+.bi-flash::before {
+    content: "\ea40";
+}
+
+.bi-flip::before {
+    content: "\ea41";
+}
+
+.bi-flip-2::before {
+    content: "\ea42";
+}
+
+.bi-folder::before {
+    content: "\ea43";
+}
+
+.bi-folder-add::before {
+    content: "\ea44";
+}
+
+.bi-folder-remove::before {
+    content: "\ea45";
+}
+
+.bi-funnel::before {
+    content: "\ea46";
+}
+
+.bi-globe::before {
+    content: "\ea47";
+}
+
+.bi-globe-2::before {
+    content: "\ea48";
+}
+
+.bi-grid::before {
+    content: "\ea49";
+}
+
+.bi-grid-2::before {
+    content: "\ea4a";
+}
+
+.bi-hard-drive::before {
+    content: "\ea4b";
+}
+
+.bi-home::before {
+    content: "\ea4c";
+}
+
+.bi-image::before {
+    content: "\ea4d";
+}
+
+.bi-info::before {
+    content: "\ea4e";
+}
+
+.bi-info-2::before {
+    content: "\ea4f";
+}
+
+.bi-keypad::before {
+    content: "\ea50";
+}
+
+.bi-keypad-2::before {
+    content: "\ea51";
+}
+
+.bi-link::before {
+    content: "\ea52";
+}
+
+.bi-link-2::before {
+    content: "\ea53";
+}
+
+.bi-list::before {
+    content: "\ea54";
+}
+
+.bi-lock::before {
+    content: "\ea55";
+}
+
+.bi-map::before {
+    content: "\ea56";
+}
+
+.bi-maximize::before {
+    content: "\ea57";
+}
+
+.bi-menu::before {
+    content: "\ea58";
+}
+
+.bi-menu-2::before {
+    content: "\ea59";
+}
+
+.bi-message::before {
+    content: "\ea5a";
+}
+
+.bi-message-2::before {
+    content: "\ea5b";
+}
+
+.bi-mic::before {
+    content: "\ea5c";
+}
+
+.bi-mic-off::before {
+    content: "\ea5d";
+}
+
+.bi-minimize::before {
+    content: "\ea5e";
+}
+
+.bi-monitor::before {
+    content: "\ea5f";
+}
+
+.bi-more::before {
+    content: "\ea60";
+}
+
+.bi-more-vertical::before {
+    content: "\ea61";
+}
+
+.bi-options::before {
+    content: "\ea62";
+}
+
+.bi-options-2::before {
+    content: "\ea63";
+}
+
+.bi-paper-plane::before {
+    content: "\ea64";
+}
+
+.bi-people::before {
+    content: "\ea65";
+}
+
+.bi-person::before {
+    content: "\ea66";
+}
+
+.bi-phone::before {
+    content: "\ea67";
+}
+
+.bi-pie-chart::before {
+    content: "\ea68";
+}
+
+.bi-printer::before {
+    content: "\ea69";
+}
+
+.bi-question-mark-circle::before {
+    content: "\ea6a";
+}
+
+.bi-refresh::before {
+    content: "\ea6b";
+}
+
+.bi-refresh-2::before {
+    content: "\ea6c";
+}
+
+.bi-search::before {
+    content: "\ea6d";
+}
+
+.bi-settings::before {
+    content: "\ea6e";
+}
+
+.bi-share::before {
+    content: "\ea6f";
+}
+
+.bi-shield::before {
+    content: "\ea70";
+}
+
+.bi-shuffle::before {
+    content: "\ea71";
+}
+
+.bi-shuffle-2::before {
+    content: "\ea72";
+}
+
+.bi-slash::before {
+    content: "\ea73";
+}
+
+.bi-star::before {
+    content: "\ea74";
+}
+
+.bi-star-2::before {
+    content: "\ea75";
+}
+
+.bi-time::before {
+    content: "\ea76";
+}
+
+.bi-time-2::before {
+    content: "\ea77";
+}
+
+.bi-trash::before {
+    content: "\ea78";
+}
+
+.bi-trash-2::before {
+    content: "\ea79";
+}
+
+.bi-undo::before {
+    content: "\ea7a";
+}
+
+.bi-unlock::before {
+    content: "\ea7b";
+}
+
+.bi-video::before {
+    content: "\ea7c";
+}
+
+.bi-warn::before {
+    content: "\ea7d";
+}
+
+.bi-warn-2::before {
+    content: "\ea7e";
+}
+
+.bi-wifi::before {
+    content: "\ea7f";
+}
+
+.bi-wifi-off::before {
+    content: "\ea80";
+}
+
+.bi-checkmark-2::before {
+    content: "\ea81";
+}
