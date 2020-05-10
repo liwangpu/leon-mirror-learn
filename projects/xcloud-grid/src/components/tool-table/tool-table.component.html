@@ -3,8 +3,6 @@
         <tr class="table-row">
             <th class="table-cell select">
                 <span (click)='selectAllRows()'>
-                    <!-- <p-checkbox *ngIf='selectMode === "multiple"' binary="true" [(ngModel)]="allRowSelected">
-                    </p-checkbox> -->
                     <byz-checkbox *ngIf='selectMode === "multiple"' [(ngModel)]="allRowSelected"></byz-checkbox>
                 </span>
             </th>
@@ -17,12 +15,8 @@
                 [tableStateRow]='rowData' [class.active]='rowData["_active"]'>
                 <td class="table-cell">
                     <ng-container *ngIf='!rowData["_level"]||rowData["_level"]===1'>
-                        <!-- <p-checkbox *ngIf='selectMode === "multiple"' [ngModel]="rowData._selected" binary="true">
-                        </p-checkbox> -->
                         <byz-checkbox *ngIf='selectMode === "multiple"' [ngModel]="rowData._selected" binary="true">
                         </byz-checkbox>
-                        <!-- <p-radioButton *ngIf='selectMode === "single"' name="select" [value]="rowData.id"
-                            [(ngModel)]="radioSelect"></p-radioButton> -->
                         <byz-radio-button *ngIf='selectMode === "single"' name="select" [value]="rowData.id"
                             [(ngModel)]="radioSelect"></byz-radio-button>
                     </ng-container>

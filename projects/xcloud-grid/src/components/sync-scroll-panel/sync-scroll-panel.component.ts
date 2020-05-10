@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChildren, ElementRef, QueryList, Renderer2, TemplateRef, ViewChild, ComponentFactoryResolver, ComponentFactory, ViewContainerRef } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, ElementRef, QueryList, Renderer2, TemplateRef, ViewChild } from '@angular/core';
 import { SyncScrollAreaDirective } from '../../directives/sync-scroll-area.directive';
 
 @Component({

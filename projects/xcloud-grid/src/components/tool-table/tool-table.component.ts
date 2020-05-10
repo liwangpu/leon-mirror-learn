@@ -1,7 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { GridTopicEnum } from '../../enums/grid-topic.enum';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { Table } from '../../models/table';
-import { GridOpsatService } from '../../services/grid-opsat.service';
 import { GridMessageFlowService } from '../../services/grid-message-flow.service';
 import { MessageFlowEnum } from '../../enums/message-flow.enum';
 

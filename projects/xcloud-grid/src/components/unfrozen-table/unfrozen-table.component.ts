@@ -1,12 +1,7 @@
 import { Component, forwardRef, OnInit, Renderer2, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { filter } from 'rxjs/operators';
-import { GridTopicEnum } from '../../enums/grid-topic.enum';
-import { IFilterView } from '../../models/i-filter-view';
-import { ITableColumn } from '../../models/i-table-column';
 import { ResizableTable } from '../../models/resizable-table';
 import { GridDataService } from '../../services/grid-data.service';
-import { GridOpsatService } from '../../services/grid-opsat.service';
 import { GridMessageFlowService } from '../../services/grid-message-flow.service';
 import { GridDataFlowService } from '../../services/grid-data-flow.service';
 

@@ -68,7 +68,6 @@ export class GridComponent implements OnInit {
         const fiterViewChangeObs: Observable<{ view: IFilterView, fetchData?: boolean }> = this.messageFlow.message
             .pipe(topicFilter(MessageFlowEnum.FilterViewChange), dataMap);
 
-        /**********************************************************************/
         combineLatest(colDefinitionfObs, viewDefinitionObs, _historyObs)
             .subscribe((resArr: [Array<ITableColumn>, Array<IFilterView>, IHistory]) => {
                 const [cols, views, history] = resArr;
