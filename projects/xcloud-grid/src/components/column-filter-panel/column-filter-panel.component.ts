@@ -4,7 +4,7 @@ import { filter, map, take } from 'rxjs/operators';
 import { ColumnTypeEnum } from '../../enums/column-type-enum.enum';
 import { GridTopicEnum } from '../../enums/grid-topic.enum';
 import { IFilter } from '../../models/i-filter';
-import { IFilterView } from '../../models/i-filter-view';
+import { IFilterView, FILTERLOGICAND, FILTERLOGICOR } from '../../models/i-filter-view';
 import { ITableColumn } from '../../models/i-table-column';
 import { GridDataService } from '../../services/grid-data.service';
 import { GridOpsatService } from '../../services/grid-opsat.service';
@@ -30,7 +30,7 @@ export class ColumnFilterPanelComponent implements OnInit {
     public advanceMenuItems: Array<MenuItem>;
     public filterItemBoxs: Array<FilterItemBoxComponent> = [];
     public logicalOperations: Array<SelectItem>;
-    public logicalOperation: string = '@and';
+    public logicalOperation: string = FILTERLOGICAND;
     public constructor(
         private cfr: ComponentFactoryResolver,
         private cache: GridDataService,
@@ -40,11 +40,11 @@ export class ColumnFilterPanelComponent implements OnInit {
         this.logicalOperations = [
             {
                 label: '满足以下所有条件',
-                value: '@and'
+                value: FILTERLOGICAND
             },
             {
                 label: '满足以下任意条件',
-                value: '@or'
+                value: FILTERLOGICOR
             }
         ];
     }
