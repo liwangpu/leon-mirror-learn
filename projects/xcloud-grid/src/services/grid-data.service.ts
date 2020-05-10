@@ -75,7 +75,6 @@ export class GridDataService {
                 break;
             }
         }
-        // console.log('v', view);
         this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData: false });
     }
 
