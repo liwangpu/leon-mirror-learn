@@ -10,6 +10,7 @@ import { topicFilter, dataMap } from '../utils/grid-tool';
 import { MessageFlowEnum } from '../enums/message-flow.enum';
 import { GRIDCONFIG, IGridConfig } from '../tokens/grid-config';
 import { ObjectTool } from '../utils/object-tool';
+import { ArrayTool } from '../utils/array-tool';
 
 @Injectable()
 export class GridDataService {
@@ -26,7 +27,7 @@ export class GridDataService {
             .pipe(topicFilter(DataFlowTopicEnum.ViewDefinition), dataMap)
             .subscribe((views: Array<IFilterView>) => {
                 // console.log('vvv', views);
-                this.filterViews = views;
+                this.filterViews = ArrayTool.deepCopy(views);
             });
     }
 
@@ -57,6 +58,11 @@ export class GridDataService {
             return;
         }
         this.filterViews.push(v);
+    }
+
+    public setActiveViewId(viewId: string): void {
+        this.history.viewId = viewId;
+        this.dataFlow.publish(DataFlowTopicEnum._History, this.history);
     }
 
     public setKeyword(keyword?: string): void {

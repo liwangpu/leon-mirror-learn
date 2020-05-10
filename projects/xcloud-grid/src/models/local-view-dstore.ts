@@ -2,7 +2,8 @@ import { Observable, of } from 'rxjs';
 import { UrlTool } from '../utils/url-tool';
 import { DStore } from './dstore';
 import { IFilterView } from './i-filter-view';
-
+import { v4 as uuidv4 } from 'uuid';
+import { ObjectTool } from '../utils/object-tool';
 export abstract class LocalViewDStore extends DStore {
 
     private pageKey: string;
@@ -13,30 +14,28 @@ export abstract class LocalViewDStore extends DStore {
             this.pageKey = UrlTool.getPath(location.href);
         }
         this.filterViews = this.getTemporyViewInLocalStorage();
+        console.log('views', this.filterViews);
     }
 
     public async getFilterViews(): Promise<Array<IFilterView>> {
-        return this.filterViews;
-
-        return new Promise(res => {
-            setTimeout(() => {
-                res(this.filterViews);
-            }, 3000);
-        });
+        return ObjectTool.deepCopy(this.filterViews);
     }
 
     public async onFilterViewCreate(view: IFilterView): Promise<IFilterView> {
-        view.id = Date.now().toString();
-        this.filterViews.push(view);
-        this.temporaryStoreViewToLocalStorage();
-        console.log('view create', view);
+        console.log('view create 1', this.filterViews);
+        view.id = uuidv4();
+        // view.id = 'ttt';
+
+        // this.filterViews.push(ObjectTool.deepCopy(view));
+        // this.temporaryStoreViewToLocalStorage();
+
         return view;
     }
 
     public async onFilterViewUpdate(view: IFilterView): Promise<void> {
         let index: number = this.filterViews.findIndex(x => x.id);
         if (index > -1) {
-            this.filterViews[index] = view;
+            this.filterViews[index] = ObjectTool.deepCopy(view);
         }
         this.temporaryStoreViewToLocalStorage();
         console.log('view update', view);

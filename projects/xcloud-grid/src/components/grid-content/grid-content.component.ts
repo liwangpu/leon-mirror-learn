@@ -156,7 +156,7 @@ export class GridContentComponent implements OnInit {
                 view.columns[index].width = obj[field];
             }
         });
-        this.cache.setFilterView(view);
+        this.cache.setFilterView(view, false);
     }
 
 }

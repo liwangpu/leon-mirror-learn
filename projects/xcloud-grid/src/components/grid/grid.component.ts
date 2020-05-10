@@ -13,6 +13,7 @@ import { GridMessageFlowService } from '../../services/grid-message-flow.service
 import { DataFlowTopicEnum } from '../../enums/data-flow-topic.enum';
 import { topicFilter, dataMap } from '../../utils/grid-tool';
 import { MessageFlowEnum } from '../../enums/message-flow.enum';
+import { ArrayTool } from '../../utils/array-tool';
 
 @Component({
     selector: 'xcloud-grid',
@@ -33,7 +34,7 @@ export class GridComponent implements OnInit {
         private dstore: DStore,
         private cache: GridDataService,
         private dataFlow: GridDataFlowService,
-        private messageFlow: GridMessageFlowService    ) {
+        private messageFlow: GridMessageFlowService) {
         this.dstore.registryGridStartup(option => {
 
             this.dataFlow.publish(DataFlowTopicEnum.DStoreOption, option);
@@ -47,7 +48,8 @@ export class GridComponent implements OnInit {
         });
 
         // log整个表格通讯信息
-        // this.opsat.message.subscribe(ms => console.log('message:', ms));
+        this.dataFlow.message.subscribe(ms => console.log('dt message:', ms));
+        this.messageFlow.message.subscribe(ms => console.log('ms message:', ms));
     }
 
     public refreshQuery(): void {
@@ -74,9 +76,11 @@ export class GridComponent implements OnInit {
                 // 1.默认视图可能是没有columns定义的,如果没有,需要把资源的columns赋值上去
                 // 2.清除view active定义
                 // 首先添加默认"全部"视图
+                console.log(1, views);
                 if (!views.some(x => x.id === '_ALL')) {
                     views.unshift({ id: '_ALL', name: '全部', columns: cols });
                 }
+
                 for (let idx: number = views.length - 1; idx >= 0; idx--) {
                     let view: IFilterView = views[idx];
                     view['_active'] = false;
@@ -84,6 +88,7 @@ export class GridComponent implements OnInit {
                 let viewIndex: number = history.viewId ? views.findIndex(x => x.id === history.viewId) : 0;
                 viewIndex = viewIndex || 0;
                 views[viewIndex]['_active'] = true;
+                console.log(2, views);
                 // this.dataFlow.publish(DataFlowTopicEnum.ColumnDefinition, views[viewIndex].columns);
                 this.dataFlow.publish(DataFlowTopicEnum.ViewDefinition, views);
                 this.messageFlow.publish(MessageFlowEnum.History, history);
@@ -103,22 +108,27 @@ export class GridComponent implements OnInit {
 
         fiterViewChangeObs
             .subscribe(async (obj: { view: IFilterView, fetchData?: boolean }) => {
+                let views = this.cache.getFilterViews();
+                ArrayTool.remove(views, v => !v.id);
                 let { view, fetchData } = obj;
-                // if (view.id === '_ALL') {
-                //     this.dataFlow.publish(DataFlowTopicEnum.ViewDefinition, this.cache.getFilterViews());
-                //     return;
-                // }
+
+                // debugger;
+                if (view.id === '_ALL') {
+                    this.dataFlow.publish(DataFlowTopicEnum.ViewDefinition, views);
+                    return;
+                }
 
                 if (view.id) {
                     await this.dstore.onFilterViewUpdate(view);
                 } else {
                     view = await this.dstore.onFilterViewCreate(view);
-                    this.cache.setFilterView(view);
+                    // this.cache.se
+                    views.push(view);
                 }
-                this.dataFlow.publish(DataFlowTopicEnum.ViewDefinition, this.cache.getFilterViews());
+                this.dataFlow.publish(DataFlowTopicEnum.ViewDefinition, views);
 
                 if (fetchData) {
-                    this.dataFlow.publish(DataFlowTopicEnum._ViewDefinition, this.cache.getFilterViews())
+                    this.dataFlow.publish(DataFlowTopicEnum._ViewDefinition, views)
                 }
             });
     }

@@ -147,20 +147,11 @@ export class ColumnFilterPanelComponent implements OnInit {
                 value: x.value
             }));
 
-        console.log(1, view.filters);
-        // this.transformFilterValueType(view);
-        this.dialogService.open(ColumnFilterViewEditPanelComponent, {
-            header: '保存新列表视图',
-            width: '450px',
-            height: '300px',
-            data: view
+        const ref: DynamicDialogRef<ColumnFilterViewEditPanelComponent> = this.editViewName();
+        ref.afterClosed().pipe(filter(name => name)).subscribe(name => {
+            view.name = name;
+            this.cache.setFilterView(view, false);
         });
-
-        // ref.onClose
-        //     .pipe(take(1))
-        //     .pipe(filter(updateView => updateView))
-        //     .subscribe(() => {
-        //     });
     }
 
     public query(): void {
@@ -206,6 +197,15 @@ export class ColumnFilterPanelComponent implements OnInit {
         //         }
         //     }
         // }
+    }
+
+    private editViewName(viewName?: string): DynamicDialogRef<ColumnFilterViewEditPanelComponent> {
+        return this.dialogService.open(ColumnFilterViewEditPanelComponent, {
+            header: viewName ? '保存列表视图' : '保存新列表视图',
+            width: '450px',
+            height: '300px',
+            data: viewName || null
+        });
     }
 
 }
