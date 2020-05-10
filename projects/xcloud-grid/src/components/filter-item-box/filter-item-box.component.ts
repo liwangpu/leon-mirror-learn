@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { filter, take } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { FILTEROPERATORS } from '../../consts/filter-operators';
-import { ISelectOption } from '../../models/i-select-option';
 import { ITableColumn } from '../../models/i-table-column';
 import { GridDataService } from '../../services/grid-data.service';
 import { FilterItemSettingPanelComponent } from '../filter-item-setting-panel/filter-item-setting-panel.component';
