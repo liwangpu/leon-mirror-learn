@@ -140,9 +140,9 @@ export class GridContentComponent implements OnInit {
                 // this.syncScrollPanel.revirseScroll();
             });
 
-        // setTimeout(() => {
-        //     this.messageFlow.publish(MessageFlowEnum.ToggleFilterSettingPanel);
-        // }, 200);
+        setTimeout(() => {
+            this.messageFlow.publish(MessageFlowEnum.ToggleFilterSettingPanel);
+        }, 200);
     }
 
     public afterColumnResize(): void {
