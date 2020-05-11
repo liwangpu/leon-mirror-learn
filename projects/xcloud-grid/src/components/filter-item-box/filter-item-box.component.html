@@ -1,12 +1,3 @@
-<!-- <div class="filter-item-box" [class.unvalid]='!field' (click)='editItem()'>
-    <p>{{fieldName?fieldName:'新建筛选器'}}</p>
-    <p *ngIf='field'>
-        <span class="o">{{operatorName}}</span>
-        <span class="v">{{text?text:value}}</span>
-    </p>
-</div>
-<div class="close" (click)='deleteItem()'>×</div> -->
-
 <div class="filter-item-box" (click)='editItem()'>
     <p class="field" *ngIf='field'>
         {{fieldName}}

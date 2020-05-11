@@ -1,9 +1,6 @@
 import { ElementRef, EventEmitter, Input, OnInit, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { delay, filter, map } from 'rxjs/operators';
 import { SortTableColumnDirective } from '../directives/sort-table-column.directive';
-import { GridTopicEnum } from '../enums/grid-topic.enum';
 import { GridDataService } from '../services/grid-data.service';
-import { GridOpsatService } from '../services/grid-opsat.service';
 import { ISortEvent } from './i-sort-event';
 import { ITableColumn } from './i-table-column';
 import { Table } from './table';
@@ -11,9 +8,10 @@ import { GridMessageFlowService } from '../services/grid-message-flow.service';
 import { topicFilter, dataMap } from '../utils/grid-tool';
 import { MessageFlowEnum } from '../enums/message-flow.enum';
 import { Observable } from 'rxjs';
-import { DStoreOption } from './dstore';
 import { DataFlowTopicEnum } from '../enums/data-flow-topic.enum';
 import { GridDataFlowService } from '../services/grid-data-flow.service';
+import { IFilterView } from './i-filter-view';
+import { take } from 'rxjs/operators';
 
 export abstract class ResizableTable extends Table implements OnInit {
 
@@ -42,6 +40,35 @@ export abstract class ResizableTable extends Table implements OnInit {
     }
     public ngOnInit(): void {
         super.ngOnInit();
+
+        const viewDefinitionObs: Observable<Array<IFilterView>> = this.dataFlow.message
+            .pipe(topicFilter(DataFlowTopicEnum.ViewDefinition), dataMap);
+
+        viewDefinitionObs.pipe(take(1)).subscribe(views => {
+            let view = views.filter(x => x['_active'])[0];
+            let cols: Array<ITableColumn> = view.columns.filter(x => !x['_invisibale']
+                && (this.tableType === 'unfrozen' ? !x['_frozen'] : x['_frozen']));
+            let minWidth: number = 0;
+            for (let col of cols) {
+                minWidth += col.width ? col.width : 0;
+            }
+
+            if (this.nestedDataLevel > 1) {
+                if (this.tableType === 'unfrozen') {
+                    this.shownNestedData = !cols.some(x => x['_frozen']);
+                } else if (this.tableType === 'frozen') {
+                    this.shownNestedData = cols.some(x => x['_frozen']);
+                } else {
+                    //
+                }
+            }
+
+            if (minWidth > 0) {
+                this.renderer2.setStyle(this.table.nativeElement, 'width', `${minWidth}px`);
+            } else {
+                this.renderer2.removeStyle(this.table.nativeElement, 'width');
+            }
+        });
     }
 
     public onLinkFieldClick(field: string, data: any, link?: any): void {
@@ -75,6 +102,7 @@ export abstract class ResizableTable extends Table implements OnInit {
             direction = sort.direction;
         }
         this.cache.setSorting(field, direction);
+        this.dataFlow.publish(DataFlowTopicEnum._History, this.cache.getHistory());
     }
 
     public toggleNestedData(item: any, e: any): void {

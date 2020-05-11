@@ -1,4 +1,4 @@
 <div class="grid-footer">
-    <p-paginator [rows]="rowsPerPageOptions?rowsPerPageOptions[0]:10" [rowsPerPageOptions]="rowsPerPageOptions"
+    <p-paginator [rows]="rows" [rowsPerPageOptions]="rowsPerPageOptions"
         [first]='paginatorFirst' [totalRecords]="dataTotal" (onPageChange)="paginate($event)"></p-paginator>
 </div>

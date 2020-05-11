@@ -1,6 +1,7 @@
 <div class="grid-header">
     <div class="view slm">
-        <byz-select [options]="allViews" [(ngModel)]="activeView"></byz-select>
+        <byz-select [options]="allViews" [ngModel]="activeView" (ngModelChange)='activeView=$event;changeActiveView()'
+            [showClear]="false"></byz-select>
     </div>
     <div class="buttons">
         <div class="search">
@@ -8,7 +9,7 @@
             <input type="text" class="slm" pInputText placeholder="搜索此列表" [(ngModel)]='keyword' (keyup.enter)='search()'
                 #keywordInput>
             <i class="clear pi pi-times" [class.hidden]='!keyword' (click)='keyword="";search()'></i> -->
-            <byz-input class="slm" [showClear]="true" [(ngModel)]='keyword' (keyup.enter)='search()'
+            <byz-input class="slm" [showClear]="false" [(ngModel)]='keyword' (keyup.enter)='search()'
                 placeholder="搜索此列表"></byz-input>
         </div>
         <byz-button class="slm" type="default" icon="byz-icon bi-arrow-back" (click)="reset()"></byz-button>
@@ -19,6 +20,3 @@
     </div>
 </div>
 <p-slideMenu #advanceSettingMenuCt appendTo="body" [model]="advanceSettingMenu" [popup]="true"></p-slideMenu>
-
-
-<!-- <xcloud-grid-column-visual-editing-panel></xcloud-grid-column-visual-editing-panel> -->

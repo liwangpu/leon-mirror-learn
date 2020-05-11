@@ -26,6 +26,24 @@ export class ArrayTool {
         return JSON.parse(str);
     }
 
+    public static applyFilterKeepOriginArrayOrder<T = any>(originArr: Array<T>, sourceArr: Array<T>, idField: string, condition: (item: T) => boolean): Array<T> {
+        let dest: Array<T> = [];
+        originArr.forEach(it => {
+            let cur = sourceArr.filter(x => x[idField] === it[idField])[0];
+            if (!cur) { return; }
+            if (condition(cur)) {
+                dest.push(cur);
+            }
+        });
+        sourceArr.filter(x => condition(x)).forEach(it => {
+            if (dest.some(x => x[idField] === it[idField])) {
+                return;
+            }
+            dest.push(it);
+        });
+        return dest;
+    }
+
     /**
      * 返回两个数组之间的差集 (拿来对比数字或者字符串数组)
      * @param a 数组A

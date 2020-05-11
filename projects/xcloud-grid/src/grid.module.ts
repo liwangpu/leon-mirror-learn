@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PaginatorModule } from 'primeng/paginator';
@@ -29,15 +28,14 @@ import { ToolTableComponent } from './components/tool-table/tool-table.component
 import { UnFrozenTableComponent } from './components/unfrozen-table/unfrozen-table.component';
 import { ColumResizerHandlerDirective } from './directives/colum-resizer-handler.directive';
 import { DynamicStyleWidthDirective } from './directives/dynamic-style-width.directive';
-import { ResizeTableColumnDirective } from './directives/resize-table-column.directive';
 import { SortTableColumnDirective } from './directives/sort-table-column.directive';
 import { TableStateRowDirective } from './directives/table-state-row.directive';
 import { SyncScrollAreaDirective } from './directives/sync-scroll-area.directive';
-import { InputModule as OrionInputModule, DynamicDialogModule as OrionDynamicDialogModule, FormModule as OrionFormModule, SelectModule as OrionSelectModule, ButtonModule as OrionButtonModule, CheckboxModule as OrionCheckboxModule, RadioButtonModule as OrionRadioButtonModule } from '@byzan/orion2';
+import { InputModule as OrionInputModule, DynamicDialogModule as OrionDynamicDialogModule, FormModule as OrionFormModule, SelectModule as OrionSelectModule, ButtonModule as OrionButtonModule, CheckboxModule as OrionCheckboxModule, RadioButtonModule as OrionRadioButtonModule, DynamicDialogService } from '@byzan/orion2';
 import { TransferComponent } from './components/transfer/transfer.component';
 
 @NgModule({
-    declarations: [SortTableColumnDirective, ResizeTableColumnDirective, ColumResizerHandlerDirective, GridHeaderComponent, ColumnVisualEditingPanelComponent, ColumnFilterPanelComponent, FilterItemBoxComponent, FilterItemSettingPanelComponent, ColumnFilterViewEditPanelComponent, GridContentComponent, GridFooterComponent, DynamicStyleWidthDirective, GridComponent, SyncScrollPanelComponent, ToolTableComponent, UnFrozenTableComponent, FrozenTableComponent, OperationTableComponent, TableStateRowDirective, SyncScrollAreaDirective, TransferComponent],
+    declarations: [SortTableColumnDirective, ColumResizerHandlerDirective, GridHeaderComponent, ColumnVisualEditingPanelComponent, ColumnFilterPanelComponent, FilterItemBoxComponent, FilterItemSettingPanelComponent, ColumnFilterViewEditPanelComponent, GridContentComponent, GridFooterComponent, DynamicStyleWidthDirective, GridComponent, SyncScrollPanelComponent, ToolTableComponent, UnFrozenTableComponent, FrozenTableComponent, OperationTableComponent, TableStateRowDirective, SyncScrollAreaDirective, TransferComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,
@@ -63,6 +61,7 @@ import { TransferComponent } from './components/transfer/transfer.component';
         OrionRadioButtonModule
     ],
     providers: [
+        DynamicDialogService
     ],
     exports: [
         GridComponent

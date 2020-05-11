@@ -1,14 +1,14 @@
 <div class="column-filter-view-edit-panel">
     <div class="content">
-        <form [formGroup]="editForm" class="simple-editor above-label">
-            <div class="fitem oneline">
-                <label>视图名称</label>
-                <input type="text" pInputText formControlName='name'>
-            </div>
+        <form byzForm [formGroup]="editForm" labelPosition='top' [cols]="1">
+            <byz-form-item label="视图名称">
+                <byz-input type="text" formControlName="name" placeholder="请输入视图名称">
+                </byz-input>
+            </byz-form-item>
         </form>
     </div>
     <div class="footer">
-        <button pButton class="ui-button-secondary" type="button" label="取消" (click)='ref.close()'></button>
-        <button pButton type="button" label="保存" (click)='save()'></button>
+        <byz-button type="default" (click)='ref.close()'>取消</byz-button>
+        <byz-button type="primary" [disabled]='!editForm.valid' (click)='save()'>保存</byz-button>
     </div>
 </div>

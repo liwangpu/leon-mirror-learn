@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChildren, ElementRef, QueryList, Renderer2, TemplateRef, ViewChild, ComponentFactoryResolver, ComponentFactory, ViewContainerRef } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, ElementRef, QueryList, Renderer2, TemplateRef, ViewChild } from '@angular/core';
 import { SyncScrollAreaDirective } from '../../directives/sync-scroll-area.directive';
 
 @Component({
@@ -60,7 +60,7 @@ export class SyncScrollPanelComponent implements AfterContentInit {
         let scrollBarHeight: number = offsetHeight - clientHeight;
         // console.log('clientHeight', clientHeight);
         // console.log('offsetHeight', offsetHeight);
-        // console.log(111,scrollBarHeight);
+        console.log('scrollBarHeight', scrollBarHeight);
         this.renderer2.setStyle(this.scrollbarSupplement.nativeElement, 'height', `${scrollBarHeight}px`);
     }
 

@@ -1,23 +1,24 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { filter, take } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { FILTEROPERATORS } from '../../consts/filter-operators';
-import { ISelectOption } from '../../models/i-select-option';
 import { ITableColumn } from '../../models/i-table-column';
 import { GridDataService } from '../../services/grid-data.service';
 import { FilterItemSettingPanelComponent } from '../filter-item-setting-panel/filter-item-setting-panel.component';
 import { DynamicDialogRef, DynamicDialogService } from '@byzan/orion2';
 
+export const FilterItemSettingPanelWidth = '400px';
+export const FilterItemSettingPanelHeight = '420px';
+
 @Component({
     selector: 'xcloud-grid-filter-item-box',
     templateUrl: './filter-item-box.component.html',
-    styleUrls: ['./filter-item-box.component.scss'],
-    providers: [
-        DynamicDialogService
-    ]
+    styleUrls: ['./filter-item-box.component.scss']
 })
 export class FilterItemBoxComponent {
 
+    @Output()
+    public readonly delete: EventEmitter<string> = new EventEmitter<string>();
     public id: string;
     public field: string;
     public fieldName: string;
@@ -25,21 +26,23 @@ export class FilterItemBoxComponent {
     public operatorName: string;
     public text: string;
     public value: any;
-    @Output() public readonly delete: EventEmitter<string> = new EventEmitter<string>();
     public constructor(
         public dialogService: DynamicDialogService,
         private cache: GridDataService,
     ) { }
 
     public editItem(): void {
+        let data: any = { columns: this.cache.getActiveFilterViewColumns() };
+        data.filter = this.field ? { field: this.field, operator: this.operator, value: this.value } : null;
         const ref: DynamicDialogRef<any> = this.dialogService.open(FilterItemSettingPanelComponent, {
             header: '筛选器设置',
-            width: '400px',
-            height: '420px',
-            data: this.field ? { field: this.field, operator: this.operator, value: this.value } : null
+            width: FilterItemSettingPanelWidth,
+            height: FilterItemSettingPanelHeight,
+            data
         });
 
-        ref.afterClosed().pipe(filter(x => x))
+        ref.afterClosed()
+            .pipe(filter(x => x))
             .subscribe((res: { field: string; operator: string; value: string }) => {
                 this.field = res.field;
                 this.operator = res.operator;
@@ -60,11 +63,5 @@ export class FilterItemBoxComponent {
         let op: SelectItem = this.operator && FILTEROPERATORS.filter(x => x.value === this.operator)[0];
         this.operatorName = op ? op.label : '';
         this.text = this.value;
-        // if (this.cache.fieldInfos && this.cache.fieldInfos[this.field]) {
-        //     let it: ISelectOption = this.cache.fieldInfos[this.field].filter(x => `${x.value}` === `${this.value}`)[0];
-        //     if (it) {
-        //         this.text = it.text;
-        //     }
-        // }
     }
 }

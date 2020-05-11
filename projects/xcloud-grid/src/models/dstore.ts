@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { IFilterView } from './i-filter-view';
 import { IQueryResult } from './i-query-result';
 import { ITableColumn } from './i-table-column';

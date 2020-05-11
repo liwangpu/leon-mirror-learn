@@ -15,6 +15,7 @@ import { DStoreOption } from '../../models/dstore';
 import { MessageFlowEnum } from '../../enums/message-flow.enum';
 import { ColumnFilterPanelComponent } from '../column-filter-panel/column-filter-panel.component';
 import { ITableButton } from '../../models/i-table-button';
+import { ArrayTool } from '../../utils/array-tool';
 
 @Component({
     selector: 'xcloud-grid-content',
@@ -103,7 +104,8 @@ export class GridContentComponent implements OnInit {
                 }
                 this.columns = cols;
                 this.unfrozenColumns = this.columns.filter(x => !x['_frozen'] && !x['_invisibale']);
-                this.frozenColumns = this.columns.filter(x => x['_frozen'] && !x['_invisibale']);
+                //冻结列需要记住上次列顺序,补充式添加冻结列
+                this.frozenColumns = ArrayTool.applyFilterKeepOriginArrayOrder(this.frozenColumns, this.columns, 'field', x => x['_frozen'] && !x['_invisibale']);
             });
 
         closePanelObs
@@ -120,22 +122,15 @@ export class GridContentComponent implements OnInit {
 
         merge(dataObs, columnWidthChangeObs)
             .pipe(delay(500))
-            .subscribe(() => this.syncScrollPanel.revirseScroll());
+            .subscribe(() => {
+                console.log('wc', this.syncScrollPanel);
+                this.syncScrollPanel?.revirseScroll();
+
+            });
 
         forkJoin(dataObs.pipe(take(1)), viewObs.pipe(take(1)), tableButtonObs.pipe(take(1)))
             .subscribe(() => {
                 this.syncMasterAreaConfirm = true;
-                // console.log('11', this.showOperationTable);
-                // const facs: Array<ComponentFactory<any>> = [];
-
-                // if (this.showOperationTable) {
-                //     let ofac = this.cfr.resolveComponentFactory(OperationTableComponent);
-                //     this.syncScrollPanel.masterPanelContainer.createComponent(ofac);
-                //     //     facs.push(this.cfr.resolveComponentFactory(OperationTableComponent));
-                // }
-                // facs.push(this.cfr.resolveComponentFactory(UnFrozenTableComponent));
-                // this.syncScrollPanel.createPanel(facs);
-                // this.syncScrollPanel.revirseScroll();
             });
 
         // setTimeout(() => {
@@ -155,6 +150,7 @@ export class GridContentComponent implements OnInit {
             }
         });
         this.cache.setFilterView(view);
+        this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData: false });
     }
 
 }

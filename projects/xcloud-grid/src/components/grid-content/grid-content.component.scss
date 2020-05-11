@@ -2,36 +2,9 @@ div.grid-content {
     width: 100%;
     height: 100%;
     position: relative;
-    // border-left: 1px solid #D5D8E1;
-    // border-right: 1px solid #D5D8E1;
-    // border-bottom: 1px solid #D5D8E1;
     border: 1px solid #D5D8E1;
     border-bottom: none;
     overflow: hidden;
-    // border-radius: 4px;
-    // div.table-panel {
-    //     flex: 1;
-    //     display: flex;
-    //     overflow: hidden;
-
-    //     div.tool-panel {
-    //         overflow: hidden;
-    //         scrollbar-width: 0;
-    //     }
-
-    //     div.frozen-panel {
-    //         overflow: hidden;
-    //         scrollbar-width: 0;
-    //     }
-
-    //     div.unfrozen-panel {
-    //         flex: 1;
-    //         height: 100%;
-    //         overflow: auto;
-    //         // overflow-x: auto;
-    //         // overflow-y: scroll;
-    //     }
-    // }
 
     div.view-container {
         display: none;
@@ -69,6 +42,6 @@ div.grid-content {
     }
 
     .hidden {
-        display: none;
+        width: 0;
     }
 }

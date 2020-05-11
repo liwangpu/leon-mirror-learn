@@ -13,11 +13,12 @@
     </div>
     <div class="content">
         <div #filterItemsContainer></div>
-        <byz-button class="add-filter" type="default" icon="byz-icon bi-plus" (click)='addFilterItem()'>新增筛选条件
+        <byz-button class="add-filter" type="default" icon="byz-icon bi-plus"
+            (click)='addFilterItem()'>新增筛选条件
         </byz-button>
     </div>
     <div class="footer">
-        <byz-button type="default">另存为</byz-button>
-        <byz-button type="primary" (click)='query()'>确定</byz-button>
+        <byz-button type="default" (click)='saveAs()'>另存为</byz-button>
+        <byz-button type="primary" (click)='save()'>确定</byz-button>
     </div>
 </div>

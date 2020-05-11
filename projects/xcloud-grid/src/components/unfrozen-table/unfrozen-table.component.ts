@@ -1,14 +1,10 @@
 import { Component, forwardRef, OnInit, Renderer2, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { filter } from 'rxjs/operators';
-import { GridTopicEnum } from '../../enums/grid-topic.enum';
-import { IFilterView } from '../../models/i-filter-view';
-import { ITableColumn } from '../../models/i-table-column';
 import { ResizableTable } from '../../models/resizable-table';
 import { GridDataService } from '../../services/grid-data.service';
-import { GridOpsatService } from '../../services/grid-opsat.service';
 import { GridMessageFlowService } from '../../services/grid-message-flow.service';
 import { GridDataFlowService } from '../../services/grid-data-flow.service';
+import { MessageFlowEnum } from '../../enums/message-flow.enum';
 
 @Component({
     selector: 'xcloud-grid-unfrozen-table',
@@ -44,7 +40,10 @@ export class UnFrozenTableComponent extends ResizableTable implements OnInit {
             {
                 id: 'freezen-column',
                 label: '冻结此列',
-                command: () => this.cache.freezeColumn(this.currentEditColumn)
+                command: () => {
+                    this.cache.freezeColumn(this.currentEditColumn);
+                    this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view: this.cache.getActiveFilterView(), fetchData: false });
+                }
             }
         ];
     }

@@ -1,16 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { delay, filter, map, take } from 'rxjs/operators';
-import { GridTopicEnum } from '../../enums/grid-topic.enum';
-import { IHistory } from '../../models/i-history';
 import { IQueryResult } from '../../models/i-query-result';
 import { GridDataService } from '../../services/grid-data.service';
-import { GridOpsatService } from '../../services/grid-opsat.service';
 import { GRIDCONFIG, IGridConfig } from '../../tokens/grid-config';
 import { GridDataFlowService } from '../../services/grid-data-flow.service';
-import { GridMessageFlowService } from '../../services/grid-message-flow.service';
 import { topicFilter, dataMap } from '../../utils/grid-tool';
 import { DataFlowTopicEnum } from '../../enums/data-flow-topic.enum';
-import { DStoreOption } from '../../models/dstore';
+import { Observable } from 'rxjs';
+import { IHistory } from '../../models/i-history';
+import { MessageFlowEnum } from '../../enums/message-flow.enum';
+import { GridMessageFlowService } from '../../services/grid-message-flow.service';
+import { delay } from 'rxjs/operators';
 
 @Component({
     selector: 'xcloud-grid-footer',
@@ -19,54 +18,49 @@ import { DStoreOption } from '../../models/dstore';
 })
 export class GridFooterComponent implements OnInit {
 
+    public rows: number;
     public rowsPerPageOptions: Array<number>;
     public dataTotal: number = 0;
     public paginatorFirst: number = 0;
     public constructor(
         @Inject(GRIDCONFIG) private gridConfig: IGridConfig,
-        private opsat: GridOpsatService,
         private cache: GridDataService,
         private dataFlow: GridDataFlowService,
-        private messageFlow: GridMessageFlowService,
+        private messageFlow: GridMessageFlowService
     ) {
         this.rowsPerPageOptions = this.gridConfig.rowsPerPageOptions;
+        this.rows = this.rowsPerPageOptions[0];
     }
 
     public ngOnInit(): void {
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.ListData))
-        //     .pipe(map(x => x.data))
-        //     .pipe(delay(100))
-        //     .subscribe((res: IQueryResult) => {
-        //         if (res.count) {
-        //             this.dataTotal = res.count;
-        //         }
-        //     });
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.History))
-        //     .pipe(map(x => x.data))
-        //     .pipe(delay(100))
-        //     .subscribe((history: IHistory) => {
-        //         this.paginatorFirst = history.pagination.page - 1 > 0 ? (history.pagination.page - 1) * history.pagination.limit : 0;
-        //     });
+        const listDataObs: Observable<IQueryResult> = this.dataFlow.message
+            .pipe(topicFilter(DataFlowTopicEnum.ListData), dataMap);
+        const historyObs: Observable<IHistory> = this.messageFlow.message
+            .pipe(topicFilter(MessageFlowEnum.History), dataMap);
 
-        this.dataFlow.message
-            .pipe(topicFilter(DataFlowTopicEnum.ListData), dataMap)
-            .subscribe((res: IQueryResult) => {
-                // console.log(1, res);
-                // this.selectMode = option.selectMode;
+        listDataObs
+            .subscribe(res => {
                 if (res.count) {
                     this.dataTotal = res.count;
                 }
             });
+
+        historyObs
+            .pipe(delay(100))
+            .subscribe(history => {
+                if (history.pagination && history.pagination.page && history.pagination.limit) {
+                    this.paginatorFirst = (history.pagination.page - 1) * history.pagination.limit;
+                }
+                this.rows = this.rowsPerPageOptions[0];
+                // console.log(111, this.rows);
+            });
     }
 
     public paginate(evt: { first: number; rows: number; page: number }): void {
+        console.log('paginate', evt);
         this.paginatorFirst = evt.first;
-        // this.cache.history.pagination.page = evt.page + 1;
-        // this.cache.history.pagination.limit = evt.rows;
         this.cache.setPagination(evt.page + 1, evt.rows);
-        // this.opsat.publish(GridTopicEnum._HistoryChange, this.cache.history);
+        this.dataFlow.publish(DataFlowTopicEnum._History, this.cache.getHistory());
     }
 
 }

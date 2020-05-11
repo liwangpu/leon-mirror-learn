@@ -17,6 +17,7 @@
                 top: 0;
                 min-width: 100px;
                 background-color: $bgc;
+                padding: 0 0 0 12px;
                 overflow: hidden;
                 z-index: 10;
 
@@ -59,7 +60,7 @@
                     p {
                         height: 100%;
                         line-height: $table_cell_height - 2px;
-                        padding-left: .5em;
+                        // padding-left: .5em;
                         overflow: hidden;
                         font-weight: bold;
                         white-space: nowrap;
@@ -158,7 +159,6 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
-                padding: 0 .5rem;
                 color: #555C71;
             }
 
@@ -177,11 +177,14 @@
     }
 
     .table-row {
+        height: $table_cell_height;
+        max-height: $table_cell_height;
 
         .table-cell {
             height: $table_cell_height;
             max-height: $table_cell_height;
             border-bottom: 1px solid #D5D8E1;
+            padding: 0 12px;
             background-color: #fff;
             text-align: left;
             font-size: 14px;

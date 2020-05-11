@@ -3,13 +3,12 @@ import { IFilterView } from '../models/i-filter-view';
 import { IHistory } from '../models/i-history';
 import { ISelectOption } from '../models/i-select-option';
 import { ITableColumn } from '../models/i-table-column';
-import { GridMessageFlowService } from './grid-message-flow.service';
 import { GridDataFlowService } from './grid-data-flow.service';
 import { DataFlowTopicEnum } from '../enums/data-flow-topic.enum';
 import { topicFilter, dataMap } from '../utils/grid-tool';
-import { MessageFlowEnum } from '../enums/message-flow.enum';
 import { GRIDCONFIG, IGridConfig } from '../tokens/grid-config';
 import { ObjectTool } from '../utils/object-tool';
+import { ArrayTool } from '../utils/array-tool';
 
 @Injectable()
 export class GridDataService {
@@ -19,14 +18,12 @@ export class GridDataService {
     private filterViews: Array<IFilterView> = [];
     public constructor(
         @Inject(GRIDCONFIG) private gridConfig: IGridConfig,
-        private dataFlow: GridDataFlowService,
-        private messageFlow: GridMessageFlowService
+        private dataFlow: GridDataFlowService
     ) {
         this.dataFlow.message
             .pipe(topicFilter(DataFlowTopicEnum.ViewDefinition), dataMap)
             .subscribe((views: Array<IFilterView>) => {
-                // console.log('vvv', views);
-                this.filterViews = views;
+                this.filterViews = ArrayTool.deepCopy(views);
             });
     }
 
@@ -47,11 +44,11 @@ export class GridDataService {
         return ObjectTool.deepCopy(this.filterViews);
     }
 
-    public setFilterView(view: IFilterView, fetchData?: boolean): void {
+    public setFilterView(view: IFilterView): void {
         let v: IFilterView = ObjectTool.deepCopy(view);
         let index = this.filterViews.findIndex(x => x.id === v.id);
 
-        this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData });
+        // this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view });
         if (index > -1) {
             this.filterViews[index] = v;
             return;
@@ -59,10 +56,15 @@ export class GridDataService {
         this.filterViews.push(v);
     }
 
+    public setActiveViewId(viewId: string): void {
+        this.history.viewId = viewId;
+        // this.dataFlow.publish(DataFlowTopicEnum._History, this.history);
+    }
+
     public setKeyword(keyword?: string): void {
-        this._initializeHistory();
+        this.initializeHistory();
         this.history.keyword = keyword;
-        this.dataFlow.publish(DataFlowTopicEnum._History, this.history);
+        // this.dataFlow.publish(DataFlowTopicEnum._History, this.history);
     }
 
     public freezeColumn(field: string): void {
@@ -75,8 +77,7 @@ export class GridDataService {
                 break;
             }
         }
-        // console.log('v', view);
-        this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData: false });
+        // this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData: false });
     }
 
     public unfreezenColumn(field: string): void {
@@ -90,27 +91,22 @@ export class GridDataService {
             }
         }
         // console.log('v', view);
-        this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData: false });
+        // this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData: false });
     }
 
     public setPagination(page?: number, limit?: number): void {
         this.history.pagination.page = page;
         this.history.pagination.limit = limit;
-        this.dataFlow.publish(DataFlowTopicEnum._History, this.history);
+        // this.dataFlow.publish(DataFlowTopicEnum._History, this.history);
     }
 
     public setSorting(field: string, direction?: string): void {
         this.history.sorting.field = field;
         this.history.sorting.direction = direction;
-        this.dataFlow.publish(DataFlowTopicEnum._History, this.history);
+        // this.dataFlow.publish(DataFlowTopicEnum._History, this.history);
     }
 
     public initializeHistory(): void {
-        this._initializeHistory();
-        this.dataFlow.publish(DataFlowTopicEnum._History, this.history);
-    }
-
-    private _initializeHistory(): void {
         this.history.keyword = null;
         this.history.pagination.page = 1;
         this.history.pagination.limit = this.gridConfig.rowsPerPageOptions[0];

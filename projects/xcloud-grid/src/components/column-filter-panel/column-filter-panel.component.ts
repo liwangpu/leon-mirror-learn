@@ -1,20 +1,20 @@
 import { Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { MenuItem, SelectItem } from 'primeng/api';
-import { filter, map, take } from 'rxjs/operators';
-import { ColumnTypeEnum } from '../../enums/column-type-enum.enum';
-import { GridTopicEnum } from '../../enums/grid-topic.enum';
+import { filter, take } from 'rxjs/operators';
 import { IFilter } from '../../models/i-filter';
-import { IFilterView } from '../../models/i-filter-view';
-import { ITableColumn } from '../../models/i-table-column';
+import { IFilterView, FILTERLOGICAND, FILTERLOGICOR } from '../../models/i-filter-view';
 import { GridDataService } from '../../services/grid-data.service';
-import { GridOpsatService } from '../../services/grid-opsat.service';
 import { ArrayTool } from '../../utils/array-tool';
-import { ObjectTool } from '../../utils/object-tool';
 import { ColumnFilterViewEditPanelComponent } from '../column-filter-view-edit-panel/column-filter-view-edit-panel.component';
-import { FilterItemBoxComponent } from '../filter-item-box/filter-item-box.component';
-import { DialogService } from 'primeng/dynamicdialog';
+import { FilterItemBoxComponent, FilterItemSettingPanelWidth, FilterItemSettingPanelHeight } from '../filter-item-box/filter-item-box.component';
 import { GridMessageFlowService } from '../../services/grid-message-flow.service';
 import { MessageFlowEnum } from '../../enums/message-flow.enum';
+import { DynamicDialogRef, DynamicDialogService } from '@byzan/orion2';
+import { GridDataFlowService } from '../../services/grid-data-flow.service';
+import { topicFilter, dataMap } from '../../utils/grid-tool';
+import { DataFlowTopicEnum } from '../../enums/data-flow-topic.enum';
+import { Observable } from 'rxjs';
+import { FilterItemSettingPanelComponent } from '../filter-item-setting-panel/filter-item-setting-panel.component';
 
 @Component({
     selector: 'xcloud-grid-column-filter-panel',
@@ -26,78 +26,64 @@ export class ColumnFilterPanelComponent implements OnInit {
     @ViewChild('filterItemsContainer', { static: true, read: ViewContainerRef })
     public filterItemsContainer: ViewContainerRef;
     public enableFilterView: boolean = false;
-    public filterView: IFilterView;
     public advanceMenuItems: Array<MenuItem>;
     public filterItemBoxs: Array<FilterItemBoxComponent> = [];
     public logicalOperations: Array<SelectItem>;
-    public logicalOperation: string = '@and';
+    public logicalOperation: string = FILTERLOGICAND;
     public constructor(
         private cfr: ComponentFactoryResolver,
         private cache: GridDataService,
         private messageFlow: GridMessageFlowService,
-        private dialogService: DialogService
+        private dataFlow: GridDataFlowService,
+        private dialogService: DynamicDialogService
     ) {
         this.logicalOperations = [
             {
                 label: '满足以下所有条件',
-                value: '@and'
+                value: FILTERLOGICAND
             },
             {
                 label: '满足以下任意条件',
-                value: '@or'
+                value: FILTERLOGICOR
             }
         ];
     }
 
     public ngOnInit(): void {
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.ViewDefinition))
-        //     .pipe(map(x => x.data))
-        //     .subscribe(() => {
-        //         // this.filterView = ObjectTool.deepCopy(this.cache.activeFilterView);
-        //         // this.renderFilterPanel();
-        //     });
+        const viewDefinitionObs: Observable<Array<IFilterView>> = this.dataFlow.message
+            .pipe(topicFilter(DataFlowTopicEnum.ViewDefinition), dataMap);
 
-        // this.opsat.message
-        //     .pipe(filter(x => x.topic === GridTopicEnum.EnableFilterView))
-        //     .pipe(map(x => x.data))
-        //     .subscribe(enable => this.enableFilterView = enable);
 
-        // this.advanceMenuItems = [
-        //     {
-        //         label: '另存为', command: () => {
-        //             this.saveAs();
-        //         }
-        //     }
-        // ];
+        viewDefinitionObs.subscribe(views => {
+            let view = views.filter(x => x['_active'])[0];
+            this.logicalOperation = view.filterLogic || FILTERLOGICAND;
+            this.renderFilterPanel(view.filters);
+        });
     }
 
-    public renderFilterPanel(): void {
-        this.filterItemsContainer.clear();
-        this.filterItemBoxs = [];
-        if (this.filterView.filters && this.filterView.filters.length > 0) {
-            for (let it of this.filterView.filters) {
-                this.addFilterItem(it.field, it.operator, it.value);
+    public renderFilterPanel(filters?: Array<IFilter>): void {
+        this.clearFilterItems();
+        if (filters?.length) {
+            for (let it of filters) {
+                this._addFilterItem(it.field, it.operator, it.value);
             }
         }
     }
 
-    public addFilterItem(field?: string, operator?: string, value?: string): void {
-        let factory: ComponentFactory<FilterItemBoxComponent> = this.cfr.resolveComponentFactory(FilterItemBoxComponent);
-        let com: ComponentRef<FilterItemBoxComponent> = this.filterItemsContainer.createComponent(factory);
-        com.instance.id = `${Date.now()}-${field}`;
-        com.instance.field = field;
-        com.instance.operator = operator;
-        com.instance.value = value;
-        com.instance.generateDisplayMessage();
-        com.instance.delete.pipe(take(1)).subscribe(id => {
-            const i: number = this.filterItemBoxs.findIndex(x => x.id === id);
-            if (i === -1) { return; }
-            ArrayTool.remove(this.filterItemBoxs, it => it.id === id);
-            this.filterItemsContainer.remove(i);
+    public addFilterItem(): void {
+        let data: any = { columns: this.cache.getActiveFilterViewColumns() };
+        const ref: DynamicDialogRef<any> = this.dialogService.open(FilterItemSettingPanelComponent, {
+            header: '筛选器设置',
+            width: FilterItemSettingPanelWidth,
+            height: FilterItemSettingPanelHeight,
+            data
         });
-        com.instance.editItem();
-        this.filterItemBoxs.push(com.instance);
+
+        ref.afterClosed()
+            .pipe(filter(x => x))
+            .subscribe((res: { field: string; operator: string; value: string }) => {
+                this._addFilterItem(res.field, res.operator, res.value);
+            });
     }
 
     public clearFilterItems(): void {
@@ -106,57 +92,32 @@ export class ColumnFilterPanelComponent implements OnInit {
     }
 
     public save(): void {
-        let view: IFilterView = ObjectTool.deepCopy(this.filterView);
+        let view: IFilterView = this.cache.getActiveFilterView();
         if (view.id === '_ALL') {
             this.saveAs(view);
             return;
         }
-
-        view.filters = this.filterItemBoxs.filter(x => x.field).map(x =>
-            ({
-                field: x.field,
-                operator: x.operator,
-                value: x.value
-            }));
-        this.transformFilterValueType(view);
-
-        this.dialogService.open(ColumnFilterViewEditPanelComponent, {
-            header: '保存新列表视图',
-            width: '450px',
-            height: '300px',
-            data: view
-        });
-
-        // ref.onClose
-        //     .pipe(take(1))
-        //     .pipe(filter(updateView => updateView))
-        //     .subscribe(() => {
-        //     });
+        view.filterLogic = this.logicalOperation;
+        view.filters = this.transferFilterItemBoxToFilter();
+        this.cache.setFilterView(view);
+        this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData: true });
+        this.messageFlow.publish(MessageFlowEnum.CloseFilterSettingPanel);
     }
 
     public saveAs(v?: IFilterView): void {
-        let view: IFilterView = v ? v : ObjectTool.deepCopy(this.filterView);
-        view.id = undefined;
-        view.name = undefined;
-        view.filters = this.filterItemBoxs.filter(x => x.field).map(x =>
-            ({
-                field: x.field,
-                operator: x.operator,
-                value: x.value
-            }));
-        this.transformFilterValueType(view);
-        this.dialogService.open(ColumnFilterViewEditPanelComponent, {
-            header: '保存新列表视图',
-            width: '450px',
-            height: '300px',
-            data: view
-        });
+        let view: IFilterView = v || this.cache.getActiveFilterView();
+        view.id = null;
+        view.name = null;
+        view.filterLogic = this.logicalOperation;
+        view.filters = this.transferFilterItemBoxToFilter();
 
-        // ref.onClose
-        //     .pipe(take(1))
-        //     .pipe(filter(updateView => updateView))
-        //     .subscribe(() => {
-        //     });
+        const ref: DynamicDialogRef<ColumnFilterViewEditPanelComponent> = this.editViewName();
+        ref.afterClosed().pipe(filter(name => name)).subscribe(name => {
+            view.name = name;
+            this.cache.setFilterView(view);
+            this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view, fetchData: true });
+            this.messageFlow.publish(MessageFlowEnum.CloseFilterSettingPanel);
+        });
     }
 
     public query(): void {
@@ -172,36 +133,39 @@ export class ColumnFilterPanelComponent implements OnInit {
         this.messageFlow.publish(MessageFlowEnum.CloseFilterSettingPanel);
     }
 
-    private transformFilterValueType(view: IFilterView): void {
-        // if (!view.filters && view.filters.length < 1) {
-        //     return;
-        // }
-        // const cols: Array<ITableColumn> = this.cache.columns;
-        // for (let idx: number = view.filters.length - 1; idx >= 0; idx--) {
-        //     // tslint:disable-next-line: no-shadowed-variable
-        //     let filter: IFilter = view.filters[idx];
-        //     let col: ITableColumn = cols.filter(x => x.field === filter.field)[0];
-        //     if (col) {
-        //         // tslint:disable-next-line: prefer-switch
-        //         if (col.fieldType === ColumnTypeEnum.Number) {
-        //             filter.value = Number(filter.value);
-        //         } else if (col.fieldType === ColumnTypeEnum.Select) {
-        //             if (this.cache.fieldInfos && this.cache.fieldInfos[col.field]) {
-        //                 let t: string = typeof (this.cache.fieldInfos[col.field][0].value);
-        //                 // tslint:disable-next-line: prefer-conditional-expression
-        //                 if (t === 'number') {
-        //                     filter.value = Number(filter.value);
-        //                 } else {
-        //                     filter.value = `${filter.value}`;
-        //                 }
-        //             } else {
-        //                 filter.value = `${filter.value}`;
-        //             }
-        //         } else {
-        //             filter.value = `${filter.value}`;
-        //         }
-        //     }
-        // }
+    private transferFilterItemBoxToFilter(): Array<IFilter> {
+        return this.filterItemBoxs.filter(x => x.field).map(x =>
+            ({
+                field: x.field,
+                operator: x.operator,
+                value: x.value
+            }));
+    }
+
+    private editViewName(viewName?: string): DynamicDialogRef<ColumnFilterViewEditPanelComponent> {
+        return this.dialogService.open(ColumnFilterViewEditPanelComponent, {
+            header: viewName ? '保存列表视图' : '保存新列表视图',
+            width: '450px',
+            height: '300px',
+            data: viewName || null
+        });
+    }
+
+    private _addFilterItem(field?: string, operator?: string, value?: string): void {
+        let factory: ComponentFactory<FilterItemBoxComponent> = this.cfr.resolveComponentFactory(FilterItemBoxComponent);
+        let com: ComponentRef<FilterItemBoxComponent> = this.filterItemsContainer.createComponent(factory);
+        com.instance.id = `${Date.now()}-${field}`;
+        com.instance.field = field;
+        com.instance.operator = operator;
+        com.instance.value = value;
+        com.instance.generateDisplayMessage();
+        com.instance.delete.pipe(take(1)).subscribe(id => {
+            const i: number = this.filterItemBoxs.findIndex(x => x.id === id);
+            if (i === -1) { return; }
+            ArrayTool.remove(this.filterItemBoxs, it => it.id === id);
+            this.filterItemsContainer.remove(i);
+        });
+        this.filterItemBoxs.push(com.instance);
     }
 
 }

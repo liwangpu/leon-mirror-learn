@@ -18,7 +18,7 @@ export abstract class Table implements OnInit {
     @Output()
     public readonly radioSelectChange: EventEmitter<string> = new EventEmitter<string>();
     public allRowSelected: boolean = false;
-    @ViewChild('table', { static: false, read: ElementRef })
+    @ViewChild('table', { static: true, read: ElementRef })
     public table: ElementRef;
     public enableRowState = true;
     public constructor(

@@ -3,6 +3,7 @@ export * from './grid.module';
 export * from './components/grid/grid.component';
 // models
 export * from './models/dstore';
+export * from './models/i-history';
 export * from './models/local-view-dstore';
 export * from './models/no-view-dstore';
 export * from './models/i-table-column';

@@ -5,5 +5,7 @@ export interface IHistory {
     pagination?: { page?: number; limit?: number };
     sorting?: { field?: string; direction?: string };
     keyword?: string;
-    dynamicFilters?: Array<IFilter>;
+    filters?: Array<IFilter>;
+    filterLogic?: string;
+    otherParams?: { [key: string]: any };
 }

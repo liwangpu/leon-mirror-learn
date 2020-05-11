@@ -4,6 +4,7 @@ import { ResizableTable } from '../../models/resizable-table';
 import { GridDataService } from '../../services/grid-data.service';
 import { GridMessageFlowService } from '../../services/grid-message-flow.service';
 import { GridDataFlowService } from '../../services/grid-data-flow.service';
+import { MessageFlowEnum } from '../../enums/message-flow.enum';
 
 @Component({
     selector: 'xcloud-grid-frozen-table',
@@ -52,6 +53,7 @@ export class FrozenTableComponent extends ResizableTable implements OnInit {
                         this.renderer2.setStyle(this.table.nativeElement, 'width', `auto`);
                     }
                     this.cache.unfreezenColumn(this.currentEditColumn);
+                    this.messageFlow.publish(MessageFlowEnum.FilterViewChange, { view: this.cache.getActiveFilterView(), fetchData: false });
                 }
             }
         ];
